@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block title %}{% endblock %} - CSQC</title>
+
+        <!-- FAVICON -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        <!-- BOOTSTRAP CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- JQUERY -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- BOOTSTRAP JS-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <!-- OWN CSS -->
+        <link rel="stylesheet" href="static/style.css">
+    </head>
+    <body>
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapse-nav">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><img src="static/img/logo.png" id="nav-logo"></a>
+                </div>
+                <div class="collapse navbar-collapse" id="collapse-nav">
+                    <ul class="nav navbar-nav">
+                        {% set active_page = active_page|default("index") %}
+                        <li {{ 'class=active' if active_page == "about" }}><a href="about">About</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

@@ -1,0 +1,23 @@
+/* COLOR PALETTE
+
+Ship Grey: #3C3940
+Brick Red: #C83649
+Aubergine: #360A17
+*/
+
+
+#nav-logo {
+    height: 100%;
+    display: inline-block;
+}
+
+.navbar-brand {
+    padding: 0px;
+}
+
+.navbar-brand,
+.navbar-nav li a {
+    height: 60px;
+    line-height: 60px;
+    padding-top: 0px;
+}
