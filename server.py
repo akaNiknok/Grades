@@ -100,6 +100,20 @@ def logout():
     return response
 
 
+@app.route('/user/<username>')
+def user(username):
+    user_id = request.cookies.get("user_id")
+
+    if user_id:
+        user = User.query.get(user_id)
+    else:
+        user = None
+
+    view_user = User.query.filter_by(username=username).first()
+
+    return render_template("user.html", user=user, view_user=view_user)
+
+
 if __name__ == "__main__":
     app.debug = True
     app.run(host="0.0.0.0")
