@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <h1>Sign Up</h1>
+        </div>
+
+        <!-- FORM -->
+        <form class="form-horizontal" action="/register" method="post">
+
+            <!-- USERNAME -->
+            {% if error == "username" %}
+                <div class="form-group has-error has-feedback">
+            {% else %}
+                <div class="form-group">
+            {% endif %}
+                <label class="control-label col-sm-1">Username:</label>
+                <div class="col-sm-11">
+                    <input class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off">
+                    {% if error == "username" %}
+                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group">
+                <label class="control-label col-sm-1">Password:</label>
+                <div class="col-sm-11">
+                    <input class="form-control" type="password" name="password" placeholder="Enter password" autocomplete="off">
+                </div>
+            </div>
+
+            <!-- RETYPE PASSWORD -->
+            {% if error == "password" %}
+                <div class="form-group has-error has-feedback">
+            {% else %}
+                <div class="form-group">
+            {% endif %}
+                <label class="control-label col-sm-1">Retype Password:</label>
+                <div class="col-sm-11">
+                    <input class="form-control" type="password" name="re_password" placeholder="Retype password" autocomplete="off">
+                    {% if error == "password" %}
+                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- RADIO -->
+            <div class="form-group">
+                <label class="control-label col-sm-1">Occupation:</label>
+                <div class="col-sm-11">
+                    <label class="radio-inline"><input type="radio" name="acc_type" value="student" checked>Student</label>
+                    <label class="radio-inline"><input type="radio" name="acc_type" value="teacher">Teacher</label>
+                </div>
+            </div>
+
+            <!-- BUTTON -->
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-11">
+                    <input class="btn btn-success" type="submit" value="Submit">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

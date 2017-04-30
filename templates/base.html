@@ -36,6 +36,15 @@
                         {% set active_page = active_page|default("index") %}
                         <li {{ 'class=active' if active_page == "about" }}><a href="about">About</a></li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if not user %}
+                            <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        {% else %}
+                            <li><a href="/user"><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a></li>
+                            <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
         </nav>
