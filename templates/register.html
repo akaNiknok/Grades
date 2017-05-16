@@ -14,11 +14,7 @@
         <form class="form-horizontal" action="/register" method="post">
 
             <!-- USERNAME -->
-            {% if error == "username" %}
-                <div class="form-group has-error has-feedback">
-            {% else %}
-                <div class="form-group">
-            {% endif %}
+            <div class="form-group{{ ' has-error has-feedback' if error == 'username' }}">
                 <label class="control-label col-sm-1">Username:</label>
                 <div class="col-sm-11">
                     <input class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off">
@@ -37,11 +33,7 @@
             </div>
 
             <!-- RETYPE PASSWORD -->
-            {% if error == "password" %}
-                <div class="form-group has-error has-feedback">
-            {% else %}
-                <div class="form-group">
-            {% endif %}
+            <div class="form-group{{ ' has-error has-feedback' if error == 'password' }}">
                 <label class="control-label col-sm-1">Retype Password:</label>
                 <div class="col-sm-11">
                     <input class="form-control" type="password" name="re_password" placeholder="Retype password" autocomplete="off">
@@ -57,7 +49,7 @@
                 <div class="col-sm-11">
                     <label class="radio-inline"><input type="radio" name="acc_type" value="student" id="student" onclick="radios()" checked>Student</label>
                     <label class="radio-inline"><input type="radio" name="acc_type" value="teacher" id="teacher" onclick="radios()">Teacher</label>
-                    <label class="radio-inline"><input type="radio" name="acc_type" value="Coordinator" id="coordinator" onclick="radios()">Coordinator</label>
+                    <label class="radio-inline"><input type="radio" name="acc_type" value="coordinator" id="coordinator" onclick="radios()">Coordinator</label>
                 </div>
             </div>
 
@@ -90,20 +82,26 @@
 
             <!-- Teacher Form -->
             <div id="teacher-form">
-                <div class="form-group">
+                <div class="form-group{{ ' has-error has-feedback' if error == 'teacher' }}">
                     <label class="control-label col-sm-1">New Teacher's Password:</label>
                     <div class="col-sm-11">
                         <input class="form-control" type="password" name="new_teacher_pass" placeholder="Password" autocomplete="off">
+                        {% if error == "teacher" %}
+                            <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
 
             <!-- Coordinator Form -->
             <div id="coordinator-form">
-                <div class="form-group">
+                <div class="form-group{{ ' has-error has-feedback' if error == 'coordinator' }}">
                     <label class="control-label col-sm-1">New Coordinator's Password:</label>
                     <div class="col-sm-11">
-                        <input class="form-control" type="password" name="new_coordinator_pass" placeholder="Password" autocomplete="off">
+                        <input class="form-control" type="password" name="new_coord_pass" placeholder="Password" autocomplete="off">
+                        {% if error == "coordinator" %}
+                            <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        {% endif %}
                     </div>
                 </div>
             </div>

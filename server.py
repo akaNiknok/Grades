@@ -53,19 +53,52 @@ def register():
         re_password = request.form["re_password"]
         acc_type = request.form["acc_type"]
 
+        # Student Specific
+        grade = request.form["grade"]
+        section = request.form["section"]
+        CN = request.form["CN"]
+
+        # Teacher and Coordinator Specific
+        new_teacher_pass = request.form["new_teacher_pass"]
+        new_coord_pass = request.form["new_coord_pass"]
+
         # Validate retype password
         if password == re_password:
 
-            # Check if username is taken
-            if User.query.filter_by(username=username).first() is None:
-                db.session.add(User(username, password, acc_type))
+            # Check if username is taken and not blank
+            if ((User.query.filter_by(username=username).first() is None) and
+                    (username is not "")):
+
+                print(acc_type)
+
+                # Add Grade, Section and CN when account type is Student
+                if acc_type == "student":
+                    student = User(username, password, acc_type)
+                    student.grade = grade
+                    student.section = section
+                    student.CN = CN
+
+                    db.session.add(student)
+
+                # Validate new teacher password
+                elif (acc_type == "teacher" and
+                        new_teacher_pass == "CSQC new teach"):
+                    db.session.add(User(username, password, acc_type))
+                elif (acc_type == "coordinator" and
+                        new_coord_pass == "CSQC new coord"):
+                    db.session.add(User(username, password, acc_type))
+                else:
+                    print("teach pass")
+                    return render_template("register.html", error=acc_type)
+
                 db.session.commit()
+
             else:
                 return render_template("register.html", error="username")
         else:
             return render_template("register.html", error="password")
 
-        # Login new user
+        # Login new user if "All Izz Well" :D
         user = User.query.filter_by(username=username).first()
         response = make_response(redirect(url_for("index")))
         response.set_cookie("user_id", str(user.id))
