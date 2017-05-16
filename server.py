@@ -62,14 +62,12 @@ def register():
         new_teacher_pass = request.form["new_teacher_pass"]
         new_coord_pass = request.form["new_coord_pass"]
 
-        # Validate retype password
-        if password == re_password:
+        # Check if username is taken and not blank
+        if ((User.query.filter_by(username=username).first() is None) and
+                (username != "")):
 
-            # Check if username is taken and not blank
-            if ((User.query.filter_by(username=username).first() is None) and
-                    (username is not "")):
-
-                print(acc_type)
+            # Validate retype password
+            if password == re_password:
 
                 # Add Grade, Section and CN when account type is Student
                 if acc_type == "student":
@@ -80,23 +78,25 @@ def register():
 
                     db.session.add(student)
 
-                # Validate new teacher password
+                # Check new teacher password
                 elif (acc_type == "teacher" and
                         new_teacher_pass == "CSQC new teach"):
                     db.session.add(User(username, password, acc_type))
+
+                # Check new coordinator password
                 elif (acc_type == "coordinator" and
                         new_coord_pass == "CSQC new coord"):
                     db.session.add(User(username, password, acc_type))
+
                 else:
-                    print("teach pass")
                     return render_template("register.html", error=acc_type)
 
                 db.session.commit()
 
             else:
-                return render_template("register.html", error="username")
+                return render_template("register.html", error="password")
         else:
-            return render_template("register.html", error="password")
+            return render_template("register.html", error="username")
 
         # Login new user if "All Izz Well" :D
         user = User.query.filter_by(username=username).first()
