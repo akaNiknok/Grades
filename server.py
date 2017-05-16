@@ -9,9 +9,13 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), nullable=False, unique=True)
-    password = db.Column(db.String(255), nullable=False)
-    acc_type = db.Column(db.String(7), nullable=False)
+    username = db.Column(db.String(20), unique=True)
+    password = db.Column(db.String(20))
+    acc_type = db.Column(db.String(11))
+
+    grade = db.Column(db.Integer)
+    section = db.Column(db.String(4))
+    CN = db.Column(db.Integer)
 
     def __init__(self, username, password, acc_type):
         self.username = username
