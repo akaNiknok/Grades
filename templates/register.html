@@ -55,8 +55,56 @@
             <div class="form-group">
                 <label class="control-label col-sm-1">Occupation:</label>
                 <div class="col-sm-11">
-                    <label class="radio-inline"><input type="radio" name="acc_type" value="student" checked>Student</label>
-                    <label class="radio-inline"><input type="radio" name="acc_type" value="teacher">Teacher</label>
+                    <label class="radio-inline"><input type="radio" name="acc_type" value="student" id="student" onclick="radios()" checked>Student</label>
+                    <label class="radio-inline"><input type="radio" name="acc_type" value="teacher" id="teacher" onclick="radios()">Teacher</label>
+                    <label class="radio-inline"><input type="radio" name="acc_type" value="Coordinator" id="coordinator" onclick="radios()">Coordinator</label>
+                </div>
+            </div>
+
+            <!-- Student Form -->
+            <div id="student-form">
+                <!-- Student Grade -->
+                <div class="form-group">
+                    <label class="control-label col-sm-1">Grade:</label>
+                    <div class="col-sm-11">
+                        <input class="form-control" type="text" name="grade" placeholder="Grade" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Student Section -->
+                <div class="form-group">
+                    <label class="control-label col-sm-1">Section:</label>
+                    <div class="col-sm-11">
+                        <input class="form-control" type="text" name="section" placeholder="Section (Ex: SMA)" autocomplete="off">
+                    </div>
+                </div>
+
+                <!-- Student CN -->
+                <div class="form-group">
+                    <label class="control-label col-sm-1">CN:</label>
+                    <div class="col-sm-11">
+                        <input class="form-control" type="text" name="CN" placeholder="CN" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teacher Form -->
+            <div id="teacher-form">
+                <div class="form-group">
+                    <label class="control-label col-sm-1">New Teacher's Password:</label>
+                    <div class="col-sm-11">
+                        <input class="form-control" type="password" name="new_teacher_pass" placeholder="Password" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coordinator Form -->
+            <div id="coordinator-form">
+                <div class="form-group">
+                    <label class="control-label col-sm-1">New Coordinator's Password:</label>
+                    <div class="col-sm-11">
+                        <input class="form-control" type="password" name="new_coordinator_pass" placeholder="Password" autocomplete="off">
+                    </div>
                 </div>
             </div>
 

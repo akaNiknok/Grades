@@ -21,3 +21,17 @@ Aubergine: #360A17
     line-height: 60px;
     padding-top: 0px;
 }
+
+/* SPECIFIC FORMS */
+
+#student-form {
+    display: block;
+}
+
+#teacher-form{
+    display: none;
+}
+
+#coordinator-form{
+    display: none;
+}
