@@ -22,7 +22,7 @@ Aubergine: #360A17
     padding-top: 0px;
 }
 
-/* SPECIFIC FORMS */
+/* Specific Forms */
 
 #student-form {
     display: block;
@@ -33,5 +33,11 @@ Aubergine: #360A17
 }
 
 #coordinator-form{
+    display: none;
+}
+
+/*END Specific Forms*/
+
+#file {
     display: none;
 }

@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 from flask import redirect, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
@@ -148,6 +149,29 @@ def user(username):
     view_user = User.query.filter_by(username=username).first()
 
     return render_template("user.html", user=user, view_user=view_user)
+
+
+@app.route('/upload', methods=["POST"])
+def upload():
+    file = request.files['file']
+
+    # Check if the file is present and is a spreadsheet (.xlsx)
+    if file and (file.filename.rsplit('.', 1)[1] == "xlsx"):
+
+        # Rename the file to subject.xlsx
+        filename = request.form["subject"] + ".xlsx"
+
+        # Directory for the excel file
+        filedir = "excels/{}/{}/".format(request.form["grade"],
+                                         request.form["section"])
+
+        # Create Directory if it does not exist
+        if not os.path.isdir(filedir):
+            os.makedirs(filedir)
+
+        file.save(os.path.join(filedir, filename))
+
+    return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
