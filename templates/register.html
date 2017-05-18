@@ -112,6 +112,15 @@
                     <input class="btn btn-success" type="submit" value="Submit">
                 </div>
             </div>
+
+            {% if error %}
+                <div class="alert alert-danger alert-dismissable fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    {{ "Username is already taken" if error == "username" }}
+                    {{ "Password does not match" if error == "password" }}
+                </div>
+            {% endif %}
         </form>
     </div>
 </div>
