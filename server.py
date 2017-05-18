@@ -62,9 +62,8 @@ def register():
         new_teacher_pass = request.form["new_teacher_pass"]
         new_coord_pass = request.form["new_coord_pass"]
 
-        # Check if username is taken and not blank
-        if ((User.query.filter_by(username=username).first() is None) and
-                (username != "")):
+        # Check if username is taken
+        if User.query.filter_by(username=username).first() is None:
 
             # Validate retype password
             if password == re_password:
