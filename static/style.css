@@ -41,3 +41,7 @@ Aubergine: #360A17
 #file {
     display: none;
 }
+
+.upper {
+    text-transform: uppercase;
+}
