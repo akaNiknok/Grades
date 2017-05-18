@@ -17,7 +17,7 @@
             <div class="form-group{{ ' has-error has-feedback' if error == 'username' }}">
                 <label class="control-label col-sm-1">Username:</label>
                 <div class="col-sm-11">
-                    <input class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off">
+                    <input class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off" required>
                     {% if error == "username" %}
                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     {% endif %}
@@ -28,7 +28,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-1">Password:</label>
                 <div class="col-sm-11">
-                    <input class="form-control" type="password" name="password" placeholder="Enter password" autocomplete="off">
+                    <input class="form-control" type="password" name="password" placeholder="Enter password" autocomplete="off" required>
                 </div>
             </div>
 
@@ -36,7 +36,7 @@
             <div class="form-group{{ ' has-error has-feedback' if error == 'password' }}">
                 <label class="control-label col-sm-1">Retype Password:</label>
                 <div class="col-sm-11">
-                    <input class="form-control" type="password" name="re_password" placeholder="Retype password" autocomplete="off">
+                    <input class="form-control" type="password" name="re_password" placeholder="Retype password" autocomplete="off" required>
                     {% if error == "password" %}
                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     {% endif %}
@@ -59,7 +59,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-1">Grade:</label>
                     <div class="col-sm-11">
-                        <input class="form-control" type="text" name="grade" placeholder="Grade" autocomplete="off">
+                        <input id="student-grade" class="form-control" type="number" name="grade" placeholder="Grade" autocomplete="off" required>
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-1">Section:</label>
                     <div class="col-sm-11">
-                        <input class="form-control" type="text" name="section" placeholder="Section (Ex: SMA)" autocomplete="off">
+                        <input id="student-section" class="form-control" type="text" name="section" placeholder="Section (Ex: SMA)" autocomplete="off" required>
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-1">CN:</label>
                     <div class="col-sm-11">
-                        <input class="form-control" type="text" name="CN" placeholder="CN" autocomplete="off">
+                        <input id="student-cn" class="form-control" type="number" name="CN" placeholder="CN" autocomplete="off" required>
                     </div>
                 </div>
             </div>
@@ -85,7 +85,7 @@
                 <div class="form-group{{ ' has-error has-feedback' if error == 'teacher' }}">
                     <label class="control-label col-sm-1">New Teacher's Password:</label>
                     <div class="col-sm-11">
-                        <input class="form-control" type="password" name="new_teacher_pass" placeholder="Password" autocomplete="off">
+                        <input id="teacher-pass"class="form-control" type="password" name="new_teacher_pass" placeholder="Password" autocomplete="off">
                         {% if error == "teacher" %}
                             <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                         {% endif %}
@@ -98,7 +98,7 @@
                 <div class="form-group{{ ' has-error has-feedback' if error == 'coordinator' }}">
                     <label class="control-label col-sm-1">New Coordinator's Password:</label>
                     <div class="col-sm-11">
-                        <input class="form-control" type="password" name="new_coord_pass" placeholder="Password" autocomplete="off">
+                        <input id="coordinator-pass" class="form-control" type="password" name="new_coord_pass" placeholder="Password" autocomplete="off">
                         {% if error == "coordinator" %}
                             <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                         {% endif %}
