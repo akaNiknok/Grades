@@ -71,9 +71,9 @@ def register():
                 # Add Grade, Section and CN when account type is Student
                 if acc_type == "student":
                     student = User(username, password, acc_type)
-                    student.grade = grade
+                    student.grade = int(grade)
                     student.section = section
-                    student.CN = CN
+                    student.CN = int(CN)
 
                     db.session.add(student)
 
