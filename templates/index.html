@@ -78,22 +78,25 @@
                 <div id="{{ subject }}" class="tab-pane fade">
                     <h3>{{ subject }}</h3>
 
-                    <table class="table">
-                    <tr>
-                        <th>Test</th>
-                        <th>Score</th>
-                        <th>Total Score</th>
-                    </tr>
-
-                    {% for test in subjects[subject] %}
-                        <tr>
-                            <td>{{ test }}</td>
-                            <td>{{ subjects[subject][test][0] }}</td>
-                            <td>{{ subjects[subject][test][1] }}</td>
-                        </tr>
-                    {% endfor %}
-
-                </table>
+                    <!-- Table of Grades -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Test</th>
+                                <th>Score</th>
+                                <th>Total Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for test in subjects[subject] %}
+                                <tr>
+                                    <td>{{ test }}</td>
+                                    <td>{{ subjects[subject][test][0] }}</td>
+                                    <td>{{ subjects[subject][test][1] }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             {% endfor %}
         </div>
