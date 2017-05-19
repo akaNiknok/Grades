@@ -161,27 +161,34 @@ def user(username):
     return render_template("user.html", user=user, view_user=view_user)
 
 
-@app.route('/upload', methods=["POST"])
+@app.route('/upload', methods=["POST", "GET"])
 def upload():
-    file = request.files['file']
+    if request.method == "POST":
+        file = request.files['file']
 
-    # Check if the file is present and is a spreadsheet (.xlsx)
-    if file and (file.filename.endswith(".xlsx")):
+        # Check if the file is present and is a spreadsheet (.xlsx, .xls)
+        if file and (file.filename.endswith(".xlsx")
+                     or file.filename.endswith(".xls")):
 
-        # Rename the file to subject.xlsx
-        filename = request.form["subject"] + ".xlsx"
+            # Rename the file to subject.xlsx
+            filename = request.form["subject"] + ".xlsx"
 
-        # Directory for the excel file
-        filedir = "excels/{}/{}/".format(request.form["grade"],
-                                         request.form["section"])
+            # Directory for the excel file
+            filedir = "excels/{}/{}/".format(request.form["grade"],
+                                             request.form["section"])
 
-        # Create Directory if it does not exist
-        if not os.path.isdir(filedir):
-            os.makedirs(filedir)
+            # Create Directory if it does not exist
+            if not os.path.isdir(filedir):
+                os.makedirs(filedir)
 
-        file.save(os.path.join(filedir, filename))
+            file.save(os.path.join(filedir, filename))
 
-    return redirect(url_for("index"))
+            return render_template("upload.html", success=True)
+        else:
+            return render_template("upload.html", error=True)
+
+    else:
+        return render_template("upload.html")
 
 
 def read_excels(grade, section, cn):

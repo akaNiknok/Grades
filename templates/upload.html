@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <h1>Upload</h1>
+        </div>
+
+        <!-- FORM -->
+        <form class="form-horizontal" action="/upload" method="post" enctype="multipart/form-data">
+
+            <!-- File -->
+            <div class="input-group">
+                <label class="input-group-btn">
+                    <span class="btn btn-primary">
+                        Browse File<input id="file" type="file" name="file" accept=".xlsx,.xls">
+                    </span>
+                </label>
+                <input type="text" class="form-control" value="Select a file..." readonly>
+            </div>
+
+            <br>
+
+            <!-- Grade -->
+            <div class="form-group">
+                <label class="control-label col-sm-1">Grade:</label>
+                <div class="col-sm-11">
+                    <input class="form-control" type="number" name="grade" placeholder="Grade" autocomplete="off" required>
+                </div>
+            </div>
+
+            <!-- Section -->
+            <div class="form-group">
+                <label class="control-label col-sm-1">Section:</label>
+                <div class="col-sm-11">
+                    <input class="form-control upper" type="text" name="section" placeholder="Section (Ex: SMA)" autocomplete="off" required>
+                </div>
+            </div>
+
+            <!-- Subject -->
+            <div class="form-group">
+                <label class="control-label col-sm-1">Subject:</label>
+                <div class="col-sm-11">
+                    <select class="form-control" name="subject">
+                        <option value="CLE">CLE</option>
+                        <option value="Math">Math</option>
+                        <option value="Science">Science</option>
+                        <option value="English">English</option>
+                        <option value="Filipino">Filipino</option>
+                        <option value="AP">AP</option>
+                        <option value="TLE">TLE</option>
+                        <option value="Computer">Computer</option>
+                        <option value="Music">Music</option>
+                        <option value="PE">PE</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- BUTTON -->
+            <div class="form-group">
+                <div class="col-sm-11">
+                    <input class="btn btn-success" type="submit" value="Submit">
+                </div>
+            </div
+            <input type="submit" value="Submit">
+        </form>
+
+        {% if error %}
+            <div class="alert alert-danger alert-dismissable fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <span class="glyphicon glyphicon-warning-sign"></span>
+                File is not an excel file.
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success alert-dismissable fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <span class="glyphicon glyphicon-ok"></span>
+                File successfully uploaded! :)
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
