@@ -67,24 +67,36 @@
 
     <!-- Student -->
     {% if user and user.acc_type == "student" %}
-        {% for subject in subjects %}
-            <h2>{{ subject }}</h2>
-            <table class="table">
-                <tr>
-                    <th>Test</th>
-                    <th>Score</th>
-                    <th>Total Score</th>
-                </tr>
+        <div id="accordion" class="panel-group">
+            {% for subject in subjects %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#{{ subject }}">{{ subject }}</a>
+                        </h2>
+                    </div>
+                    <div id="{{ subject }}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                            <tr>
+                                <th>Test</th>
+                                <th>Score</th>
+                                <th>Total Score</th>
+                            </tr>
 
-                {% for test in subjects[subject] %}
-                    <tr>
-                        <td>{{ test }}</td>
-                        <td>{{ subjects[subject][test][0] }}</td>
-                        <td>{{ subjects[subject][test][1] }}</td>
-                    </tr>
-                {% endfor %}
+                            {% for test in subjects[subject] %}
+                                <tr>
+                                    <td>{{ test }}</td>
+                                    <td>{{ subjects[subject][test][0] }}</td>
+                                    <td>{{ subjects[subject][test][1] }}</td>
+                                </tr>
+                            {% endfor %}
 
-            </table>
-        {% endfor %}
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
 {% endblock %}
