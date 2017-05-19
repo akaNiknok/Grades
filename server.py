@@ -188,7 +188,17 @@ def upload():
             return render_template("upload.html", error=True)
 
     else:
-        return render_template("upload.html")
+        user_id = request.cookies.get("user_id")
+
+        # Require user to be a teacher or coordinator
+        if user_id:
+            user = User.query.get(user_id)
+            if user.acc_type == "teacher" or "coordinator":
+                return render_template("upload.html", user=user)
+            else:
+                return redirect(url_for("index"))
+        else:
+            return redirect(url_for("index"))
 
 
 def read_excels(grade, section, cn):
