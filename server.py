@@ -156,7 +156,7 @@ def upload():
     file = request.files['file']
 
     # Check if the file is present and is a spreadsheet (.xlsx)
-    if file and (file.filename.rsplit('.', 1)[1] == "xlsx"):
+    if file and (file.filename.endswith(".xlsx")):
 
         # Rename the file to subject.xlsx
         filename = request.form["subject"] + ".xlsx"
