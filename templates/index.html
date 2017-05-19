@@ -67,34 +67,33 @@
 
     <!-- Student -->
     {% if user and user.acc_type == "student" %}
-        <div id="accordion" class="panel-group">
+        <ul class="nav nav-tabs">
+        {% for subject in subjects %}
+            <li><a data-toggle="tab" href="#{{ subject }}">{{ subject }}</a></li>
+        {% endfor %}
+        </ul>
+
+        <div class="tab-content">
             {% for subject in subjects %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#{{ subject }}">{{ subject }}</a>
-                        </h2>
-                    </div>
-                    <div id="{{ subject }}" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <table class="table">
-                            <tr>
-                                <th>Test</th>
-                                <th>Score</th>
-                                <th>Total Score</th>
-                            </tr>
+                <div id="{{ subject }}" class="tab-pane fade">
+                    <h3>{{ subject }}</h3>
 
-                            {% for test in subjects[subject] %}
-                                <tr>
-                                    <td>{{ test }}</td>
-                                    <td>{{ subjects[subject][test][0] }}</td>
-                                    <td>{{ subjects[subject][test][1] }}</td>
-                                </tr>
-                            {% endfor %}
+                    <table class="table">
+                    <tr>
+                        <th>Test</th>
+                        <th>Score</th>
+                        <th>Total Score</th>
+                    </tr>
 
-                        </table>
-                        </div>
-                    </div>
+                    {% for test in subjects[subject] %}
+                        <tr>
+                            <td>{{ test }}</td>
+                            <td>{{ subjects[subject][test][0] }}</td>
+                            <td>{{ subjects[subject][test][1] }}</td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
                 </div>
             {% endfor %}
         </div>
