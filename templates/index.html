@@ -4,6 +4,12 @@
 {% block content %}
     <h1>Index</h1>
 
+    {% if user and user.acc_type == "teacher" %}
+    <form action="/upload" method="get">
+        <button type="submit" class="btn">Upload .xlsx</button>
+    </form>
+    {% endif %}
+
     <!-- Student -->
     {% if user and user.acc_type == "student" %}
         <ul class="nav nav-tabs">
