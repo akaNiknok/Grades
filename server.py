@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request
 from flask import redirect, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
+import openpyxl
 
 app = Flask(__name__)
 app.config.from_object("config")
@@ -31,12 +32,21 @@ db.create_all()
 def index():
     user_id = request.cookies.get("user_id")
 
+    # Check if logged in
     if user_id:
         user = User.query.get(user_id)
+
+        # Check if user is a student
+        if user.acc_type == "student":
+            subjects = read_excels(user.grade, user.section, user.CN)
+        else:
+            subjects = None
+
     else:
         user = None
+        subjects = None
 
-    return render_template("index.html", user=user)
+    return render_template("index.html", user=user, subjects=subjects)
 
 
 @app.route('/about')
@@ -172,6 +182,62 @@ def upload():
         file.save(os.path.join(filedir, filename))
 
     return redirect(url_for("index"))
+
+
+def read_excels(grade, section, cn):
+    """Return format:
+        subjects = {
+            "Subject": {
+                "Test": (int(Student Score), int(Total Score))
+            }
+        }
+    """
+
+    # Rows for label and total score
+    TEST_LABEL_ROW = 7
+    TEST_TOTAL_ROW = 8
+
+    # Get file directory using users grade and section
+    filedir = "excels/{}/{}/".format(grade,
+                                     section)
+
+    # Get all files (subjects) in file directory
+    files = os.listdir(filedir)
+
+    subjects = {}
+
+    # Loop per subject
+    for file in files:
+
+        # Open the excel file
+        wb = openpyxl.load_workbook(os.path.join(filedir, file),
+                                    data_only=True)
+
+        # Open the sheet (subject to change)
+        ws = wb.get_sheet_by_name("Raw.Score-1st")
+
+        # Find CN rows
+        for row in range(1, ws.max_row):
+            if ws.cell(row=row, column=1).value == cn:
+                user_row = row
+
+        Tests = {}
+
+        # Store tests in dictionary
+        for column in range(3, ws.max_column):
+            if ws.cell(row=TEST_LABEL_ROW, column=column).value is not None:
+                Tests[ws.cell(row=TEST_LABEL_ROW, column=column).value] = (
+                    # Students score
+                    ws.cell(row=user_row, column=column).value,
+                    # Total score
+                    ws.cell(row=TEST_TOTAL_ROW, column=column).value
+                )
+
+        # Store the tests in subject
+        # Also removes the file extension
+        subjects[os.path.splitext(file)[0]] = Tests
+
+    return subjects
 
 
 if __name__ == "__main__":

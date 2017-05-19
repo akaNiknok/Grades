@@ -3,6 +3,8 @@
 
 {% block content %}
     <h1>Index</h1>
+
+    <!-- Teacher -->
     {% if user and user.acc_type == "teacher" %}
         <form class="form-horizontal" action="/upload" method="post" enctype="multipart/form-data">
 
@@ -61,5 +63,28 @@
             </div
             <input type="submit" value="Submit">
         </form>
+    {% endif %}
+
+    <!-- Student -->
+    {% if user and user.acc_type == "student" %}
+        {% for subject in subjects %}
+            <h2>{{ subject }}</h2>
+            <table class="table">
+                <tr>
+                    <th>Test</th>
+                    <th>Score</th>
+                    <th>Total Score</th>
+                </tr>
+
+                {% for test in subjects[subject] %}
+                    <tr>
+                        <td>{{ test }}</td>
+                        <td>{{ subjects[subject][test][0] }}</td>
+                        <td>{{ subjects[subject][test][1] }}</td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+        {% endfor %}
     {% endif %}
 {% endblock %}
