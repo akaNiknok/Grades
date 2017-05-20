@@ -231,7 +231,7 @@ def read_excels(grade, section, cn):
                                     data_only=True)
 
         # Open the sheet (subject to change)
-        ws = wb.get_sheet_by_name("Raw.Score-1st")
+        ws = wb.worksheets[0]
 
         # Find CN rows
         for row in range(1, ws.max_row):
