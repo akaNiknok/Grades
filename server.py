@@ -238,7 +238,7 @@ def read_excels(grade, section, cn):
             if ws.cell(row=row, column=1).value == cn:
                 user_row = row
 
-        Tests = {}
+        Tests = []
 
         # Store tests in dictionary
         for col in range(3, ws.max_column):
@@ -247,16 +247,13 @@ def read_excels(grade, section, cn):
             if ((ws.cell(row=TEST_LABEL_ROW, column=col).value is not None)
                     and ws.cell(row=user_row, column=col).value is not None):
 
-                Tests[ws.cell(row=TEST_LABEL_ROW, column=col).value] = (
-                    # Students score
-                    ws.cell(row=user_row, column=col).value,
-                    # Total score
-                    ws.cell(row=TEST_TOTAL_ROW, column=col).value
-                )
+                Tests.append((ws.cell(row=TEST_LABEL_ROW, column=col).value,
+                             (ws.cell(row=user_row, column=col).value,
+                              ws.cell(row=TEST_TOTAL_ROW, column=col).value)))
 
         # Store the tests in subject
         # Also removes the file extension
-        subjects[os.path.splitext(file)[0]] = Tests
+        subjects[os.path.splitext(file)[0]] = dict(Tests)
 
     return subjects
 
