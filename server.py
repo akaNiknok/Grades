@@ -248,7 +248,8 @@ def read_excels(grade, section, cn):
             total_score = ws.cell(row=TEST_TOTAL_ROW, column=col).value
 
             # Only include scores with label
-            if (test_label is not None) and (student_score is not None):
+            if ((test_label not in (None, "TS", "PS", "EP"))
+                    and (student_score is not None)):
 
                 if test_label in Tests:
                     Tests[test_label][0] += student_score
