@@ -243,13 +243,14 @@ def read_excels(grade, section, cn):
         # Store tests in dictionary
         for col in range(3, ws.max_column):
 
-            # Only include scores with label
-            if ((ws.cell(row=TEST_LABEL_ROW, column=col).value is not None)
-                    and ws.cell(row=user_row, column=col).value is not None):
+            test_label = ws.cell(row=TEST_LABEL_ROW, column=col).value
+            student_score = ws.cell(row=user_row, column=col).value
+            total_score = ws.cell(row=TEST_TOTAL_ROW, column=col).value
 
-                Tests.append((ws.cell(row=TEST_LABEL_ROW, column=col).value,
-                             (ws.cell(row=user_row, column=col).value,
-                              ws.cell(row=TEST_TOTAL_ROW, column=col).value)))
+            # Only include scores with label
+            if (test_label is not None) and (student_score is not None):
+
+                Tests.append((test_label, (student_score, total_score)))
 
         # Store the tests in subject
         # Also removes the file extension
