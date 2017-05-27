@@ -4,46 +4,54 @@
 {% block content %}
     <h1>Index</h1>
 
+    <!-- Teacher -->
     {% if user and user.acc_type == "teacher" %}
-    <form action="/upload" method="get">
-        <button type="submit" class="btn">Upload .xlsx</button>
-    </form>
-    {% endif %}
+        <form action="/upload" method="get">
+            <button type="submit" class="btn">Upload .xlsx</button>
+        </form>
 
     <!-- Student -->
-    {% if user and user.acc_type == "student" %}
-        <ul class="nav nav-tabs">
-        {% for subject in subjects %}
-            <li><a data-toggle="tab" href="#{{ subject }}">{{ subject }}</a></li>
-        {% endfor %}
-        </ul>
+    {% elif user and user.acc_type == "student" %}
 
-        <div class="tab-content">
+        <form action="/" method="post">
+            <button type="submit" class="btn btn-default">Refresh</button>
+        </form>
+
+        {% if subjects %}
+            <ul class="nav nav-tabs">
             {% for subject in subjects %}
-                <div id="{{ subject }}" class="tab-pane fade">
-                    <h3>{{ subject }}</h3>
-
-                    <!-- Table of Grades -->
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Test</th>
-                                <th>Score</th>
-                                <th>Total Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for test in subjects[subject] %}
-                                <tr>
-                                    <td>{{ test }}</td>
-                                    <td>{{ subjects[subject][test][0] }}</td>
-                                    <td>{{ subjects[subject][test][1] }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                <li><a data-toggle="tab" href="#{{ subject }}">{{ subject }}</a></li>
             {% endfor %}
-        </div>
+            </ul>
+
+            <div class="tab-content">
+                {% for subject in subjects %}
+                    <div id="{{ subject }}" class="tab-pane fade">
+                        <h3>{{ subject }}</h3>
+
+                        <!-- Table of Grades -->
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Test</th>
+                                    <th>Score</th>
+                                    <th>Total Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for test in subjects[subject] %}
+                                    <tr>
+                                        <td>{{ test }}</td>
+                                        <td>{{ subjects[subject][test][0] }}</td>
+                                        <td>{{ subjects[subject][test][1] }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
     {% endif %}
 {% endblock %}

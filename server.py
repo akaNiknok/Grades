@@ -28,25 +28,27 @@ class User(db.Model):
 db.create_all()
 
 
-@app.route('/')
+@app.route('/', methods=["POST", "GET"])
 def index():
-    user_id = request.cookies.get("user_id")
+    if request.method == "POST":
 
-    # Check if logged in
-    if user_id:
+        user_id = request.cookies.get("user_id")
+
         user = User.query.get(user_id)
+        subjects = read_excels(user.grade, user.section, user.CN)
 
-        # Check if user is a student
-        if user.acc_type == "student":
-            subjects = read_excels(user.grade, user.section, user.CN)
-        else:
-            subjects = None
+        return render_template("index.html", user=user, subjects=subjects)
 
     else:
-        user = None
-        subjects = None
+        user_id = request.cookies.get("user_id")
 
-    return render_template("index.html", user=user, subjects=subjects)
+        # Check if logged in
+        if user_id:
+            user = User.query.get(user_id)
+        else:
+            user = None
+
+        return render_template("index.html", user=user, subjects=None)
 
 
 @app.route('/about')
