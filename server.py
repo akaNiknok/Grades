@@ -129,14 +129,14 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if user is None:
-            return render_template("login.html", error=True)
+            return render_template("login.html", error="username")
         else:
             if user.password == password:
                 response = make_response(redirect(url_for("index")))
                 response.set_cookie("user_id", str(user.id))
                 return response
             else:
-                return render_template("login.html", error=True)
+                return render_template("login.html", error="password")
 
     else:
         return render_template("login.html")
