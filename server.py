@@ -84,6 +84,7 @@ def register():
 
         # Teacher and Coordinator Specific
         new_teacher_pass = request.form["new_teacher_pass"]
+        new_teacher_subject = request.form["new_teacher_subject"]
         new_coord_pass = request.form["new_coord_pass"]
 
         # Check if username is taken
@@ -104,7 +105,9 @@ def register():
                 # Check new teacher password
                 elif (acc_type == "teacher" and
                         new_teacher_pass == "CSQC new teach"):
-                    db.session.add(User(username, password, acc_type))
+                    teacher = User(username, password, acc_type)
+                    teacher.subject = new_teacher_subject
+                    db.session.add(teacher)
 
                 # Check new coordinator password
                 elif (acc_type == "coordinator" and
@@ -183,12 +186,16 @@ def upload():
         if file and (file.filename.endswith(".xlsx")
                      or file.filename.endswith(".xls")):
 
+            # Get the user
+            user_id = request.cookies.get("user_id")
+            user = User.query.get(user_id)
+
             # Rename the file to subject.xlsx
             filename = request.form["subject"] + ".xlsx"
 
             # Directory for the excel file
             filedir = "excels/{}/{}/".format(request.form["grade"],
-                                             request.form["section"])
+                                             user.subject)
 
             # Create Directory if it does not exist
             if not os.path.isdir(filedir):
@@ -196,10 +203,6 @@ def upload():
 
             # Save the file in the correct directory
             file.save(os.path.join(filedir, filename))
-
-            # Get the user
-            user_id = request.cookies.get("user_id")
-            user = User.query.get(user_id)
 
             # Load the sections list
             if user.sections is not None:

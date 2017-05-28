@@ -82,6 +82,8 @@
 
             <!-- Teacher Form -->
             <div id="teacher-form">
+
+                <!-- Teacher New Password -->
                 <div class="form-group{{ ' has-error has-feedback' if error == 'teacher' }}">
                     <label class="control-label col-sm-1">New Teacher's Password:</label>
                     <div class="col-sm-11">
@@ -89,6 +91,25 @@
                         {% if error == "teacher" %}
                             <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                         {% endif %}
+                    </div>
+                </div>
+
+                <!-- Teacher Subject -->
+                <div class="form-group">
+                    <label class="control-label col-sm-1">Subject:</label>
+                    <div class="col-sm-11">
+                        <select class="form-control" name="new_teacher_subject">
+                            <option value="CLE">CLE</option>
+                            <option value="Math">Math</option>
+                            <option value="Science">Science</option>
+                            <option value="English">English</option>
+                            <option value="Filipino">Filipino</option>
+                            <option value="AP">AP</option>
+                            <option value="TLE">TLE</option>
+                            <option value="Computer">Computer</option>
+                            <option value="Music">Music</option>
+                            <option value="PE">PE</option>
+                        </select>
                     </div>
                 </div>
             </div>
