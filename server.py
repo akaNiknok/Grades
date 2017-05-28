@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, render_template, request
 from flask import redirect, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
@@ -18,6 +19,9 @@ class User(db.Model):
     grade = db.Column(db.Integer)
     section = db.Column(db.String(4))
     CN = db.Column(db.Integer)
+
+    subject = db.Column(db.String(7))
+    sections = db.Column(db.String)
 
     def __init__(self, username, password, acc_type):
         self.username = username
@@ -45,10 +49,17 @@ def index():
         # Check if logged in
         if user_id:
             user = User.query.get(user_id)
+
+            if user.acc_type == "teacher" and user.sections is not None:
+                return render_template(
+                    "index.html",
+                    user=user,
+                    sections=json.loads(user.sections)
+                )
         else:
             user = None
 
-        return render_template("index.html", user=user, subjects=None)
+        return render_template("index.html", user=user)
 
 
 @app.route('/about')
@@ -183,7 +194,25 @@ def upload():
             if not os.path.isdir(filedir):
                 os.makedirs(filedir)
 
+            # Save the file in the correct directory
             file.save(os.path.join(filedir, filename))
+
+            # Get the user
+            user_id = request.cookies.get("user_id")
+            user = User.query.get(user_id)
+
+            # Load the sections list
+            if user.sections is not None:
+                sections = json.loads(user.sections)
+            else:
+                sections = []
+
+            # Add the section to the list
+            sections.append(request.form["subject"])
+
+            # Save the list
+            user.sections = json.dumps(sections)
+            db.session.commit()
 
             return render_template("upload.html", success=True)
         else:
