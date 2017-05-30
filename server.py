@@ -50,7 +50,7 @@ def index():
         if user_id:
             user = User.query.get(user_id)
 
-            if user.acc_type == "teacher" and user.sections is not None:
+            if user.acc_type == "teacher":
                 return render_template(
                     "index.html",
                     user=user,
@@ -107,6 +107,7 @@ def register():
                         new_teacher_pass == "CSQC new teach"):
                     teacher = User(username, password, acc_type)
                     teacher.subject = new_teacher_subject
+                    teacher.sections = "[]"
                     db.session.add(teacher)
 
                 # Check new coordinator password
@@ -204,11 +205,7 @@ def upload():
             # Save the file in the correct directory
             file.save(os.path.join(filedir, filename))
 
-            # Load the sections list
-            if user.sections is not None:
-                sections = json.loads(user.sections)
-            else:
-                sections = []
+            sections = json.loads(user.sections)
 
             # Add the section to the list
             sections.append(request.form["subject"])
