@@ -199,11 +199,11 @@ def upload():
             user = User.query.get(user_id)
 
             # Rename the file to subject.xlsx
-            filename = request.form["subject"] + ".xlsx"
+            filename = user.subject + ".xlsx"
 
             # Directory for the excel file
             filedir = "excels/{}/{}/".format(request.form["grade"],
-                                             user.subject)
+                                             request.form["section"])
 
             # Create Directory if it does not exist
             if not os.path.isdir(filedir):
@@ -215,7 +215,7 @@ def upload():
             sections = json.loads(user.sections)
 
             # Add the section to the list
-            sections.append(request.form["subject"])
+            sections.append((request.form["grade"], request.form["section"]))
 
             # Save the list
             user.sections = json.dumps(sections)
