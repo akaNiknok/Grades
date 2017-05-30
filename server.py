@@ -64,7 +64,14 @@ def index():
 
 @app.route('/about')
 def about():
-    return render_template("about.html")
+    user_id = request.cookies.get("user_id")
+
+    if user_id:
+        user = User.query.get(user_id)
+    else:
+        user = None
+
+    return render_template("about.html", user=user)
 
 
 @app.route('/register', methods=["POST", "GET"])
