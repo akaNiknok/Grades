@@ -36,8 +36,8 @@ db.create_all()
 def index():
     if request.method == "POST":
 
+        # Refresh for students
         user_id = request.cookies.get("user_id")
-
         user = User.query.get(user_id)
         subjects = read_excels(user.grade, user.section, user.CN)
 
@@ -237,6 +237,33 @@ def upload():
                 return redirect(url_for("index"))
         else:
             return redirect(url_for("index"))
+
+
+@app.route('/delete', methods=["POST"])
+def delete():
+
+    # Get user
+    user_id = request.cookies.get("user_id")
+    user = User.query.get(user_id)
+
+    # Get index
+    delete_index = int(request.form["delete_index"])
+
+    # Load the sections list
+    sections = json.loads(user.sections)
+    section = sections[delete_index]
+
+    # Remove the section from the list and delete the file
+    sections.pop(delete_index)
+    os.remove(
+        "excels/{}/{}/{}.xlsx".format(section[0], section[1], user.subject)
+    )
+
+    # Save the list
+    user.sections = json.dumps(sections)
+    db.session.commit()
+
+    return redirect(url_for("index"))
 
 
 def read_excels(grade, section, cn):

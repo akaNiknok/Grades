@@ -26,7 +26,6 @@ body {
 }
 
 /* Specific Forms */
-
 #student-form {
     display: block;
 }
@@ -38,8 +37,17 @@ body {
 #coordinator-form{
     display: none;
 }
-
 /*END Specific Forms*/
+
+/* Teacher Excel Actions */
+.showLess {
+    display: none !important;
+}
+
+.imSure {
+    display: none !important;
+}
+/* END Teacher Excel Actions */
 
 #file {
     display: none;

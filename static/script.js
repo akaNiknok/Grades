@@ -61,6 +61,24 @@ function radios() {
     }
 }
 
+function showMore(id) {
+    var showMore = document.getElementById("showMore" + parseInt(id))
+    var showLess = document.getElementById("showLess" + parseInt(id))
+    var imSure = document.getElementById("imSure" + parseInt(id))
+    showMore.style.cssText = "display:none !important";
+    showLess.style.cssText = "display:inline-block !important";
+    imSure.style.cssText = "display:inline-block !important";
+}
+
+function showLess(id) {
+    var showMore = document.getElementById("showMore" + parseInt(id))
+    var showLess = document.getElementById("showLess" + parseInt(id))
+    var imSure = document.getElementById("imSure" + parseInt(id))
+    showMore.style.cssText = "display:inline-block !important";
+    showLess.style.cssText = "display:none !important";
+    imSure.style.cssText = "display:none !important";
+}
+
 // https://www.abeautifulsite.net/whipping-file-inputs-into-shape-with-bootstrap-3
 $(function() {
 

@@ -10,6 +10,42 @@
             <button type="submit" class="btn">Upload .xlsx</button>
         </form>
 
+        <form id="delete" action="/delete" method="post"></form>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Grade</th>
+                    <th>Section</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for section in sections %}
+                <tr>
+                    <td>{{ section[0]}} </td>
+                    <td>{{ section[1]}} </td>
+                    <td>
+                        <!-- Delete button -->
+                        <button id="showMore{{ sections.index(section) }}" class="showMore btn btn-xs btn-danger" type="button" onclick="showMore({{ sections.index(section) }})">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+
+                        <!-- Cancel delete button -->
+                        <button id="showLess{{ sections.index(section) }}" class="showLess btn btn-xs btn-danger" type="button" onclick="showLess({{ sections.index(section) }})">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+
+                        <!-- Confirm delete button -->
+                        <button id="imSure{{ sections.index(section) }}" class="imSure btn btn-xs btn-danger" type="submit" name="delete_index" value="{{ sections.index(section) }}" form="delete">
+                            Are you sure?
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
     <!-- Student -->
     {% elif user and user.acc_type == "student" %}
 
