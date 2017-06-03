@@ -4,115 +4,117 @@
 {% block content %}
     <h1>Index</h1>
 
-    <!-- Student -->
-    {% if user and user.acc_type == "student" %}
+    {% if user %}
+        <!-- Student -->
+        {% if user.acc_type == "student" %}
 
-        <form action="/" method="post">
-            <button type="submit" class="btn btn-default">Refresh</button>
-        </form>
+            <form action="/" method="post">
+                <button type="submit" class="btn btn-default">Refresh</button>
+            </form>
 
-        {% if subjects %}
-            <ul class="nav nav-tabs">
-            {% for subject in subjects %}
-                <li><a data-toggle="tab" href="#{{ subject }}">{{ subject }}</a></li>
-            {% endfor %}
-            </ul>
-
-            <div class="tab-content">
+            {% if subjects %}
+                <ul class="nav nav-tabs">
                 {% for subject in subjects %}
-                    <div id="{{ subject }}" class="tab-pane fade">
-                        <h3>{{ subject }}</h3>
+                    <li><a data-toggle="tab" href="#{{ subject }}">{{ subject }}</a></li>
+                {% endfor %}
+                </ul>
 
-                        <!-- Table of Grades -->
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Test</th>
-                                    <th>Score</th>
-                                    <th>Total Score</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for test in subjects[subject] %}
+                <div class="tab-content">
+                    {% for subject in subjects %}
+                        <div id="{{ subject }}" class="tab-pane fade">
+                            <h3>{{ subject }}</h3>
+
+                            <!-- Table of Grades -->
+                            <table class="table table-striped">
+                                <thead>
                                     <tr>
-                                        <td>{{ test }}</td>
-                                        <td>{{ subjects[subject][test][0] }}</td>
-                                        <td>{{ subjects[subject][test][1] }}</td>
+                                        <th>Test</th>
+                                        <th>Score</th>
+                                        <th>Total Score</th>
                                     </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {% for test in subjects[subject] %}
+                                        <tr>
+                                            <td>{{ test }}</td>
+                                            <td>{{ subjects[subject][test][0] }}</td>
+                                            <td>{{ subjects[subject][test][1] }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        <!-- Teacher -->
+        {% elif user.acc_type == "teacher" %}
+            <form action="/upload" method="get">
+                <button type="submit" class="btn">Upload .xlsx</button>
+            </form>
+
+            <form id="delete" action="/delete" method="post"></form>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Grade</th>
+                        <th>Section</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for section in sections %}
+                    <tr>
+                        <td>{{ section[0]}} </td>
+                        <td>{{ section[1]}} </td>
+                        <td>
+                            <!-- Delete button -->
+                            <button id="showMore{{ sections.index(section) }}" class="showMore btn btn-xs btn-danger" type="button" onclick="showMore({{ sections.index(section) }})">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+
+                            <!-- Cancel delete button -->
+                            <button id="showLess{{ sections.index(section) }}" class="showLess btn btn-xs btn-danger" type="button" onclick="showLess({{ sections.index(section) }})">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+
+                            <!-- Confirm delete button -->
+                            <button id="imSure{{ sections.index(section) }}" class="imSure btn btn-xs btn-danger" type="submit" name="delete_index" value="{{ sections.index(section) }}" form="delete">
+                                Are you sure?
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        <!-- Coordinator -->
+        {% elif user.acc_type == "coordinator" %}
+
+            <div class="panel-group" id="accordion">
+
+            {% for teacher in teachers %}
+                <div class="panel panel-default">
+                    <!-- Panel Heading -->
+                    <div class="panel panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#{{ teacher.username }}">{{ teacher.username }}</a>
+                        </h4>
                     </div>
-                {% endfor %}
+
+                    <!-- Panel Body -->
+                    <div id="{{ teacher.username }}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            Sections here
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
             </div>
+
         {% endif %}
-
-    <!-- Teacher -->
-    {% elif user and user.acc_type == "teacher" %}
-        <form action="/upload" method="get">
-            <button type="submit" class="btn">Upload .xlsx</button>
-        </form>
-
-        <form id="delete" action="/delete" method="post"></form>
-
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Grade</th>
-                    <th>Section</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for section in sections %}
-                <tr>
-                    <td>{{ section[0]}} </td>
-                    <td>{{ section[1]}} </td>
-                    <td>
-                        <!-- Delete button -->
-                        <button id="showMore{{ sections.index(section) }}" class="showMore btn btn-xs btn-danger" type="button" onclick="showMore({{ sections.index(section) }})">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-
-                        <!-- Cancel delete button -->
-                        <button id="showLess{{ sections.index(section) }}" class="showLess btn btn-xs btn-danger" type="button" onclick="showLess({{ sections.index(section) }})">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-
-                        <!-- Confirm delete button -->
-                        <button id="imSure{{ sections.index(section) }}" class="imSure btn btn-xs btn-danger" type="submit" name="delete_index" value="{{ sections.index(section) }}" form="delete">
-                            Are you sure?
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-    <!-- Coordinator -->
-    {% elif user and user.acc_type == "coordinator" %}
-
-        <div class="panel-group" id="accordion">
-
-        {% for teacher in teachers %}
-            <div class="panel panel-default">
-                <!-- Panel Heading -->
-                <div class="panel panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#{{ teacher.username }}">{{ teacher.username }}</a>
-                    </h4>
-                </div>
-
-                <!-- Panel Body -->
-                <div id="{{ teacher.username }}" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        Sections here
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-
-        </div>
-
     {% endif %}
 {% endblock %}
