@@ -209,8 +209,14 @@ def login():
 
 @app.route('/logout', methods=["GET"])
 def logout():
+
+    # Make response
     response = make_response(redirect(url_for("index")))
-    response.set_cookie("user_id", "")
+
+    # Set cookies to no value and expiration to the past :D
+    response.set_cookie("user_id", "", expires=0)
+    response.set_cookie("subjects", "", expires=0)
+
     return response
 
 
