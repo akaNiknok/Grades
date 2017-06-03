@@ -93,20 +93,22 @@ def about():
 def register():
     if request.method == "POST":
 
-        # Get data from forms
+        # Get data from general forms
         username = request.form["username"]
         password = request.form["password"]
         re_password = request.form["re_password"]
         acc_type = request.form["acc_type"]
 
-        # Student Specific
+        # Student Specific Forms
         grade = request.form["grade"]
         section = request.form["section"]
         CN = request.form["CN"]
 
-        # Teacher and Coordinator Specific
+        # Teacher Specific Forms
         new_teacher_pass = request.form["new_teacher_pass"]
         new_teacher_subject = request.form["new_teacher_subject"]
+
+        # Coordinator Specific Forms
         new_coord_pass = request.form["new_coord_pass"]
         new_coord_subject = request.form["new_coord_subject"]
 
@@ -116,7 +118,7 @@ def register():
             # Validate retype password
             if password == re_password:
 
-                # Add Grade, Section and CN when account type is Student
+                # Add grade, section and CN when account type is student
                 if acc_type == "student":
                     student = User(username, password, acc_type)
                     student.grade = int(grade)
@@ -125,7 +127,7 @@ def register():
 
                     db.session.add(student)
 
-                # Check new teacher password
+                # Add subject and section when account type is teacher
                 elif (acc_type == "teacher" and
                         new_teacher_pass == "CSQC new teach"):
                     teacher = User(username, password, acc_type)
@@ -133,7 +135,7 @@ def register():
                     teacher.sections = "[]"
                     db.session.add(teacher)
 
-                # Check new coordinator password
+                # Add subject when account type is coordinator
                 elif (acc_type == "coordinator" and
                         new_coord_pass == "CSQC new coord"):
                     coord = User(username, password, acc_type)
