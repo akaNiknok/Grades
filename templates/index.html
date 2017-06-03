@@ -89,5 +89,30 @@
             </div>
         {% endif %}
 
+    <!-- Coordinator -->
+    {% elif user and user.acc_type == "coordinator" %}
+
+        <div class="panel-group" id="accordion">
+
+        {% for teacher in teachers %}
+            <div class="panel panel-default">
+                <!-- Panel Heading -->
+                <div class="panel panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#{{ teacher.username }}">{{ teacher.username }}</a>
+                    </h4>
+                </div>
+
+                <!-- Panel Body -->
+                <div id="{{ teacher.username }}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        Sections here
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        </div>
+
     {% endif %}
 {% endblock %}

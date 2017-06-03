@@ -71,6 +71,17 @@ def index():
                     user=user,
                     sections=json.loads(user.sections)
                 )
+
+            # Get teachers if user is coordinator
+            elif user.acc_type == "coordinator":
+                return render_template(
+                    "index.html",
+                    user=user,
+                    teachers=User.query.filter_by(
+                        subject=user.subject,
+                        acc_type="teacher"
+                    ).all()
+                )
         else:
             user = None
 
