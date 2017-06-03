@@ -41,7 +41,13 @@ def index():
         user = User.query.get(user_id)
         subjects = read_excels(user.grade, user.section, user.CN)
 
-        return render_template("index.html", user=user, subjects=subjects)
+        # Make response and create a cookie for subjects
+        response = make_response(render_template("index.html",
+                                                 user=user,
+                                                 subjects=subjects))
+        response.set_cookie("subjects", json.dumps(subjects))
+
+        return response
 
     else:
         user_id = request.cookies.get("user_id")
@@ -50,7 +56,16 @@ def index():
         if user_id:
             user = User.query.get(user_id)
 
-            if user.acc_type == "teacher":
+            # Get subjects from cookies if user is student
+            if user.acc_type == "student":
+                return render_template(
+                    "index.html",
+                    user=user,
+                    subjects=json.loads(request.cookies.get("subjects"))
+                )
+
+            # Get sections if user is teacher
+            elif user.acc_type == "teacher":
                 return render_template(
                     "index.html",
                     user=user,
