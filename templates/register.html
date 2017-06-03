@@ -112,10 +112,13 @@
                         </select>
                     </div>
                 </div>
+
             </div>
 
             <!-- Coordinator Form -->
             <div id="coordinator-form">
+
+                <!-- Coordinator New Password -->
                 <div class="form-group{{ ' has-error has-feedback' if error == 'coordinator' }}">
                     <label class="control-label col-sm-1">New Coordinator's Password:</label>
                     <div class="col-sm-11">
@@ -125,6 +128,26 @@
                         {% endif %}
                     </div>
                 </div>
+
+                <!-- Coordinator Subject -->
+                <div class="form-group">
+                    <label class="control-label col-sm-1">Subject:</label>
+                    <div class="col-sm-11">
+                        <select class="form-control" name="new_coord_subject">
+                            <option value="CLE">CLE</option>
+                            <option value="Math">Math</option>
+                            <option value="Science">Science</option>
+                            <option value="English">English</option>
+                            <option value="Filipino">Filipino</option>
+                            <option value="AP">AP</option>
+                            <option value="TLE">TLE</option>
+                            <option value="Computer">Computer</option>
+                            <option value="Music">Music</option>
+                            <option value="PE">PE</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
 
             <!-- BUTTON -->

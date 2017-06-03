@@ -108,6 +108,7 @@ def register():
         new_teacher_pass = request.form["new_teacher_pass"]
         new_teacher_subject = request.form["new_teacher_subject"]
         new_coord_pass = request.form["new_coord_pass"]
+        new_coord_subject = request.form["new_coord_subject"]
 
         # Check if username is taken
         if User.query.filter_by(username=username).first() is None:
@@ -135,7 +136,9 @@ def register():
                 # Check new coordinator password
                 elif (acc_type == "coordinator" and
                         new_coord_pass == "CSQC new coord"):
-                    db.session.add(User(username, password, acc_type))
+                    coord = User(username, password, acc_type)
+                    coord.subject = new_coord_subject
+                    db.session.add(coord)
 
                 else:
                     return render_template("register.html", error=acc_type)
