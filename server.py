@@ -58,10 +58,18 @@ def index():
 
             # Get subjects from cookies if user is student
             if user.acc_type == "student":
+
+                # Get cookie of subjects
+                subjects = request.cookies.get("subjects")
+
+                # Load the subjects if it exists
+                if subjects is not None:
+                    subjects = json.loads(subjects)
+
                 return render_template(
                     "index.html",
                     user=user,
-                    subjects=json.loads(request.cookies.get("subjects"))
+                    subjects=subjects
                 )
 
             # Get sections if user is teacher
