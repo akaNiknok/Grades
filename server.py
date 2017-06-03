@@ -160,20 +160,24 @@ def register():
 @app.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == "POST":
+
+        # Get data from form
         username = request.form["username"]
         password = request.form["password"]
 
         user = User.query.filter_by(username=username).first()
 
+        # Validate username
         if user is None:
             return render_template("login.html", error="username")
+
+        # Validate password
+        elif user.password == password:
+            response = make_response(redirect(url_for("index")))
+            response.set_cookie("user_id", str(user.id))
+            return response
         else:
-            if user.password == password:
-                response = make_response(redirect(url_for("index")))
-                response.set_cookie("user_id", str(user.id))
-                return response
-            else:
-                return render_template("login.html", error="password")
+            return render_template("login.html", error="password")
 
     else:
         return render_template("login.html")
