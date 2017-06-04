@@ -173,7 +173,7 @@ def register():
 
         # Login new user if "All Izz Well" :D
         user = User.query.filter_by(username=username).first()
-        response = make_response(redirect(url_for("index")))
+        response = make_response(redirect("/"))
         response.set_cookie("user_id", str(user.id))
 
         return response
@@ -197,7 +197,7 @@ def login():
 
         # Validate password
         elif user.password == password:
-            response = make_response(redirect(url_for("index")))
+            response = make_response(redirect("/"))
             response.set_cookie("user_id", str(user.id))
             return response
         else:
@@ -211,7 +211,7 @@ def login():
 def logout():
 
     # Make response
-    response = make_response(redirect(url_for("index")))
+    response = make_response(redirect("/"))
 
     # Set cookies to no value and expiration to the past :D
     response.set_cookie("user_id", "", expires=0)
@@ -283,9 +283,9 @@ def upload():
             if user.acc_type == "teacher" or "coordinator":
                 return render_template("upload.html", user=user)
             else:
-                return redirect(url_for("index"))
+                return redirect("/")
         else:
-            return redirect(url_for("index"))
+            return redirect("/")
 
 
 @app.route('/delete', methods=["POST"])
@@ -312,7 +312,7 @@ def delete():
     user.sections = json.dumps(sections)
     db.session.commit()
 
-    return redirect(url_for("index"))
+    return redirect("/")
 
 
 def read_excels(grade, section, cn):
