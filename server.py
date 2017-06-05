@@ -328,8 +328,7 @@ def read_excels(grade, section, cn):
     TEST_TOTAL_ROW = 8
 
     # Get file directory using users grade and section
-    filedir = "excels/{}/{}/".format(grade,
-                                     section)
+    filedir = "excels/{}/{}/".format(grade, section)
 
     # Get all files (subjects) in file directory
     files = os.listdir(filedir)
