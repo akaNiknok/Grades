@@ -1,7 +1,6 @@
 import os
 import json
-from flask import Flask, render_template, request
-from flask import redirect, url_for, make_response
+from flask import Flask, render_template, request, redirect, make_response
 from flask_sqlalchemy import SQLAlchemy
 import openpyxl
 
