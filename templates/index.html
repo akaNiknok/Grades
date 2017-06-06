@@ -70,6 +70,9 @@
                         <td>{{ section[0] }} </td>
                         <td>{{ section[1] }} </td>
                         <td>
+                            <!-- Link to table button -->
+                            <a class="btn btn-xs btn-success" href="excels/{{ section[0] }}/{{ section[1 ]}}/{{ user.subject }}">View</a>
+
                             <!-- Delete button -->
                             <button id="showMore{{ sections.index(section) }}" class="showMore btn btn-xs btn-danger" type="button" onclick="showMore({{ sections.index(section) }})">
                                 <span class="glyphicon glyphicon-remove"></span>
