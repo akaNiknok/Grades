@@ -1,6 +1,7 @@
 import os
 import json
-from flask import Flask, render_template, request, redirect, make_response
+from flask import Flask, render_template, request
+from flask import redirect, make_response, send_file
 from flask_sqlalchemy import SQLAlchemy
 import openpyxl
 from openpyxl.utils import range_boundaries
@@ -355,6 +356,12 @@ def upload():
                 return redirect("/")
         else:
             return redirect("/")
+
+
+@app.route('/download/<grade>/<section>/<subject>')
+def download(grade, section, subject):
+    return send_file("excels/{}/{}/{}.xlsx".format(grade, section, subject),
+                     as_attachment=True)
 
 
 @app.route('/delete', methods=["POST"])
