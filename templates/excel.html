@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ grade }}-{{ section }} {{ subject }}{% endblock %}
+
+{% block content %}
+    <h1>{{ grade }}-{{ section }} {{ subject }}</h1>
+
+    <table class="table table-bordered">
+        {% for row in table %}
+            <tr>
+            {% for col in row %}
+                <td colspan="{{ col[1] }}">{{ col[0] }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
