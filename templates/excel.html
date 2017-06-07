@@ -4,13 +4,17 @@
 {% block content %}
     <h1>{{ grade }}-{{ section }} {{ subject }} <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">Download .xlsx</a></h1>
 
-    <table class="table table-bordered">
-        {% for row in table %}
-            <tr>
-            {% for col in row %}
-                <td colspan="{{ col[1] }}">{{ col[0] }}</td>
+    <p>For users with large screen, there is a scroll bar at the bottom</p>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed">
+            {% for row in table %}
+                <tr>
+                {% for col in row %}
+                    <td colspan="{{ col[1] }}">{{ col[0] }}</td>
+                {% endfor %}
+                </tr>
             {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
+        </table>
+    </div>
 {% endblock %}
