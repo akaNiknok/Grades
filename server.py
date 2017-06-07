@@ -557,7 +557,6 @@ def read_excels(grade, section, cn):
 
             # Store users score
             elif ws.cell(row=row, column=1).value == cn:
-                print cn
 
                 # Contains columns (value, colspan) here
                 new_row = []
