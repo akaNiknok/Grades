@@ -40,27 +40,17 @@
                             <div id="{{ subject }}{{ trimester }}" class="tab-pane fade">
                                 <h3>{{ subject }} - {{ trimester }} Trimester</h3>
 
-                                <!-- Table of Grades -->
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Test</th>
-                                            <th>Score</th>
-                                            <th>Total Score</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for test in subjects[subject][trimester] %}
-                                            <tr>
-                                                <td>{{ test }}</td>
-                                                <td>{{ subjects[subject][trimester][test][0] }}</td>
-                                                <td>{{ subjects[subject][trimester][test][1] }}</td>
-                                            </tr>
+                            <!-- Table of Grades -->
+                            <table class="table table-bordered">
+                                {% for row in subjects[subject] %}
+                                    <tr>
+                                        {% for col in row %}
+                                        <td colspan="{{ col[1] }}">{{ col[0] }}</td>
                                         {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
                     {% endfor %}
                 </div>
             {% elif subjects == "Empty" %}
