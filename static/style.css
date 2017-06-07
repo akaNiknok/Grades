@@ -56,3 +56,8 @@ body {
 .upper {
     text-transform: uppercase;
 }
+
+.table-responsive {
+    max-height: 75vh;
+    overflow: auto;
+}

@@ -4,8 +4,6 @@
 {% block content %}
     <h1>{{ grade }}-{{ section }} {{ subject }} <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">Download .xlsx</a></h1>
 
-    <p>For users with large screen, there is a scroll bar at the bottom</p>
-
     <div class="table-responsive">
         <table class="table table-bordered table-condensed">
             {% for row in table %}
