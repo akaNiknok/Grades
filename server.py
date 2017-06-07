@@ -238,56 +238,6 @@ def user(username):
 @app.route('/excels/<grade>/<section>/<subject>')
 def excels(grade, section, subject):
 
-    # Open excel file
-    wb = openpyxl.load_workbook("excels/{}/{}/{}".format(grade,
-                                                         section,
-                                                         subject + ".xlsx"),
-                                data_only=True)
-
-    # Open the sheet (subject to change)
-    ws = wb.worksheets[0]
-
-    # Get boundaries (min_col, min_row, max_col, max_row) of merged_cells
-    merged_cells = [range_boundaries(r) for r in ws.merged_cell_ranges]
-
-    table = []
-
-    # Loop through rows
-    for row in range(5, ws.max_row):
-
-        # Contains columns (value, colspan) here
-        new_row = []
-
-        # Create an iterator object to be able to skip merged cells
-        columns = iter(range(1, ws.max_column))
-
-        # Loop through columns
-        for column in columns:
-
-            # Get value of cell
-            value = ws.cell(row=row, column=column).value
-
-            # Check if the cell is not empty
-            if value is not None:
-                colspan = 1
-
-                # Check if cell is merged
-                for r in merged_cells:
-                    if (r[0] == column) and (r[1] == row):
-                        colspan += (r[2] - r[0])  # Add to colspan
-                        break
-
-                new_row.append((value, colspan))
-
-                # If cell is merged, skip (colspan - 1) iterations
-                if colspan != 1:
-                    for x in range(colspan - 1):
-                        next(columns)
-            else:
-                new_row.append(("", 1))
-
-        table.append(new_row)
-
     # Get user
     user_id = request.cookies.get("user_id")
 
@@ -301,7 +251,7 @@ def excels(grade, section, subject):
                            grade=grade,
                            section=section,
                            subject=subject,
-                           table=table)
+                           table=read_excel(grade, section, subject))
 
 
 @app.route('/upload', methods=["POST", "GET"])
@@ -451,6 +401,62 @@ def read_excels(grade, section, cn):
         subjects[os.path.splitext(file)[0]] = Tests
 
     return subjects
+
+
+def read_excel(grade, section, subject):
+    """Reads an excel file and returns a table list"""
+
+    # Open excel file
+    wb = openpyxl.load_workbook("excels/{}/{}/{}".format(grade,
+                                                         section,
+                                                         subject + ".xlsx"),
+                                data_only=True)
+
+    # Open the sheet (subject to change)
+    ws = wb.worksheets[0]
+
+    # Get boundaries (min_col, min_row, max_col, max_row) of merged_cells
+    merged_cells = [range_boundaries(r) for r in ws.merged_cell_ranges]
+
+    table = []
+
+    # Loop through rows
+    for row in range(5, ws.max_row):
+
+        # Contains columns (value, colspan) here
+        new_row = []
+
+        # Create an iterator object to be able to skip merged cells
+        columns = iter(range(1, ws.max_column))
+
+        # Loop through columns
+        for column in columns:
+
+            # Get value of cell
+            value = ws.cell(row=row, column=column).value
+
+            # Check if the cell is not empty
+            if value is not None:
+                colspan = 1
+
+                # Check if cell is merged
+                for r in merged_cells:
+                    if (r[0] == column) and (r[1] == row):
+                        colspan += (r[2] - r[0])  # Add to colspan
+                        break
+
+                new_row.append((value, colspan))
+
+                # If cell is merged, skip (colspan - 1) iterations
+                if colspan != 1:
+                    for x in range(colspan - 1):
+                        next(columns)
+            else:
+                new_row.append(("", 1))
+
+        table.append(new_row)
+
+    return table
 
 
 if __name__ == "__main__":
