@@ -41,15 +41,17 @@
                                 <h3>{{ subject }} - {{ trimester }} Trimester</h3>
 
                             <!-- Table of Grades -->
-                            <table class="table table-bordered">
-                                {% for row in subjects[subject] %}
-                                    <tr>
-                                        {% for col in row %}
-                                        <td colspan="{{ col[1] }}">{{ col[0] }}</td>
-                                        {% endfor %}
-                                    </tr>
-                                {% endfor %}
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-condensed">
+                                    {% for row in subjects[subject] %}
+                                        <tr>
+                                            {% for col in row %}
+                                            <td colspan="{{ col[1] }}">{{ col[0] }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
