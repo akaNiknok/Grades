@@ -358,7 +358,10 @@ def read_excels(grade, section, cn):
     filedir = "excels/{}/{}/".format(grade, section)
 
     # Get all files (subjects) in file directory
-    files = os.listdir(filedir)
+    try:
+        files = os.listdir(filedir)
+    except OSError:
+        return None
 
     subjects = {}
 
