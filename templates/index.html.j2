@@ -46,7 +46,11 @@
                                     {% for row in subjects[subject] %}
                                         <tr>
                                             {% for col in row %}
-                                            <td colspan="{{ col[1] }}">{{ col[0] }}</td>
+                                                {% if subjects[subject].index(row) in (0, 1, 2) %}
+                                                    <th colspan="{{ col[1] }}">{{ col[0] }}</th>
+                                                {% else %}
+                                                    <td colspan="{{ col[1] }}">{{ col[0] }}</td>
+                                                {% endif %}
                                             {% endfor %}
                                         </tr>
                                     {% endfor %}
