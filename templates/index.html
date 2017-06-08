@@ -112,7 +112,9 @@
                     <!-- Panel Body -->
                     <div id="{{ teacher.username }}" class="panel-collapse collapse">
                         <div class="panel-body">
-                            Sections here
+                            {% for section in loads(teacher.sections) %}
+                                <a href="/excels/{{ section[0] }}/{{ section[1] }}/{{ teacher.subject }}">{{ section[0] }} - {{ section[1] }}</a>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

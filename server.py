@@ -89,7 +89,8 @@ def index():
                     teachers=User.query.filter_by(
                         subject=user.subject,
                         acc_type="teacher"
-                    ).all()
+                    ).all(),
+                    loads=json.loads
                 )
         else:
             user = None
