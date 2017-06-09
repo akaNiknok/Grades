@@ -19,7 +19,6 @@ class User(db.Model):
 
     firstname = db.Column(db.String())
     middlename = db.Column(db.String())
-    middleinitial = db.Column(db.String(6))
     lastname = db.Column(db.String())
 
     grade = db.Column(db.Integer)
@@ -43,11 +42,15 @@ class User(db.Model):
         self.middlename = middlename
         self.lastname = lastname
 
-        self.middleinitial = ""
+    def mi(self):
+        """Returns middle initial of user"""
+        mi = ""
 
-        for name in middlename.split():
-            self.middleinitial += name[0]
-            self.middleinitial += "."
+        for name in self.middlename.split():
+            mi += name[0]
+            mi += "."
+
+        return mi
 
 
 db.create_all()
