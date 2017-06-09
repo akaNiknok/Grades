@@ -15,8 +15,8 @@
 
             <!-- USERNAME -->
             <div class="form-group{{ ' has-error has-feedback' if error == 'username' }}">
-                <label class="control-label col-sm-1">Username:</label>
-                <div class="col-sm-11">
+                <label class="control-label col-sm-4">Username:</label>
+                <div class="col-sm-5">
                     <input class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off" required>
                     {% if error == "username" %}
                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
@@ -26,16 +26,16 @@
 
             <!-- PASSWORD -->
             <div class="form-group">
-                <label class="control-label col-sm-1">Password:</label>
-                <div class="col-sm-11">
+                <label class="control-label col-sm-4">Password:</label>
+                <div class="col-sm-5">
                     <input class="form-control" type="password" name="password" placeholder="Enter password" autocomplete="off" required>
                 </div>
             </div>
 
             <!-- RETYPE PASSWORD -->
             <div class="form-group{{ ' has-error has-feedback' if error == 'password' }}">
-                <label class="control-label col-sm-1">Retype Password:</label>
-                <div class="col-sm-11">
+                <label class="control-label col-sm-4">Retype Password:</label>
+                <div class="col-sm-5">
                     <input class="form-control" type="password" name="re_password" placeholder="Retype password" autocomplete="off" required>
                     {% if error == "password" %}
                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
@@ -45,32 +45,32 @@
 
             <!-- First name -->
             <div class="form-group">
-                <label class="control-label col-sm-1">First name:</label>
-                <div class="col-sm-11">
+                <label class="control-label col-sm-4">First name:</label>
+                <div class="col-sm-5">
                     <input class="form-control" type="text" name="firstname" placeholder="First name" autocomplete="off" required>
                 </div>
             </div>
 
             <!-- Middle name -->
             <div class="form-group">
-                <label class="control-label col-sm-1">Middle name:</label>
-                <div class="col-sm-11">
+                <label class="control-label col-sm-4">Middle name:</label>
+                <div class="col-sm-5">
                     <input class="form-control" type="text" name="middlename" placeholder="Middle name" autocomplete="off" required>
                 </div>
             </div>
 
             <!-- Last name -->
             <div class="form-group">
-                <label class="control-label col-sm-1">Last name:</label>
-                <div class="col-sm-11">
+                <label class="control-label col-sm-4">Last name:</label>
+                <div class="col-sm-5">
                     <input class="form-control" type="text" name="lastname" placeholder="Last name" autocomplete="off" required>
                 </div>
             </div>
 
             <!-- RADIO -->
             <div class="form-group">
-                <label class="control-label col-sm-1">Occupation:</label>
-                <div class="col-sm-11">
+                <label class="control-label col-sm-4">Occupation:</label>
+                <div class="col-sm-5">
                     <label class="radio-inline"><input type="radio" name="acc_type" value="student" id="student" onclick="radios()" checked>Student</label>
                     <label class="radio-inline"><input type="radio" name="acc_type" value="teacher" id="teacher" onclick="radios()">Teacher</label>
                     <label class="radio-inline"><input type="radio" name="acc_type" value="coordinator" id="coordinator" onclick="radios()">Coordinator</label>
@@ -81,24 +81,24 @@
             <div id="student-form">
                 <!-- Student Grade -->
                 <div class="form-group">
-                    <label class="control-label col-sm-1">Grade:</label>
-                    <div class="col-sm-11">
+                    <label class="control-label col-sm-4">Grade:</label>
+                    <div class="col-sm-5">
                         <input id="student-grade" class="form-control" type="number" name="grade" placeholder="Grade" autocomplete="off" required>
                     </div>
                 </div>
 
                 <!-- Student Section -->
                 <div class="form-group">
-                    <label class="control-label col-sm-1">Section:</label>
-                    <div class="col-sm-11">
+                    <label class="control-label col-sm-4">Section:</label>
+                    <div class="col-sm-5">
                         <input id="student-section" class="form-control upper" type="text" name="section" placeholder="Section (Ex: SMA)" autocomplete="off" required>
                     </div>
                 </div>
 
                 <!-- Student CN -->
                 <div class="form-group">
-                    <label class="control-label col-sm-1">CN:</label>
-                    <div class="col-sm-11">
+                    <label class="control-label col-sm-4">CN:</label>
+                    <div class="col-sm-5">
                         <input id="student-cn" class="form-control" type="number" name="CN" placeholder="CN" autocomplete="off" required>
                     </div>
                 </div>
@@ -109,8 +109,8 @@
 
                 <!-- Teacher New Password -->
                 <div class="form-group{{ ' has-error has-feedback' if error == 'teacher' }}">
-                    <label class="control-label col-sm-1">New Teacher's Password:</label>
-                    <div class="col-sm-11">
+                    <label class="control-label col-sm-4">New Teacher's Password:</label>
+                    <div class="col-sm-5">
                         <input id="teacher-pass"class="form-control" type="password" name="new_teacher_pass" placeholder="Password" autocomplete="off">
                         {% if error == "teacher" %}
                             <span class="glyphicon glyphicon-remove form-control-feedback"></span>
@@ -120,8 +120,8 @@
 
                 <!-- Teacher Subject -->
                 <div class="form-group">
-                    <label class="control-label col-sm-1">Subject:</label>
-                    <div class="col-sm-11">
+                    <label class="control-label col-sm-4">Subject:</label>
+                    <div class="col-sm-5">
                         <select class="form-control" name="new_teacher_subject">
                             <option value="CLE">CLE</option>
                             <option value="Math">Math</option>
@@ -144,8 +144,8 @@
 
                 <!-- Coordinator New Password -->
                 <div class="form-group{{ ' has-error has-feedback' if error == 'coordinator' }}">
-                    <label class="control-label col-sm-1">New Coordinator's Password:</label>
-                    <div class="col-sm-11">
+                    <label class="control-label col-sm-4">New Coordinator's Password:</label>
+                    <div class="col-sm-5">
                         <input id="coordinator-pass" class="form-control" type="password" name="new_coord_pass" placeholder="Password" autocomplete="off">
                         {% if error == "coordinator" %}
                             <span class="glyphicon glyphicon-remove form-control-feedback"></span>
@@ -155,8 +155,8 @@
 
                 <!-- Coordinator Subject -->
                 <div class="form-group">
-                    <label class="control-label col-sm-1">Subject:</label>
-                    <div class="col-sm-11">
+                    <label class="control-label col-sm-4">Subject:</label>
+                    <div class="col-sm-5">
                         <select class="form-control" name="new_coord_subject">
                             <option value="CLE">CLE</option>
                             <option value="Math">Math</option>
@@ -176,7 +176,7 @@
 
             <!-- BUTTON -->
             <div class="form-group">
-                <div class="col-sm-offset-1 col-sm-11">
+                <div class="col-sm-offset-4 col-sm-1">
                     <input class="btn btn-success" type="submit" value="Submit">
                 </div>
             </div>
