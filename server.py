@@ -17,6 +17,11 @@ class User(db.Model):
     password = db.Column(db.String(20))
     acc_type = db.Column(db.String(11))
 
+    firstname = db.Column(db.String())
+    middlename = db.Column(db.String())
+    middleinitial = db.Column(db.String(6))
+    lastname = db.Column(db.String())
+
     grade = db.Column(db.Integer)
     section = db.Column(db.String(4))
     CN = db.Column(db.Integer)
@@ -24,10 +29,25 @@ class User(db.Model):
     subject = db.Column(db.String(7))
     sections = db.Column(db.String)
 
-    def __init__(self, username, password, acc_type):
+    def __init__(self,
+                 username,
+                 password,
+                 acc_type,
+                 firstname,
+                 middlename,
+                 lastname):
         self.username = username
         self.password = password
         self.acc_type = acc_type
+        self.firstname = firstname
+        self.middlename = middlename
+        self.lastname = lastname
+
+        self.middleinitial = ""
+
+        for name in middlename.split():
+            self.middleinitial += name[0]
+            self.middleinitial += "."
 
 
 db.create_all()
@@ -120,6 +140,10 @@ def register():
         re_password = request.form["re_password"]
         acc_type = request.form["acc_type"]
 
+        firstname = request.form["firstname"]
+        middlename = request.form["middlename"]
+        lastname = request.form["lastname"]
+
         # Student Specific Forms
         grade = request.form["grade"]
         section = request.form["section"]
@@ -141,7 +165,12 @@ def register():
 
                 # Add grade, section and CN when account type is student
                 if acc_type == "student":
-                    student = User(username, password, acc_type)
+                    student = User(username,
+                                   password,
+                                   acc_type,
+                                   firstname,
+                                   middlename,
+                                   lastname)
                     student.grade = int(grade)
                     student.section = section
                     student.CN = int(CN)
@@ -151,7 +180,12 @@ def register():
                 # Add subject and section when account type is teacher
                 elif (acc_type == "teacher" and
                         new_teacher_pass == "CSQC new teach"):
-                    teacher = User(username, password, acc_type)
+                    teacher = User(username,
+                                   password,
+                                   acc_type,
+                                   firstname,
+                                   middlename,
+                                   lastname)
                     teacher.subject = new_teacher_subject
                     teacher.sections = "[]"
                     db.session.add(teacher)
@@ -159,7 +193,12 @@ def register():
                 # Add subject when account type is coordinator
                 elif (acc_type == "coordinator" and
                         new_coord_pass == "CSQC new coord"):
-                    coord = User(username, password, acc_type)
+                    coord = User(username,
+                                 password,
+                                 acc_type,
+                                 firstname,
+                                 middlename,
+                                 lastname)
                     coord.subject = new_coord_subject
                     db.session.add(coord)
 
