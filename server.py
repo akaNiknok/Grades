@@ -287,7 +287,11 @@ def excels(grade, section, subject):
     if user_id:
         user = User.query.get(user_id)
     else:
-        user = None
+        return redirect("/")
+
+    # Only allow teachers and coordinators to view excels
+    if user.acc_type != "teacher" and user.acc_type != "coordinator":
+        return redirect("/")
 
     return render_template("excel.html",
                            user=user,
