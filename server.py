@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from flask import redirect, make_response, send_file
 from flask_sqlalchemy import SQLAlchemy
 import openpyxl
@@ -61,7 +61,7 @@ def index():
     if request.method == "POST":
 
         # Refresh for students
-        user_id = request.cookies.get("user_id")
+        user_id = session.get("user_id")
         user = User.query.get(user_id)
         subjects = read_excels(user.grade, user.section, user.CN)
 
@@ -74,7 +74,7 @@ def index():
         return response
 
     else:
-        user_id = request.cookies.get("user_id")
+        user_id = session.get("user_id")
 
         # Check if logged in
         if user_id:
@@ -123,7 +123,7 @@ def index():
 
 @app.route('/about')
 def about():
-    user_id = request.cookies.get("user_id")
+    user_id = session.get("user_id")
 
     if user_id:
         user = User.query.get(user_id)
@@ -218,7 +218,7 @@ def register():
         # Login new user if "All Izz Well" :D
         user = User.query.filter_by(username=username).first()
         response = make_response(redirect("/"))
-        response.set_cookie("user_id", str(user.id))
+        session["user_id"] = user.id
 
         return response
     else:
@@ -242,7 +242,7 @@ def login():
         # Validate password
         elif user.password == password:
             response = make_response(redirect("/"))
-            response.set_cookie("user_id", str(user.id))
+            session["user_id"] = user.id
             return response
         else:
             return render_template("login.html", error="password")
@@ -257,8 +257,8 @@ def logout():
     # Make response
     response = make_response(redirect("/"))
 
-    # Set cookies to no value and expiration to the past :D
-    response.set_cookie("user_id", "", expires=0)
+    # Set cookies and session to no value and expiration to the past :D
+    session.clear()
     response.set_cookie("subjects", "", expires=0)
 
     return response
@@ -266,7 +266,7 @@ def logout():
 
 @app.route('/user/<username>')
 def user(username):
-    user_id = request.cookies.get("user_id")
+    user_id = session.get("user_id")
 
     if user_id:
         user = User.query.get(user_id)
@@ -282,7 +282,7 @@ def user(username):
 def excels(grade, section, subject):
 
     # Get user
-    user_id = request.cookies.get("user_id")
+    user_id = session.get("user_id")
 
     if user_id:
         user = User.query.get(user_id)
@@ -311,7 +311,7 @@ def upload():
                      or file.filename.endswith(".xls")):
 
             # Get the user
-            user_id = request.cookies.get("user_id")
+            user_id = session.get("user_id")
             user = User.query.get(user_id)
 
             # Rename the file to subject.xlsx
@@ -342,7 +342,7 @@ def upload():
             return render_template("upload.html", error=True)
 
     else:
-        user_id = request.cookies.get("user_id")
+        user_id = session.get("user_id")
 
         # Require user to be a teacher or coordinator
         if user_id:
@@ -365,7 +365,7 @@ def download(grade, section, subject):
 def delete():
 
     # Get user
-    user_id = request.cookies.get("user_id")
+    user_id = session.get("user_id")
     user = User.query.get(user_id)
 
     # Get index
