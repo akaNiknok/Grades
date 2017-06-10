@@ -2,7 +2,11 @@
 {% block title %}{{ grade }}-{{ section }} {{ subject }}{% endblock %}
 
 {% block content %}
-    <h1>{{ grade }}-{{ section }} {{ subject }} <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">Download .xlsx</a></h1>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <h1>{{ grade }}-{{ section }} {{ subject }} <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">Download .xlsx</a></h1>
+    </div>
 
     <div class="table-responsive">
         <table class="table table-bordered table-condensed">
