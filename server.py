@@ -66,7 +66,7 @@ def index():
         subjects = read_excels(user.grade, user.section, user.CN)
         session["subjects"] = subjects
 
-        return render_template("index.html", user=user, subjects=subjects)
+        return redirect("/")
 
     else:
         user_id = session.get("user_id")
