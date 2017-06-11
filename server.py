@@ -258,27 +258,33 @@ def user(username):
     return render_template("user.html", user=user, view_user=view_user)
 
 
-@app.route('/excels/<grade>/<section>/<subject>')
+@app.route('/excels/<grade>/<section>/<subject>', methods=["POST", "GET"])
 def excels(grade, section, subject):
+    if request.method == "POST":
 
-    # Get user
-    user_id = session.get("user_id")
+        # Reload
+        session["table"] = read_excel(grade, section, subject)
+        return redirect("/excels/{}/{}/{}".format(grade, section, subject))
 
-    if user_id:
-        user = User.query.get(user_id)
     else:
-        return redirect("/")
+        # Get user
+        user_id = session.get("user_id")
 
-    # Only allow teachers and coordinators to view excels
-    if user.acc_type != "teacher" and user.acc_type != "coordinator":
-        return redirect("/")
+        if user_id:
+            user = User.query.get(user_id)
+        else:
+            return redirect("/")
 
-    return render_template("excel.html",
-                           user=user,
-                           grade=grade,
-                           section=section,
-                           subject=subject,
-                           table=read_excel(grade, section, subject))
+        # Only allow teachers and coordinators to view excels
+        if user.acc_type != "teacher" and user.acc_type != "coordinator":
+            return redirect("/")
+
+        return render_template("excel.html",
+                               user=user,
+                               grade=grade,
+                               section=section,
+                               subject=subject,
+                               table=session.get("table"))
 
 
 @app.route('/upload', methods=["POST", "GET"])

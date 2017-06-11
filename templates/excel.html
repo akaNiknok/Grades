@@ -3,24 +3,31 @@
 
 {% block content %}
 
+    <form id="reload" action="" method="post"></form>
+
     <!-- PAGE HEADER -->
     <div class="page-header">
-        <h1>{{ grade }}-{{ section }} {{ subject }} <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">Download .xlsx</a></h1>
+        <h1>{{ grade }}-{{ section }} {{ subject }} <button class="btn btn-default" type="submit" form="reload">Reload</button> <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">Download .xlsx</a></h1>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-condensed">
-            {% for row in table %}
-                <tr>
-                {% for col in row %}
-                    {% if table.index(row) in (0, 1, 2, 3) %}
-                        <th colspan="{{ col[1] }}">{{ col[0] }}</th>
-                    {% else%}
-                        <td colspan="{{ col[1] }}">{{ col[0] }}</td>
-                    {% endif %}
+
+    {% if table %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-condensed">
+                {% for row in table %}
+                    <tr>
+                    {% for col in row %}
+                        {% if table.index(row) in (0, 1, 2, 3) %}
+                            <th colspan="{{ col[1] }}">{{ col[0] }}</th>
+                        {% else%}
+                            <td colspan="{{ col[1] }}">{{ col[0] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
                 {% endfor %}
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
+            </table>
+        </div>
+    {% else %}
+        <h1>Click reload</h1>
+    {% endif %}
 {% endblock %}
