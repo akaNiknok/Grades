@@ -64,14 +64,9 @@ def index():
         user_id = session.get("user_id")
         user = User.query.get(user_id)
         subjects = read_excels(user.grade, user.section, user.CN)
+        session["subjects"] = subjects
 
-        # Make response and create a cookie for subjects
-        response = make_response(render_template("index.html",
-                                                 user=user,
-                                                 subjects=subjects))
-        response.set_cookie("subjects", json.dumps(subjects))
-
-        return response
+        return render_template("index.html", user=user, subjects=subjects)
 
     else:
         user_id = session.get("user_id")
@@ -80,20 +75,12 @@ def index():
         if user_id:
             user = User.query.get(user_id)
 
-            # Get subjects from cookies if user is student
+            # Get subjects from session if user is student
             if user.acc_type == "student":
-
-                # Get cookie of subjects
-                subjects = request.cookies.get("subjects")
-
-                # Load the subjects if it exists
-                if subjects is not None:
-                    subjects = json.loads(subjects)
-
                 return render_template(
                     "index.html",
                     user=user,
-                    subjects=subjects
+                    subjects=session.get("subjects")
                 )
 
             # Get sections if user is teacher
@@ -253,15 +240,8 @@ def login():
 
 @app.route('/logout', methods=["GET"])
 def logout():
-
-    # Make response
-    response = make_response(redirect("/"))
-
-    # Set cookies and session to no value and expiration to the past :D
     session.clear()
-    response.set_cookie("subjects", "", expires=0)
-
-    return response
+    return redirect("/")
 
 
 @app.route('/user/<username>')
