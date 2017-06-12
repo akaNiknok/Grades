@@ -18,6 +18,9 @@
                 <label class="control-label col-sm-4">Username:</label>
                 <div class="col-sm-5">
                     <input class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off" required>
+                    {% if error == "username" %}
+                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                    {% endif %}
                 </div>
             </div>
 
@@ -26,6 +29,9 @@
                 <label class="control-label col-sm-4">Password:</label>
                 <div class="col-sm-5">
                     <input class="form-control" type="password" name="password" placeholder="Enter password" autocomplete="off" required>
+                    {% if error == "password" %}
+                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                    {% endif %}
                 </div>
             </div>
 
