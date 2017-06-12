@@ -58,10 +58,11 @@ db.create_all()
 
 @app.route('/', methods=["POST", "GET"])
 def index():
+    user_id = session.get("user_id")
+
     if request.method == "POST":
 
         # Refresh for students
-        user_id = session.get("user_id")
         user = User.query.get(user_id)
         subjects = read_excels(user.grade, user.section, user.CN)
         session["subjects"] = subjects
@@ -69,8 +70,6 @@ def index():
         return redirect("/")
 
     else:
-        user_id = session.get("user_id")
-
         # Check if logged in
         if user_id:
             user = User.query.get(user_id)
@@ -193,13 +192,16 @@ def register():
                     db.session.add(coord)
 
                 else:
+                    # Entered the wrong new_*_pass
                     return render_template("register.html", error=acc_type)
 
                 db.session.commit()
 
             else:
+                # Entered wrong retype password
                 return render_template("register.html", error="password")
         else:
+            # Username taken
             return render_template("register.html", error="username")
 
         # Login new user if "All Izz Well" :D
@@ -262,7 +264,7 @@ def user(username):
 def excels(grade, section, subject):
     if request.method == "POST":
 
-        # Reload
+        # Refresh for teachers and coordinators
         session["table"] = read_excel(grade, section, subject)
         return redirect("/excels/{}/{}/{}".format(grade, section, subject))
 
@@ -289,6 +291,8 @@ def excels(grade, section, subject):
 
 @app.route('/upload', methods=["POST", "GET"])
 def upload():
+    user_id = session.get("user_id")
+
     if request.method == "POST":
         file = request.files['file']
 
@@ -297,7 +301,6 @@ def upload():
                      or file.filename.endswith(".xls")):
 
             # Get the user
-            user_id = session.get("user_id")
             user = User.query.get(user_id)
 
             # Rename the file to subject.xlsx
@@ -328,7 +331,6 @@ def upload():
             return render_template("upload.html", error=True)
 
     else:
-        user_id = session.get("user_id")
 
         # Require user to be a teacher or coordinator
         if user_id:
