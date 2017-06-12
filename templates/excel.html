@@ -7,7 +7,14 @@
 
     <!-- PAGE HEADER -->
     <div class="page-header">
-        <h1>{{ grade }}-{{ section }} {{ subject }} <button class="btn btn-default" type="submit" form="refresh">Refresh</button> <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">Download .xlsx</a></h1>
+        <h1>{{ grade }}-{{ section }} {{ subject }}
+            <button class="btn btn-default" type="submit" form="refresh">
+                <span class="glyphicon glyphicon-refresh"></span> Refresh
+            </button>
+            <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">
+                <span class="glyphicon glyphicon-download"></span> Download .xlsx
+            </a>
+        </h1>
     </div>
 
 
