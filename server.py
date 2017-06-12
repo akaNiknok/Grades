@@ -77,7 +77,7 @@ def index():
             # Get subjects from session if user is student
             if user.acc_type == "student":
                 return render_template(
-                    "index.html",
+                    "index.html.j2",
                     user=user,
                     subjects=session.get("subjects")
                 )
@@ -85,7 +85,7 @@ def index():
             # Get sections if user is teacher
             elif user.acc_type == "teacher":
                 return render_template(
-                    "index.html",
+                    "index.html.j2",
                     user=user,
                     sections=json.loads(user.sections)
                 )
@@ -93,7 +93,7 @@ def index():
             # Get teachers if user is coordinator
             elif user.acc_type == "coordinator":
                 return render_template(
-                    "index.html",
+                    "index.html.j2",
                     user=user,
                     teachers=User.query.filter_by(
                         subject=user.subject,
@@ -104,7 +104,7 @@ def index():
         else:
             user = None
 
-        return render_template("index.html", user=user)
+        return render_template("index.html.j2", user=user)
 
 
 @app.route('/about')
@@ -116,7 +116,7 @@ def about():
     else:
         user = None
 
-    return render_template("about.html", user=user)
+    return render_template("about.html.j2", user=user)
 
 
 @app.route('/register', methods=["POST", "GET"])
@@ -193,16 +193,16 @@ def register():
 
                 else:
                     # Entered the wrong new_*_pass
-                    return render_template("register.html", error=acc_type)
+                    return render_template("register.html.j2", error=acc_type)
 
                 db.session.commit()
 
             else:
                 # Entered wrong retype password
-                return render_template("register.html", error="password")
+                return render_template("register.html.j2", error="password")
         else:
             # Username taken
-            return render_template("register.html", error="username")
+            return render_template("register.html.j2", error="username")
 
         # Login new user if "All Izz Well" :D
         user = User.query.filter_by(username=username).first()
@@ -211,7 +211,7 @@ def register():
 
         return response
     else:
-        return render_template("register.html")
+        return render_template("register.html.j2")
 
 
 @app.route('/login', methods=["POST", "GET"])
@@ -226,7 +226,7 @@ def login():
 
         # Validate username
         if user is None:
-            return render_template("login.html", error="username")
+            return render_template("login.html.j2", error="username")
 
         # Validate password
         elif user.password == password:
@@ -234,10 +234,10 @@ def login():
             session["user_id"] = user.id
             return response
         else:
-            return render_template("login.html", error="password")
+            return render_template("login.html.j2", error="password")
 
     else:
-        return render_template("login.html")
+        return render_template("login.html.j2")
 
 
 @app.route('/logout', methods=["GET"])
@@ -257,7 +257,7 @@ def user(username):
 
     view_user = User.query.filter_by(username=username).first()
 
-    return render_template("user.html", user=user, view_user=view_user)
+    return render_template("user.html.j2", user=user, view_user=view_user)
 
 
 @app.route('/excels/<grade>/<section>/<subject>', methods=["POST", "GET"])
@@ -281,7 +281,7 @@ def excels(grade, section, subject):
         if user.acc_type != "teacher" and user.acc_type != "coordinator":
             return redirect("/")
 
-        return render_template("excel.html",
+        return render_template("excel.html.j2",
                                user=user,
                                grade=grade,
                                section=section,
@@ -326,9 +326,9 @@ def upload():
             user.sections = json.dumps(sections)
             db.session.commit()
 
-            return render_template("upload.html", success=True)
+            return render_template("upload.html.j2", success=True)
         else:
-            return render_template("upload.html", error=True)
+            return render_template("upload.html.j2", error=True)
 
     else:
 
@@ -336,7 +336,7 @@ def upload():
         if user_id:
             user = User.query.get(user_id)
             if user.acc_type == "teacher" or "coordinator":
-                return render_template("upload.html", user=user)
+                return render_template("upload.html.j2", user=user)
             else:
                 return redirect("/")
         else:
