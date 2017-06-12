@@ -1,7 +1,7 @@
 import os
 import json
 from flask import Flask, render_template, request, session
-from flask import redirect, make_response, send_file
+from flask import redirect, make_response, send_file, flash
 from flask_sqlalchemy import SQLAlchemy
 import openpyxl
 from openpyxl.utils import range_boundaries
@@ -240,24 +240,65 @@ def login():
         return render_template("login.html.j2")
 
 
-@app.route('/logout', methods=["GET"])
+@app.route('/logout')
 def logout():
     session.clear()
     return redirect("/")
 
 
-@app.route('/user/<username>')
+@app.route('/user/<username>', methods=["POST", "GET"])
 def user(username):
     user_id = session.get("user_id")
 
-    if user_id:
+    if request.method == "POST":
+
+        # Get user
         user = User.query.get(user_id)
+
+        # Get data from forms
+        orig_pass = request.form["orig_pass"]
+        new_pass = request.form["new_pass"]
+        re_new_pass = request.form["re_new_pass"]
+
+        # Check if original password matches user's password
+        if orig_pass == user.password:
+
+            # Check if new password matches retype password
+            if new_pass == re_new_pass:
+
+                # Change the password and save to database
+                user.password = new_pass
+                db.session.commit()
+
+                return render_template("user.html.j2",
+                                       user=user,
+                                       view_user=user,
+                                       success=True)
+            else:
+                return render_template("user.html.j2",
+                                       user=user,
+                                       view_user=user,
+                                       error="re_new_pass")
+        else:
+            return render_template("user.html.j2",
+                                   user=user,
+                                   view_user=user,
+                                   error="orig_pass")
+
     else:
-        user = None
+        if user_id:
+            user = User.query.get(user_id)
 
-    view_user = User.query.filter_by(username=username).first()
+            # Check if logged in user is viewing his own account
+            if user.username == username:
+                view_user = user
+            else:
+                view_user = User.query.filter_by(username=username).first()
+        else:
+            user = None
+            view_user = User.query.filter_by(username=username).first()
 
-    return render_template("user.html.j2", user=user, view_user=view_user)
+        return render_template("user.html.j2", user=user, view_user=view_user)
 
 
 @app.route('/excels/<grade>/<section>/<subject>', methods=["POST", "GET"])
