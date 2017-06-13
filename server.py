@@ -1,7 +1,7 @@
 import os
 import json
 from flask import Flask, render_template, request, session
-from flask import redirect, make_response, send_file, flash
+from flask import redirect, make_response, send_file
 from flask_sqlalchemy import SQLAlchemy
 import openpyxl
 from openpyxl.utils import range_boundaries
