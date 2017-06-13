@@ -351,21 +351,24 @@ def upload():
             filedir = "excels/{}/{}/".format(request.form["grade"],
                                              request.form["section"])
 
+            # If the file already exist, don't add anonther section to the list
+            if not os.path.isfile(filedir + filename):
+                sections = json.loads(user.sections)
+
+                # Add the section as tuple to the list
+                sections.append((request.form["grade"],
+                                 request.form["section"]))
+
+                # Save the list
+                user.sections = json.dumps(sections)
+                db.session.commit()
+
             # Create Directory if it does not exist
             if not os.path.isdir(filedir):
                 os.makedirs(filedir)
 
             # Save the file in the correct directory
             file.save(os.path.join(filedir, filename))
-
-            sections = json.loads(user.sections)
-
-            # Add the section to the list
-            sections.append((request.form["grade"], request.form["section"]))
-
-            # Save the list
-            user.sections = json.dumps(sections)
-            db.session.commit()
 
             return render_template("upload.html.j2", success=True)
         else:
