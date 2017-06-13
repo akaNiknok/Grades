@@ -14,7 +14,7 @@
         <form class="form-horizontal" action="/upload" method="post" enctype="multipart/form-data">
 
             <!-- File -->
-            <div class="input-group">
+            <div class="input-group col-sm-offset-3 col-sm-6">
                 <label class="input-group-btn">
                     <span class="btn btn-default">
                         Browse File<input id="file" type="file" name="file" accept=".xlsx,.xls">
@@ -27,23 +27,23 @@
 
             <!-- Grade -->
             <div class="form-group">
-                <label class="control-label col-sm-1">Grade:</label>
-                <div class="col-sm-11">
+                <label class="control-label col-sm-4">Grade:</label>
+                <div class="col-sm-5">
                     <input class="form-control" type="number" name="grade" placeholder="Grade" autocomplete="off" required>
                 </div>
             </div>
 
             <!-- Section -->
             <div class="form-group">
-                <label class="control-label col-sm-1">Section:</label>
-                <div class="col-sm-11">
+                <label class="control-label col-sm-4">Section:</label>
+                <div class="col-sm-5">
                     <input class="form-control upper" type="text" name="section" placeholder="Section (Ex: SMA)" autocomplete="off" required>
                 </div>
             </div>
 
             <!-- BUTTON -->
             <div class="form-group">
-                <div class="col-sm-11">
+                <div class="col-sm-offset-4 col-sm-1">
                     <input class="btn btn-success" type="submit" value="Submit">
                 </div>
             </div
@@ -51,14 +51,14 @@
         </form>
 
         {% if error %}
-            <div class="alert alert-danger alert-dismissable fade in">
+            <div class="alert alert-danger alert-dismissable fade in col-sm-offset-4 col-sm-5">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <span class="glyphicon glyphicon-warning-sign"></span>
                 File is not an excel file.
             </div>
         {% endif %}
         {% if success %}
-            <div class="alert alert-success alert-dismissable fade in">
+            <div class="alert alert-success alert-dismissable fade in col-sm-offset-4 col-sm-5">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <span class="glyphicon glyphicon-ok"></span>
                 File successfully uploaded! :)
