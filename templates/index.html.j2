@@ -1,6 +1,11 @@
 {% extends "base.html.j2" %}
 {% block title %}Home{% endblock %}
 
+{% macro popover(section, sections) %}
+    <button class='btn btn-success' data-toggle='clickover' onclick='$(&quot;#showMore{{ sections.index(section) }}&quot;).popover(&quot;hide&quot;);'>Cancel</button>
+    <button class='btn btn-danger' data-toggle='clickover' form='delete' type='submit' name='delete_index' value='{{ sections.index(section) }}'>Yes</button>
+{% endmacro %}
+
 {% block content %}
 
     {% if user %}
@@ -86,18 +91,8 @@
                             <a class="btn btn-xs btn-success" href="excels/{{ section[0] }}/{{ section[1 ]}}/{{ user.subject }}">View</a>
 
                             <!-- Delete button -->
-                            <button id="showMore{{ sections.index(section) }}" class="showMore btn btn-xs btn-danger" type="button" onclick="showMore({{ sections.index(section) }})">
+                            <button id="showMore{{ sections.index(section) }}" class="showMore btn btn-xs btn-danger" data-toggle="popover" title="Are you sure you want to delete {{ section[0] }}-{{ section[1] }}?" data-content="{{ popover(section, sections) }}" data-placement="bottom" data-html=true>
                                 <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-
-                            <!-- Cancel delete button -->
-                            <button id="showLess{{ sections.index(section) }}" class="showLess btn btn-xs btn-danger" type="button" onclick="showLess({{ sections.index(section) }})">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-
-                            <!-- Confirm delete button -->
-                            <button id="imSure{{ sections.index(section) }}" class="imSure btn btn-xs btn-danger" type="submit" name="delete_index" value="{{ sections.index(section) }}" form="delete">
-                                Are you sure?
                             </button>
                         </td>
                     </tr>
