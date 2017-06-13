@@ -3,7 +3,7 @@
 
 {% macro popover(section, sections) %}
     <button class='btn btn-success' data-toggle='clickover' onclick='$(&quot;#showMore{{ sections.index(section) }}&quot;).popover(&quot;hide&quot;);'>Cancel</button>
-    <button class='btn btn-danger' data-toggle='clickover' form='delete' type='submit' name='delete_index' value='{{ sections.index(section) }}'>Yes</button>
+    <button class='btn btn-danger pull-right' data-toggle='clickover' form='delete' type='submit' name='delete_index' value='{{ sections.index(section) }}'>Yes</button>
 {% endmacro %}
 
 {% block content %}
@@ -88,11 +88,13 @@
                         <td>{{ section[1] }} </td>
                         <td>
                             <!-- Link to table button -->
-                            <a class="btn btn-xs btn-success" href="excels/{{ section[0] }}/{{ section[1 ]}}/{{ user.subject }}">View</a>
+                            <a class="btn btn-xs btn-success" href="excels/{{ section[0] }}/{{ section[1 ]}}/{{ user.subject }}">
+                                <span class="glyphicon glyphicon-eye-open"></span> View
+                            </a>
 
                             <!-- Delete button -->
-                            <button id="showMore{{ sections.index(section) }}" class="showMore btn btn-xs btn-danger" data-toggle="popover" title="Are you sure you want to delete {{ section[0] }}-{{ section[1] }}?" data-content="{{ popover(section, sections) }}" data-placement="bottom" data-html=true>
-                                <span class="glyphicon glyphicon-remove"></span>
+                            <button id="showMore{{ sections.index(section) }}" class="btn btn-xs btn-danger" data-toggle="popover" title="Are you sure you want to delete {{ section[0] }}-{{ section[1] }}?" data-content="{{ popover(section, sections) }}" data-placement="bottom" data-html=true>
+                                <span class="glyphicon glyphicon-remove"></span> Delete
                             </button>
                         </td>
                     </tr>
