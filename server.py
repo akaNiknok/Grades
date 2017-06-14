@@ -255,35 +255,66 @@ def user(username):
         # Get user
         user = User.query.get(user_id)
 
-        # Get data from forms
-        orig_pass = request.form["orig_pass"]
-        new_pass = request.form["new_pass"]
-        re_new_pass = request.form["re_new_pass"]
+        # Check if user wants to change password or delete his/her account
+        submit = request.form["submit"]
 
-        # Check if original password matches user's password
-        if orig_pass == user.password:
+        if submit == "Change Password":
 
-            # Check if new password matches retype password
-            if new_pass == re_new_pass:
+            # Get data from form
+            orig_pass = request.form["orig_pass"]
+            new_pass = request.form["new_pass"]
+            re_new_pass = request.form["re_new_pass"]
 
-                # Change the password and save to database
-                user.password = new_pass
-                db.session.commit()
+            # Check if original password matches user's password
+            if orig_pass == user.password:
 
-                return render_template("user.html.j2",
-                                       user=user,
-                                       view_user=user,
-                                       success=True)
+                # Check if new password matches retype password
+                if new_pass == re_new_pass:
+
+                    # Change the password and save to database
+                    user.password = new_pass
+                    db.session.commit()
+
+                    return render_template("user.html.j2",
+                                           user=user,
+                                           view_user=user,
+                                           success=True)
+                else:
+                    return render_template("user.html.j2",
+                                           user=user,
+                                           view_user=user,
+                                           error="re_new_pass")
             else:
                 return render_template("user.html.j2",
                                        user=user,
                                        view_user=user,
-                                       error="re_new_pass")
+                                       error="orig_pass")
+
         else:
-            return render_template("user.html.j2",
-                                   user=user,
-                                   view_user=user,
-                                   error="orig_pass")
+            # Get data from form
+            username = request.form["username"]
+            password = request.form["password"]
+
+            # Validate username
+            if user.username != username:
+                return render_template("user.html.j2",
+                                       user=user,
+                                       view_user=user,
+                                       error="username")
+            # Validate password
+            elif user.password != password:
+                return render_template("user.html.j2",
+                                       user=user,
+                                       view_user=user,
+                                       error="password")
+
+            else:
+                # Logout and Delete account
+                session.clear()
+                db.session.delete(user)
+                db.session.commit()
+
+                return redirect("/")
 
     else:
         if user_id:

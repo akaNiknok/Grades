@@ -51,3 +51,7 @@ body {
     max-height: 75vh;
     overflow: auto;
 }
+
+form h2, form p {
+    text-align: center;
+}

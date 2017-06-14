@@ -9,9 +9,9 @@
     </div>
 
     {% if user == view_user %}
-        <h2 align="center">Change Password</h2>
-
         <form class="form-horizontal" action="" method="post">
+
+            <h2 align="center">Change Password</h2>
 
             <!-- ORIGINAL PASSWORD -->
             <div class="form-group{{ ' has-error has-feedback' if error == 'orig_pass'}}">
@@ -46,7 +46,42 @@
             <!-- BUTTON -->
             <div class="form-group">
                 <div class="col-sm-offset-4 col-sm-1">
-                    <input class="btn btn-success" type="submit">
+                    <input class="btn btn-success" type="submit" name="submit" value="Change Password">
+                </div>
+            </div>
+        </form>
+
+        <form class="form-horizontal" action="" method="post">
+
+            <h2 class="text-danger">Delete Account</h2>
+            <p>Type your username and password to delete your account.</p>
+
+            <!-- USERNAME -->
+            <div class="form-group{{ ' has-error has-feedback' if error == 'username'}}">
+                <label class="control-label col-sm-4" for="username">Username:</label>
+                <div class="col-sm-5">
+                    <input id="username" class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off" required>
+                    {% if error == "username" %}
+                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group{{ ' has-error has-feedback' if error == 'password'}}">
+                <label class="control-label col-sm-4" for="password">Password:</label>
+                <div class="col-sm-5">
+                    <input id="password" class="form-control" type="password" name="password" placeholder="Enter password" autocomplete="off" required>
+                    {% if error == "password" %}
+                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- BUTTON -->
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-1">
+                    <input class="btn btn-danger" type="submit" name="submit" value="Delete Account">
                 </div>
             </div>
 
@@ -56,6 +91,8 @@
                     <span class="glyphicon glyphicon-warning-sign"></span>
                     {{ "Original password is incorrect." if error == "orig_pass" }}
                     {{ "Password and retype password does not match." if error == "re_new_pass" }}
+                    {{ "Username is incorrect" if error == "username"}}
+                    {{ "Password is incorrect" if error == "password"}}
                 </div>
             {% endif %}
 
