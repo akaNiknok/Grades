@@ -15,9 +15,9 @@
 
             <!-- USERNAME -->
             <div class="form-group{{ ' has-error has-feedback' if error == 'username'}}">
-                <label class="control-label col-sm-4">Username:</label>
+                <label class="control-label col-sm-4" for="username">Username:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off" required>
+                    <input id="username" class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off" required>
                     {% if error == "username" %}
                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     {% endif %}
@@ -26,9 +26,9 @@
 
             <!-- PASSWORD -->
             <div class="form-group{{ ' has-error has-feedback' if error == 'password'}}">
-                <label class="control-label col-sm-4">Password:</label>
+                <label class="control-label col-sm-4" for="password">Password:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="password" name="password" placeholder="Enter password" autocomplete="off" required>
+                    <input id="password" class="form-control" type="password" name="password" placeholder="Enter password" autocomplete="off" required>
                     {% if error == "password" %}
                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     {% endif %}

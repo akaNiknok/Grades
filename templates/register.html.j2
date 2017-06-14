@@ -15,9 +15,9 @@
 
             <!-- USERNAME -->
             <div class="form-group{{ ' has-error has-feedback' if error == 'username' }}">
-                <label class="control-label col-sm-4">Username:</label>
+                <label class="control-label col-sm-4" for="username">Username:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off" required>
+                    <input id="username" class="form-control" type="text" name="username" placeholder="Enter username" autocomplete="off" required>
                     {% if error == "username" %}
                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     {% endif %}
@@ -26,17 +26,17 @@
 
             <!-- PASSWORD -->
             <div class="form-group">
-                <label class="control-label col-sm-4">Password:</label>
+                <label class="control-label col-sm-4" for="password">Password:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="password" name="password" placeholder="Enter password" autocomplete="off" required>
+                    <input id="password" class="form-control" type="password" name="password" placeholder="Enter password" autocomplete="off" required>
                 </div>
             </div>
 
             <!-- RETYPE PASSWORD -->
             <div class="form-group{{ ' has-error has-feedback' if error == 'password' }}">
-                <label class="control-label col-sm-4">Retype Password:</label>
+                <label class="control-label col-sm-4" for="re_password">Retype Password:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="password" name="re_password" placeholder="Retype password" autocomplete="off" required>
+                    <input id="re_password" class="form-control" type="password" name="re_password" placeholder="Retype password" autocomplete="off" required>
                     {% if error == "password" %}
                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     {% endif %}
@@ -45,25 +45,25 @@
 
             <!-- First name -->
             <div class="form-group">
-                <label class="control-label col-sm-4">First name:</label>
+                <label class="control-label col-sm-4" for="firstname">First name:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="text" name="firstname" placeholder="First name" autocomplete="off" required>
+                    <input id="firstname" class="form-control" type="text" name="firstname" placeholder="First name" autocomplete="off" required>
                 </div>
             </div>
 
             <!-- Middle name -->
             <div class="form-group">
-                <label class="control-label col-sm-4">Middle name:</label>
+                <label class="control-label col-sm-4" for="middlename">Middle name:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="text" name="middlename" placeholder="Middle name" autocomplete="off" required>
+                    <input id="middlename" class="form-control" type="text" name="middlename" placeholder="Middle name" autocomplete="off" required>
                 </div>
             </div>
 
             <!-- Last name -->
             <div class="form-group">
-                <label class="control-label col-sm-4">Last name:</label>
+                <label class="control-label col-sm-4" for="lastname">Last name:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="text" name="lastname" placeholder="Last name" autocomplete="off" required>
+                    <input id="lastname" class="form-control" type="text" name="lastname" placeholder="Last name" autocomplete="off" required>
                 </div>
             </div>
 
@@ -81,7 +81,7 @@
             <div id="student-form">
                 <!-- Student Grade -->
                 <div class="form-group">
-                    <label class="control-label col-sm-4">Grade:</label>
+                    <label class="control-label col-sm-4" for="student-grade">Grade:</label>
                     <div class="col-sm-5">
                         <input id="student-grade" class="form-control" type="number" name="grade" placeholder="Grade" autocomplete="off" required>
                     </div>
@@ -89,7 +89,7 @@
 
                 <!-- Student Section -->
                 <div class="form-group">
-                    <label class="control-label col-sm-4">Section:</label>
+                    <label class="control-label col-sm-4" for="student-section">Section:</label>
                     <div class="col-sm-5">
                         <input id="student-section" class="form-control upper" type="text" name="section" placeholder="Section (Ex: SMA)" autocomplete="off" required>
                     </div>
@@ -97,7 +97,7 @@
 
                 <!-- Student CN -->
                 <div class="form-group">
-                    <label class="control-label col-sm-4">CN:</label>
+                    <label class="control-label col-sm-4" for="student-cn">CN:</label>
                     <div class="col-sm-5">
                         <input id="student-cn" class="form-control" type="number" name="CN" placeholder="CN" autocomplete="off" required>
                     </div>
@@ -109,7 +109,7 @@
 
                 <!-- Teacher New Password -->
                 <div class="form-group{{ ' has-error has-feedback' if error == 'teacher' }}">
-                    <label class="control-label col-sm-4">New Teacher's Password:</label>
+                    <label class="control-label col-sm-4" for="teacher-pass">New Teacher's Password:</label>
                     <div class="col-sm-5">
                         <input id="teacher-pass"class="form-control" type="password" name="new_teacher_pass" placeholder="Password" autocomplete="off">
                         {% if error == "teacher" %}
@@ -120,9 +120,9 @@
 
                 <!-- Teacher Subject -->
                 <div class="form-group">
-                    <label class="control-label col-sm-4">Subject:</label>
+                    <label class="control-label col-sm-4" for="new_teacher_subject">Subject:</label>
                     <div class="col-sm-5">
-                        <select class="form-control" name="new_teacher_subject">
+                        <select id="new_teacher_subject" class="form-control" name="new_teacher_subject">
                             <option value="CLE">CLE</option>
                             <option value="Math">Math</option>
                             <option value="Science">Science</option>
@@ -144,7 +144,7 @@
 
                 <!-- Coordinator New Password -->
                 <div class="form-group{{ ' has-error has-feedback' if error == 'coordinator' }}">
-                    <label class="control-label col-sm-4">New Coordinator's Password:</label>
+                    <label class="control-label col-sm-4" for="coordinator-pass">New Coordinator's Password:</label>
                     <div class="col-sm-5">
                         <input id="coordinator-pass" class="form-control" type="password" name="new_coord_pass" placeholder="Password" autocomplete="off">
                         {% if error == "coordinator" %}
@@ -155,9 +155,9 @@
 
                 <!-- Coordinator Subject -->
                 <div class="form-group">
-                    <label class="control-label col-sm-4">Subject:</label>
+                    <label class="control-label col-sm-4" for="new_coord_subject">Subject:</label>
                     <div class="col-sm-5">
-                        <select class="form-control" name="new_coord_subject">
+                        <select id="new_coord_subject" class="form-control" name="new_coord_subject">
                             <option value="CLE">CLE</option>
                             <option value="Math">Math</option>
                             <option value="Science">Science</option>

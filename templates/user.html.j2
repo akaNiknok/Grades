@@ -15,9 +15,9 @@
 
             <!-- ORIGINAL PASSWORD -->
             <div class="form-group{{ ' has-error has-feedback' if error == 'orig_pass'}}">
-                <label class="control-label col-sm-4">Original Password:</label>
+                <label class="control-label col-sm-4" for="orig_pass">Original Password:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="password" name="orig_pass" placeholder="Enter original password" autocomplete="off" required>
+                    <input id="orig_pass" class="form-control" type="password" name="orig_pass" placeholder="Enter original password" autocomplete="off" required>
                     {% if error == "orig_pass" %}
                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     {% endif %}
@@ -26,17 +26,17 @@
 
             <!-- NEW PASSWORD -->
             <div class="form-group">
-                <label class="control-label col-sm-4">New Password:</label>
+                <label class="control-label col-sm-4" for="new_pass">New Password:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="password" name="new_pass" placeholder="Enter new password" autocomplete="off" required>
+                    <input id="new_pass" class="form-control" type="password" name="new_pass" placeholder="Enter new password" autocomplete="off" required>
                 </div>
             </div>
 
             <!-- RETYPE PASSWORD -->
             <div class="form-group{{ ' has-error has-feedback' if error == 're_new_pass'}}">
-                <label class="control-label col-sm-4">Retype New Password:</label>
+                <label class="control-label col-sm-4" for="re_new_pass">Retype New Password:</label>
                 <div class="col-sm-5">
-                    <input class="form-control" type="password" name="re_new_pass" placeholder="Retype new password" autocomplete="off" required>
+                    <input id="re_new_pass" class="form-control" type="password" name="re_new_pass" placeholder="Retype new password" autocomplete="off" required>
                     {% if error == "re_new_pass" %}
                         <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     {% endif %}
