@@ -49,12 +49,33 @@
                     <input class="btn btn-success" type="submit" name="submit" value="Change Password">
                 </div>
             </div>
+
+            <div class="row">
+                {% if error in ("orig_pass", "re_new_pass") %}
+                    <div class="alert alert-danger alert-dismissable fade in col-sm-offset-4 col-sm-5">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        {{ "Original password is incorrect." if error == "orig_pass" }}
+                        {{ "Password and retype password does not match." if error == "re_new_pass" }}
+                    </div>
+                {% endif %}
+
+                {% if success %}
+                    <div class="alert alert-success alert-dismissable fade in col-sm-offset-4 col-sm-5">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-ok"></span>
+                        Successfully changed password!
+                    </div>
+                {% endif %}
+            </div>
         </form>
 
         <form class="form-horizontal" action="" method="post">
 
-            <h2 class="text-danger">Delete Account</h2>
-            <p>Type your username and password to delete your account.</p>
+            <div class="row">
+                <h2 class="text-danger">Delete Account</h2>
+                <p>Type your username and password to delete your account.</p>
+            </div>
 
             <!-- USERNAME -->
             <div class="form-group{{ ' has-error has-feedback' if error == 'username'}}">
@@ -85,22 +106,12 @@
                 </div>
             </div>
 
-            {% if error %}
+            {% if error in ("username", "password") %}
                 <div class="alert alert-danger alert-dismissable fade in col-sm-offset-4 col-sm-5">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     <span class="glyphicon glyphicon-warning-sign"></span>
-                    {{ "Original password is incorrect." if error == "orig_pass" }}
-                    {{ "Password and retype password does not match." if error == "re_new_pass" }}
                     {{ "Username is incorrect" if error == "username"}}
                     {{ "Password is incorrect" if error == "password"}}
-                </div>
-            {% endif %}
-
-            {% if success %}
-                <div class="alert alert-success alert-dismissable fade in col-sm-offset-4 col-sm-5">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <span class="glyphicon glyphicon-ok"></span>
-                    Successfully changed password!
                 </div>
             {% endif %}
         </form>
