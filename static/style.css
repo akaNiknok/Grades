@@ -39,16 +39,6 @@ body {
 }
 /*END Specific Forms*/
 
-/* Teacher Excel Actions */
-.showLess {
-    display: none !important;
-}
-
-.imSure {
-    display: none !important;
-}
-/* END Teacher Excel Actions */
-
 #file {
     display: none;
 }
