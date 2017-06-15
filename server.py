@@ -346,6 +346,7 @@ def excels(grade, section, subject):
     if user.acc_type != "teacher" and user.acc_type != "coordinator":
         return redirect("/")
 
+    # Read pre-rendered table
     with open("excels/{}/{}/{}".format(grade,
                                        section,
                                        user.subject + ".html.j2")) as f:
@@ -377,8 +378,9 @@ def upload():
             grade = request.form["grade"]
             section = request.form["section"]
 
-            # Rename the file to subject.xlsx
+            # Rename the file to subject.xlsx and subject.html.j2
             filename = user.subject + ".xlsx"
+            filename_j2 = user.subject + ".html.j2"
 
             # Directory for the excel file
             filedir = "excels/{}/{}/".format(grade, section)
@@ -402,10 +404,7 @@ def upload():
             # Save the file in the correct directory
             file.save(os.path.join(filedir, filename))
 
-            # Filename for jinja2 template
-            filename_j2 = user.subject + ".html.j2"
-
-            # Save pre-rendered table
+            # Pre-render table and save to file
             with open(os.path.join(filedir, filename_j2), "w") as f:
                 f.write(render_template(
                             "table.html.j2",
