@@ -404,13 +404,13 @@ def upload():
             # Save the file in the correct directory
             file.save(os.path.join(filedir, filename))
 
+            # Read excel
+            table = read_excel(grade, section, user.subject)
+
             # Pre-render table and save to file
             with open(os.path.join(filedir, filename_j2), "w") as f:
-                f.write(render_template(
-                            "table.html.j2",
-                            table=read_excel(grade,
-                                             section,
-                                             user.subject)).encode("utf-8"))
+                f.write(render_template("table.html.j2",
+                                        table=table).encode("utf-8"))
 
             return render_template("upload.html.j2", success=True)
         else:
