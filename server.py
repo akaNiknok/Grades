@@ -332,33 +332,31 @@ def user(username):
         return render_template("user.html.j2", user=user, view_user=view_user)
 
 
-@app.route('/excels/<grade>/<section>/<subject>', methods=["POST", "GET"])
+@app.route('/excels/<grade>/<section>/<subject>')
 def excels(grade, section, subject):
-    if request.method == "POST":
+    # Get user
+    user_id = session.get("user_id")
 
-        # Refresh for teachers and coordinators
-        session["table"] = read_excel(grade, section, subject)
-        return redirect("/excels/{}/{}/{}".format(grade, section, subject))
-
+    if user_id:
+        user = User.query.get(user_id)
     else:
-        # Get user
-        user_id = session.get("user_id")
+        return redirect("/")
 
-        if user_id:
-            user = User.query.get(user_id)
-        else:
-            return redirect("/")
+    # Only allow teachers and coordinators to view excels
+    if user.acc_type != "teacher" and user.acc_type != "coordinator":
+        return redirect("/")
 
-        # Only allow teachers and coordinators to view excels
-        if user.acc_type != "teacher" and user.acc_type != "coordinator":
-            return redirect("/")
+    with open("excels/{}/{}/{}".format(grade,
+                                       section,
+                                       user.subject + ".html.j2")) as f:
+        table = f.read().decode("utf-8")
 
-        return render_template("excel.html.j2",
-                               user=user,
-                               grade=grade,
-                               section=section,
-                               subject=subject,
-                               table=session.get("table"))
+    return render_template("excel.html.j2",
+                           user=user,
+                           grade=grade,
+                           section=section,
+                           subject=subject,
+                           table=table)
 
 
 @app.route('/upload', methods=["POST", "GET"])
@@ -375,12 +373,15 @@ def upload():
             # Get the user
             user = User.query.get(user_id)
 
+            # Get data from forms
+            grade = request.form["grade"]
+            section = request.form["section"]
+
             # Rename the file to subject.xlsx
             filename = user.subject + ".xlsx"
 
             # Directory for the excel file
-            filedir = "excels/{}/{}/".format(request.form["grade"],
-                                             request.form["section"])
+            filedir = "excels/{}/{}/".format(grade, section)
 
             # If the file already exist, don't add anonther section to the list
             if not os.path.isfile(filedir + filename):
@@ -400,6 +401,17 @@ def upload():
 
             # Save the file in the correct directory
             file.save(os.path.join(filedir, filename))
+
+            # Filename for jinja2 template
+            filename_j2 = user.subject + ".html.j2"
+
+            # Save pre-rendered table
+            with open(os.path.join(filedir, filename_j2), "w") as f:
+                f.write(render_template(
+                            "table.html.j2",
+                            table=read_excel(grade,
+                                             section,
+                                             user.subject)).encode("utf-8"))
 
             return render_template("upload.html.j2", success=True)
         else:
@@ -438,10 +450,13 @@ def delete():
     sections = json.loads(user.sections)
     section = sections[delete_index]
 
-    # Remove the section from the list and delete the file
+    # Remove the section from the list and delete the files
     sections.pop(delete_index)
     os.remove(
         "excels/{}/{}/{}.xlsx".format(section[0], section[1], user.subject)
+    )
+    os.remove(
+        "excels/{}/{}/{}.html.j2".format(section[0], section[1], user.subject)
     )
 
     # Save the list

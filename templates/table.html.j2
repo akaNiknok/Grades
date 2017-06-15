@@ -1,0 +1,15 @@
+        <div class="table-responsive">
+            <table class="table table-bordered table-condensed">
+                {% for row in table %}
+                    <tr>
+                    {% for col in row %}
+                        {% if table.index(row) in (0, 1, 2, 3) %}
+                            <th colspan="{{ col[1] }}">{{ col[0] }}</th>
+                        {% else%}
+                            <td colspan="{{ col[1] }}">{{ col[0] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
