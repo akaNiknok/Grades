@@ -9,8 +9,8 @@
 {% block content %}
 
     {% if user %}
-        <!-- Student -->
         {% if user.acc_type == "student" %}
+        <!-- Student -->
 
             <form id="refresh" action="/" method="post"></form>
 
@@ -59,8 +59,8 @@
                 <h1>There is currently no grades posted by your teachers yet, please check back later.</h1>
             {% endif %}
 
-        <!-- Teacher -->
         {% elif user.acc_type == "teacher" %}
+        <!-- Teacher -->
 
             <!-- PAGE HEADER -->
             <div class="page-header">
@@ -102,8 +102,8 @@
                 </tbody>
             </table>
 
-        <!-- Coordinator -->
         {% elif user.acc_type == "coordinator" %}
+        <!-- Coordinator -->
 
             <!-- PAGE HEADER -->
             <div class="page-header">
