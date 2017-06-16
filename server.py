@@ -492,40 +492,43 @@ def read_excels(grade, section, cn):
     # Loop per subject
     for file in files:
 
-        # Open the excel file
-        wb = openpyxl.load_workbook(os.path.join(filedir, file),
-                                    data_only=True)
+        # Only read .xslx
+        if file.endswith(".xlsx"):
 
-        # Open the sheet (subject to change)
-        ws = wb.worksheets[0]
+            # Open the excel file
+            wb = openpyxl.load_workbook(os.path.join(filedir, file),
+                                        data_only=True)
 
-        # Find CN rows
-        for row in range(1, ws.max_row):
-            if ws.cell(row=row, column=1).value == cn:
-                user_row = row
+            # Open the sheet (subject to change)
+            ws = wb.worksheets[0]
 
-        Tests = {}
+            # Find CN rows
+            for row in range(1, ws.max_row):
+                if ws.cell(row=row, column=1).value == cn:
+                    user_row = row
 
-        # Store tests in dictionary
-        for col in range(3, ws.max_column):
+            Tests = {}
 
-            test_label = ws.cell(row=TEST_LABEL_ROW, column=col).value
-            student_score = ws.cell(row=user_row, column=col).value
-            total_score = ws.cell(row=TEST_TOTAL_ROW, column=col).value
+            # Store tests in dictionary
+            for col in range(3, ws.max_column):
 
-            # Only include scores with label
-            if ((test_label not in (None, "TS", "PS", "EP"))
-                    and (student_score is not None)):
+                test_label = ws.cell(row=TEST_LABEL_ROW, column=col).value
+                student_score = ws.cell(row=user_row, column=col).value
+                total_score = ws.cell(row=TEST_TOTAL_ROW, column=col).value
 
-                if test_label in Tests:
-                    Tests[test_label][0] += student_score
-                    Tests[test_label][1] += total_score
-                else:
-                    Tests[test_label] = [student_score, total_score]
+                # Only include scores with label
+                if ((test_label not in (None, "TS", "PS", "EP"))
+                        and (student_score is not None)):
 
-        # Store the tests in subject
-        # Also removes the file extension
-        subjects[os.path.splitext(file)[0]] = Tests
+                    if test_label in Tests:
+                        Tests[test_label][0] += student_score
+                        Tests[test_label][1] += total_score
+                    else:
+                        Tests[test_label] = [student_score, total_score]
+
+            # Store the tests in subject
+            # Also removes the file extension
+            subjects[os.path.splitext(file)[0]] = Tests
 
     return subjects
 
