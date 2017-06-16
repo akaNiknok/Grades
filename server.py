@@ -512,69 +512,70 @@ def read_excels(grade, section, cn):
 
             # Open the sheet (subject to change)
             ws = wb.worksheets[0]
-        # Get boundaries (min_col, min_row, max_col, max_row) of merged_cells
-        merged_cells = [range_boundaries(r) for r in ws.merged_cell_ranges]
 
-        table = []
+            # Get boundary (min_col, min_row, max_col, max_row) of merged_cells
+            merged_cells = [range_boundaries(r) for r in ws.merged_cell_ranges]
 
-        # Loop through rows
-        for row in range(5, ws.max_row):
+            table = []
 
-            # Store the labels
-            if row in (5, 6, 7, 8):
+            # Loop through rows
+            for row in range(5, ws.max_row):
 
-                # Contains columns (value, colspan) here
-                new_row = []
+                # Store the labels
+                if row in (5, 6, 7, 8):
 
-                # Create an iterator object to be able to skip merged cells
-                columns = iter(range(1, ws.max_column))
+                    # Contains columns (value, colspan) here
+                    new_row = []
 
-                # Loop through columns
-                for column in columns:
+                    # Create an iterator object to be able to skip merged cells
+                    columns = iter(range(1, ws.max_column))
 
-                    value = ws.cell(row=row, column=column).value
+                    # Loop through columns
+                    for column in columns:
 
-                    # Check if the cell is not empty
-                    if value is not None:
-                        colspan = 1
+                        value = ws.cell(row=row, column=column).value
 
-                        # Check if cell is merged
-                        for r in merged_cells:
-                            if (r[0] == column) and (r[1] == row):
-                                colspan += (r[2] - r[0])  # Add to colspan
-                                break
+                        # Check if the cell is not empty
+                        if value is not None:
+                            colspan = 1
 
-                        new_row.append((value, colspan))
+                            # Check if cell is merged
+                            for r in merged_cells:
+                                if (r[0] == column) and (r[1] == row):
+                                    colspan += (r[2] - r[0])  # Add to colspan
+                                    break
 
-                        # If cell is merged, skip (colspan - 1) iterations
-                        if colspan != 1:
-                            for x in range(colspan - 1):
-                                next(columns)
-                    else:
-                        new_row.append(("", 1))
+                            new_row.append((value, colspan))
 
-                table.append(new_row)
+                            # If cell is merged, skip (colspan - 1) iterations
+                            if colspan != 1:
+                                for x in range(colspan - 1):
+                                    next(columns)
+                        else:
+                            new_row.append(("", 1))
 
-            # Store users score
-            elif ws.cell(row=row, column=1).value == cn:
+                    table.append(new_row)
 
-                # Contains columns (value, colspan) here
-                new_row = []
+                # Store users score
+                elif ws.cell(row=row, column=1).value == cn:
 
-                # Loop through columns
-                for column in range(1, ws.max_column):
+                    # Contains columns (value, colspan) here
+                    new_row = []
 
-                    value = ws.cell(row=row, column=column).value
+                    # Loop through columns
+                    for column in range(1, ws.max_column):
 
-                    # Check if the cell is not empty
-                    if value is not None:
-                        new_row.append((value, 1))
-                    else:
-                        new_row.append(("", 1))
+                        value = ws.cell(row=row, column=column).value
 
-                table.append(new_row)
+                        # Check if the cell is not empty
+                        if value is not None:
+                            new_row.append((value, 1))
+                        else:
+                            new_row.append(("", 1))
 
-        subjects[os.path.splitext(file)[0]] = table
+                    table.append(new_row)
+
+            subjects[os.path.splitext(file)[0]] = table
 
     return subjects
 
