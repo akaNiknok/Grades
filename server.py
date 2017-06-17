@@ -486,7 +486,8 @@ def read_excels(grade, section, cn):
     """Read excels of every subject of a student and returns a table list
     Return format:
         subjects = {
-            "Subject": [[col]]
+            "Subject":
+                "Trimester": [[col]]
         }"""
 
     # Get file directory using users grade and section
@@ -510,72 +511,82 @@ def read_excels(grade, section, cn):
             wb = openpyxl.load_workbook(os.path.join(filedir, file),
                                         data_only=True)
 
-            # Open the sheet (subject to change)
-            ws = wb.worksheets[0]
+            trimesters = {}
 
-            # Get boundary (min_col, min_row, max_col, max_row) of merged_cells
-            merged_cells = [range_boundaries(r) for r in ws.merged_cell_ranges]
+            # Loop through sheets
+            for ws in wb.worksheets:
 
-            table = []
+                if "Raw.Score" in ws.title:
 
-            # Loop through rows
-            for row in range(5, ws.max_row):
+                    # Get boundary (min_col, min_row, max_col, max_row)
+                    # of merged_cells
+                    merged_cells = [range_boundaries(r)
+                                    for r in ws.merged_cell_ranges]
 
-                # Store the labels
-                if row in (5, 6, 7, 8):
+                    table = []
 
-                    # Contains columns (value, colspan) here
-                    new_row = []
+                    # Loop through rows
+                    for row in range(5, ws.max_row):
 
-                    # Create an iterator object to be able to skip merged cells
-                    columns = iter(range(1, ws.max_column))
+                        # Store the labels
+                        if row in (5, 6, 7, 8):
 
-                    # Loop through columns
-                    for column in columns:
+                            # Contains columns (value, colspan) here
+                            new_row = []
 
-                        value = ws.cell(row=row, column=column).value
+                            # Create an iterator object to skip merged cells
+                            columns = iter(range(1, ws.max_column))
 
-                        # Check if the cell is not empty
-                        if value is not None:
-                            colspan = 1
+                            # Loop through columns
+                            for column in columns:
 
-                            # Check if cell is merged
-                            for r in merged_cells:
-                                if (r[0] == column) and (r[1] == row):
-                                    colspan += (r[2] - r[0])  # Add to colspan
-                                    break
+                                value = ws.cell(row=row, column=column).value
 
-                            new_row.append((value, colspan))
+                                # Check if the cell is not empty
+                                if value is not None:
+                                    colspan = 1
 
-                            # If cell is merged, skip (colspan - 1) iterations
-                            if colspan != 1:
-                                for x in range(colspan - 1):
-                                    next(columns)
-                        else:
-                            new_row.append(("", 1))
+                                    # Check if cell is merged
+                                    for r in merged_cells:
+                                        if (r[0] == column) and (r[1] == row):
+                                            # Add to colspan
+                                            colspan += (r[2] - r[0])
+                                            break
 
-                    table.append(new_row)
+                                    new_row.append((value, colspan))
 
-                # Store users score
-                elif ws.cell(row=row, column=1).value == cn:
+                                    # If cell is merged,
+                                    # skip (colspan - 1) iterations
+                                    if colspan != 1:
+                                        for x in range(colspan - 1):
+                                            next(columns)
+                                else:
+                                    new_row.append(("", 1))
 
-                    # Contains columns (value, colspan) here
-                    new_row = []
+                            table.append(new_row)
 
-                    # Loop through columns
-                    for column in range(1, ws.max_column):
+                        # Store users score
+                        elif ws.cell(row=row, column=1).value == cn:
 
-                        value = ws.cell(row=row, column=column).value
+                            # Contains columns (value, colspan) here
+                            new_row = []
 
-                        # Check if the cell is not empty
-                        if value is not None:
-                            new_row.append((value, 1))
-                        else:
-                            new_row.append(("", 1))
+                            # Loop through columns
+                            for column in range(1, ws.max_column):
 
-                    table.append(new_row)
+                                value = ws.cell(row=row, column=column).value
 
-            subjects[os.path.splitext(file)[0]] = table
+                                # Check if the cell is not empty
+                                if value is not None:
+                                    new_row.append((value, 1))
+                                else:
+                                    new_row.append(("", 1))
+
+                            table.append(new_row)
+
+                    trimesters[ws.title.split("-")[1]] = table
+
+            subjects[os.path.splitext(file)[0]] = trimesters
 
     return subjects
 
