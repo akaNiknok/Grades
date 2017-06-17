@@ -24,35 +24,46 @@
             {% if subjects %}
                 <ul class="nav nav-tabs">
                 {% for subject in subjects %}
-                    <li><a data-toggle="tab" href="#{{ subject }}">{{ subject }}</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            {{ subject }}<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for trimester in subjects[subject] %}
+                                <li><a data-toggle="tab" href="#{{ subject }}{{ trimester }}">{{ trimester }} Trimester</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
                 {% endfor %}
                 </ul>
 
                 <div class="tab-content">
                     {% for subject in subjects %}
-                        <div id="{{ subject }}" class="tab-pane fade">
-                            <h3>{{ subject }}</h3>
+                        {% for trimester in subjects[subject] %}
+                            <div id="{{ subject }}{{ trimester }}" class="tab-pane fade">
+                                <h3>{{ subject }} - {{ trimester }} Trimester</h3>
 
-                            <!-- Table of Grades -->
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Test</th>
-                                        <th>Score</th>
-                                        <th>Total Score</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for test in subjects[subject] %}
+                                <!-- Table of Grades -->
+                                <table class="table table-striped">
+                                    <thead>
                                         <tr>
-                                            <td>{{ test }}</td>
-                                            <td>{{ subjects[subject][test][0] }}</td>
-                                            <td>{{ subjects[subject][test][1] }}</td>
+                                            <th>Test</th>
+                                            <th>Score</th>
+                                            <th>Total Score</th>
                                         </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody>
+                                        {% for test in subjects[subject][trimester] %}
+                                            <tr>
+                                                <td>{{ test }}</td>
+                                                <td>{{ subjects[subject][trimester][test][0] }}</td>
+                                                <td>{{ subjects[subject][trimester][test][1] }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endfor %}
                     {% endfor %}
                 </div>
             {% else %}
