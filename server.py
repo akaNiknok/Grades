@@ -412,9 +412,9 @@ def upload():
                 f.write(render_template("table.html.j2",
                                         table=table).encode("utf-8"))
 
-            return render_template("upload.html.j2", success=True)
+            return render_template("upload.html.j2", user=user, success=True)
         else:
-            return render_template("upload.html.j2", error=True)
+            return render_template("upload.html.j2", user=user, error=True)
 
     else:
 
