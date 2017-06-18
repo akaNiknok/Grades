@@ -4,19 +4,12 @@ from openpyxl.utils import range_boundaries
 
 
 def read_excels(grade, section, cn):
-    """Return format:
+    """Read excels of every subject of a student and returns a table list
+    Return format:
         subjects = {
-            "Subject": {
-                "Trimester": {
-                    "Test": (int(Student Score), int(Total Score))
-                }
-            }
-        }
-    """
-
-    # Rows for label and total score
-    TEST_LABEL_ROW = 7
-    TEST_TOTAL_ROW = 8
+            "Subject":
+                "Trimester": [[col]]
+        }"""
 
     # Get file directory using users grade and section
     filedir = "excels/{}/{}/".format(grade, section)
@@ -46,38 +39,74 @@ def read_excels(grade, section, cn):
 
                 if "Raw.Score" in ws.title:
 
-                    # Get CN rows
-                    user_row = cn + 8
+                    # Get boundary (min_col, min_row, max_col, max_row)
+                    # of merged_cells
+                    merged_cells = [range_boundaries(r)
+                                    for r in ws.merged_cell_ranges]
 
-                    Tests = {}
+                    table = []
 
-                    # Store tests in dictionary
-                    for col in range(3, ws.max_column):
+                    # Loop through rows
+                    for row in range(5, ws.max_row):
 
-                        test_label = ws.cell(row=TEST_LABEL_ROW,
-                                             column=col).value
-                        student_score = ws.cell(row=user_row,
-                                                column=col).value
-                        total_score = ws.cell(row=TEST_TOTAL_ROW,
-                                              column=col).value
+                        # Store the labels
+                        if row in (5, 6, 7, 8):
 
-                        # Only include scores with label
-                        if ((test_label not in (None, "TS", "PS", "EP"))
-                                and (student_score is not None)):
+                            # Contains columns (value, colspan) here
+                            new_row = []
 
-                            if test_label in Tests:
-                                Tests[test_label][0] += student_score
-                                Tests[test_label][1] += total_score
-                            else:
-                                Tests[test_label] = [student_score,
-                                                     total_score]
+                            # Create an iterator object to skip merged cells
+                            columns = iter(range(1, ws.max_column))
 
-                    # Store the test in trimester
-                    # Also remove "Raw.Score-" from the sheet title
-                    trimesters[ws.title.split("-")[1]] = Tests
+                            # Loop through columns
+                            for column in columns:
 
-            # Store the trimester in subject
-            # Also removes the file extension
+                                value = ws.cell(row=row, column=column).value
+
+                                # Check if the cell is not empty
+                                if value is not None:
+                                    colspan = 1
+
+                                    # Check if cell is merged
+                                    for r in merged_cells:
+                                        if (r[0] == column) and (r[1] == row):
+                                            # Add to colspan
+                                            colspan += (r[2] - r[0])
+                                            break
+
+                                    new_row.append((value, colspan))
+
+                                    # If cell is merged,
+                                    # skip (colspan - 1) iterations
+                                    if colspan != 1:
+                                        for x in range(colspan - 1):
+                                            next(columns)
+                                else:
+                                    new_row.append(("", 1))
+
+                            table.append(new_row)
+
+                        # Store users score
+                        elif ws.cell(row=row, column=1).value == cn:
+
+                            # Contains columns (value, colspan) here
+                            new_row = []
+
+                            # Loop through columns
+                            for column in range(1, ws.max_column):
+
+                                value = ws.cell(row=row, column=column).value
+
+                                # Check if the cell is not empty
+                                if value is not None:
+                                    new_row.append((value, 1))
+                                else:
+                                    new_row.append(("", 1))
+
+                            table.append(new_row)
+
+                    trimesters[ws.title.split("-")[1]] = table
+
             subjects[os.path.splitext(file)[0]] = trimesters
 
     return subjects
