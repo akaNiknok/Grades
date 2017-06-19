@@ -92,48 +92,57 @@ def read_excel(grade, section, subject):
                                                          subject + ".xlsx"),
                                 data_only=True)
 
-    # Open the sheet (subject to change)
-    ws = wb.worksheets[0]
+    trimesters = {}
 
-    # Get boundaries (min_col, min_row, max_col, max_row) of merged_cells
-    merged_cells = [range_boundaries(r) for r in ws.merged_cell_ranges]
+    # Loop through sheets
+    for ws in wb.worksheets:
 
-    table = []
+        if "Raw.Score" in ws.title:
 
-    # Loop through rows
-    for row in range(5, ws.max_row):
+            # Get boundary (min_col, min_row, max_col, max_row) of merged_cells
+            merged_cells = [range_boundaries(r) for r in ws.merged_cell_ranges]
 
-        # Contains columns (value, colspan) here
-        new_row = []
+            table = []
 
-        # Create an iterator object to be able to skip merged cells
-        columns = iter(range(1, ws.max_column))
+            # Loop through rows
+            for row in range(5, ws.max_row):
 
-        # Loop through columns
-        for column in columns:
+                # Contains columns (value, colspan) here
+                new_row = []
 
-            # Get value of cell
-            value = ws.cell(row=row, column=column).value
+                # Create an iterator object to be able to skip merged cells
+                columns = iter(range(1, ws.max_column))
 
-            # Check if the cell is not empty
-            if value is not None:
-                colspan = 1
+                # Loop through columns
+                for column in columns:
 
-                # Check if cell is merged
-                for r in merged_cells:
-                    if (r[0] == column) and (r[1] == row):
-                        colspan += (r[2] - r[0])  # Add to colspan
-                        break
+                    # Get value of cell
+                    value = ws.cell(row=row, column=column).value
 
-                new_row.append((value, colspan))
+                    # Check if the cell is not empty
+                    if value is not None:
+                        colspan = 1
 
-                # If cell is merged, skip (colspan - 1) iterations
-                if colspan != 1:
-                    for x in range(colspan - 1):
-                        next(columns)
-            else:
-                new_row.append(("", 1))
+                        # Check if cell is merged
+                        for r in merged_cells:
+                            if (r[0] == column) and (r[1] == row):
+                                colspan += (r[2] - r[0])  # Add to colspan
+                                break
 
-        table.append(new_row)
+                        # Append column's row and colspan to row
+                        new_row.append((value, colspan))
 
-    return table
+                        # If cell is merged, skip (colspan - 1) iterations
+                        if colspan != 1:
+                            for x in range(colspan - 1):
+                                next(columns)
+                    else:
+                        new_row.append(("", 1))
+
+                # Appen row to table
+                table.append(new_row)
+
+            # Store the table in the trimesters dictionary
+            trimesters[ws.title.split("-")[1]] = table
+
+    return trimesters

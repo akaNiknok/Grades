@@ -3,6 +3,7 @@ import json
 from flask import Flask, render_template, request, session
 from flask import redirect, make_response, send_file
 from flask_sqlalchemy import SQLAlchemy
+from bs4 import BeautifulSoup
 from excels import read_excel, read_excels
 
 app = Flask(__name__)
@@ -349,14 +350,19 @@ def excels(grade, section, subject):
     with open("excels/{}/{}/{}".format(grade,
                                        section,
                                        user.subject + ".html.j2")) as f:
-        table = f.read().decode("utf-8")
+        soup = BeautifulSoup(f.read().decode("utf-8"))
+
+    trimesters = {}
+
+    for tag in soup.find_all("div"):
+        trimesters[tag.get("id")] = tag
 
     return render_template("excel.html.j2",
                            user=user,
                            grade=grade,
                            section=section,
                            subject=subject,
-                           table=table)
+                           trimesters=trimesters)
 
 
 @app.route('/upload', methods=["POST", "GET"])
@@ -404,12 +410,12 @@ def upload():
             file.save(os.path.join(filedir, filename))
 
             # Read excel
-            table = read_excel(grade, section, user.subject)
+            trimesters = read_excel(grade, section, user.subject)
 
             # Pre-render table and save to file
             with open(os.path.join(filedir, filename_j2), "w") as f:
                 f.write(render_template("table.html.j2",
-                                        table=table).encode("utf-8"))
+                                        trimesters=trimesters).encode("utf-8"))
 
             return render_template("upload.html.j2", user=user, success=True)
         else:
