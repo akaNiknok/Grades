@@ -46,10 +46,8 @@ def read_excels(grade, section, cn):
 
                 if "Raw.Score" in ws.title:
 
-                    # Find CN rows
-                    for row in range(1, ws.max_row):
-                        if ws.cell(row=row, column=1).value == cn:
-                            user_row = row
+                    # Get CN rows
+                    user_row = cn + 8
 
                     Tests = {}
 
