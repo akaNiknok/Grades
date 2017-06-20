@@ -39,23 +39,8 @@
                         {% for trimester in subjects[subject] %}
                             <div id="{{ subject }}{{ trimester }}" class="tab-pane fade">
                                 <h3>{{ subject }} - {{ trimester }} Trimester</h3>
-
                                 <!-- Table of Grades -->
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-condensed">
-                                        {% for row in subjects[subject][trimester] %}
-                                            <tr>
-                                                {% for col in row %}
-                                                    {% if subjects[subject][trimester].index(row) in (0, 1, 2, 3) %}
-                                                        <th colspan="{{ col[1] }}">{{ col[0] }}</th>
-                                                    {% else %}
-                                                        <td colspan="{{ col[1] }}">{{ col[0] }}</td>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </tr>
-                                        {% endfor %}
-                                    </table>
-                                </div>
+                                {{ subjects[subject][trimester] }}
                             </div>
                         {% endfor %}
                     {% endfor %}
