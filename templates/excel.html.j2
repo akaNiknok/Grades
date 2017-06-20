@@ -9,14 +9,17 @@
             <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">
                 <span class="glyphicon glyphicon-download"></span> Download .xlsx
             </a>
+            <a class="btn btn-default" href="/excels/{{ grade }}/{{ section }}/{{ subject }}?fullscreen=1" target="_blank">
+                <span class="glyphicon glyphicon-search"></span> View Fullscreen
+            </a>
         </h1>
     </div>
 
-        <ul class="nav nav-tabs">
-            {% for trimester in trimesters %}
-                <li><a data-toggle="tab" href="#{{ trimester }}-table">{{ trimester }}</a></li>
-            {% endfor %}
-        </ul>
+    <ul class="nav nav-tabs">
+        {% for trimester in trimesters %}
+            <li><a data-toggle="tab" href="#{{ trimester }}-table">{{ trimester }}</a></li>
+        {% endfor %}
+    </ul>
 
     <div class="tab-content">
         {% for trimester in trimesters %}

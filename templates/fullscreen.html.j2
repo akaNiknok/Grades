@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block title %}{% endblock %} - CSQC Grades</title>
+
+        <!-- FAVICON -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+        <!-- BOOTSTRAP CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- JQUERY -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- BOOTSTRAP JS-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    </head>
+    <body>
+        <ul class="nav nav-tabs">
+            {% for trimester in trimesters %}
+                <li><a data-toggle="tab" href="#{{ trimester }}-table">{{ trimester }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <div class="tab-content">
+            {% for trimester in trimesters %}
+                <div id="{{ trimester }}-table" class="tab-pane fade">
+                    <h3>{{ trimester }} Trimester</h3>
+                    {{ trimesters[trimester] }}
+                </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

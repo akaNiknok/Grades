@@ -352,17 +352,29 @@ def excels(grade, section, subject):
                                        user.subject + ".html.j2")) as f:
         soup = BeautifulSoup(f.read().decode("utf-8"))
 
+    fullscreen = request.args.get("fullscreen")
     trimesters = {}
 
     for tag in soup.find_all("div"):
-        trimesters[tag.get("id")] = tag
+        if not fullscreen:
+            trimesters[tag.get("id")] = tag
+        else:
+            trimesters[tag.get("id")] = tag.find("table")
 
-    return render_template("excel.html.j2",
-                           user=user,
-                           grade=grade,
-                           section=section,
-                           subject=subject,
-                           trimesters=trimesters)
+    if not fullscreen:
+        return render_template("excel.html.j2",
+                               user=user,
+                               grade=grade,
+                               section=section,
+                               subject=subject,
+                               trimesters=trimesters)
+    else:
+        return render_template("fullscreen.html.j2",
+                               user=user,
+                               grade=grade,
+                               section=section,
+                               subject=subject,
+                               trimesters=trimesters)
 
 
 @app.route('/upload', methods=["POST", "GET"])
