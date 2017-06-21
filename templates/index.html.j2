@@ -104,7 +104,7 @@
                             </a>
 
                             <!-- Delete button -->
-                            <button id="showMore{{ sections.index(section) }}" class="btn btn-xs btn-danger" data-toggle="popover" title="Are you sure you want to delete {{ section[0] }}-{{ section[1] }}?" data-content="{{ popover(section, sections) }}" data-placement="bottom" data-html=true>
+                            <button id="showMore{{ sections.index(section) }}" class="btn btn-xs btn-danger" data-toggle="popover" title="Are you sure you want to delete <b>{{ section[0] }}-{{ section[1] }}</b>?" data-content="{{ popover(section, sections) }}" data-placement="bottom" data-html=true>
                                 <span class="glyphicon glyphicon-remove"></span> Delete
                             </button>
                         </td>
