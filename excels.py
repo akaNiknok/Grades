@@ -74,6 +74,7 @@ def read_excel(grade, section, subject):
             merged_cells = [range_boundaries(r) for r in ws.merged_cell_ranges]
 
             table = []
+            empty_cols = range(0, ws.max_column - 1)
 
             # Loop through rows
             for row in range(5, ws.max_row):
@@ -94,6 +95,10 @@ def read_excel(grade, section, subject):
                     if value is not None:
                         colspan = 1
 
+                        # Remove column from empty_cols
+                        if (column - 1) in empty_cols:
+                            empty_cols.remove(column - 1)
+
                         # Check if cell is merged
                         for r in merged_cells:
                             if (r[0] == column) and (r[1] == row):
@@ -110,8 +115,28 @@ def read_excel(grade, section, subject):
                     else:
                         new_row.append(("", 1))
 
-                # Appen row to table
+                # Append row to table
                 table.append(new_row)
+
+            # Remove empty columns
+            for row in table:
+
+                fake_col = 0  # To identify the index of the column in table
+                real_col = 0  # To identify the column number
+                remove_cols = []
+
+                # Identify columns to be removed
+                for col in row:
+                    real_col += col[1]
+                    fake_col += 1
+                    if real_col in empty_cols:
+                        remove_cols.append(fake_col)
+
+                remove_cols.reverse()  # Reverse to escape IndexError
+
+                # Remove the columns
+                for col in remove_cols:
+                    row.pop(col)
 
             # Store the table in the trimesters dictionary
             trimesters[ws.title.split("-")[1]] = table
