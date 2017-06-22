@@ -30,6 +30,7 @@ def read_htmls(grade, section, cn):
         if file.endswith(".j2"):
 
             trimesters = {}
+            incl_rows = [0, 1, 2, 3, cn + 3]  # Headers and user row
 
             # Open the pre-rendered html
             with open("excels/{}/{}/{}".format(grade, section, file)) as f:
@@ -43,11 +44,8 @@ def read_htmls(grade, section, cn):
                 div.table.clear()
 
                 # Add headers and user row to new table
-                div.table.append(rows[0])
-                div.table.append(rows[1])
-                div.table.append(rows[2])
-                div.table.append(rows[3])
-                div.table.append(rows[cn + 3])
+                for row in incl_rows:
+                    div.table.append(rows[row])
 
                 # Store the div in the trimesters
                 trimesters[div.get("id")] = str(div)
