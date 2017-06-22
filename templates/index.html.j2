@@ -25,9 +25,7 @@
                 <ul class="nav nav-tabs">
                 {% for subject in subjects %}
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            {{ subject }}<span class="caret"></span>
-                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ subject }} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             {% for trimester in subjects[subject] %}
                                 <li><a data-toggle="tab" href="#{{ subject }}{{ trimester }}">{{ trimester }} Trimester</a></li>
