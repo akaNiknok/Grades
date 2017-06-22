@@ -37,12 +37,17 @@ def read_htmls(grade, section, cn):
 
             # Loop through trimesters
             for div in soup.find_all("div"):
-                rows = div.find_all("tr")
 
-                # Remove all rows except for headers and user's row
-                for row in rows:
-                    if rows.index(row) not in (0, 1, 2, 3, cn+3):
-                        row.decompose()
+                # Get rows and clear table
+                rows = div.find_all("tr")
+                div.table.clear()
+
+                # Add headers and user row to new table
+                div.table.append(rows[0])
+                div.table.append(rows[1])
+                div.table.append(rows[2])
+                div.table.append(rows[3])
+                div.table.append(rows[cn + 3])
 
                 # Store the div in the trimesters
                 trimesters[div.get("id")] = str(div)
