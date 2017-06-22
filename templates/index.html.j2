@@ -144,5 +144,15 @@
             </div>
 
         {% endif %}
+
+    {% else %}
+    <!-- Guest -->
+
+        <div class="page-header">
+            <h1>Welcome, guest!</h1>
+        </div>
+
+        <p>Sign up <a href="/register">here</a> or login <a href="/login">here</a></p>
+
     {% endif %}
 {% endblock %}
