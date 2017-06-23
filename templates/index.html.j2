@@ -20,7 +20,7 @@
                 </h1>
             </div>
 
-            {% if subjects %}
+            {% if subjects and subjects != "Empty"%}
                 <ul class="nav nav-tabs">
                 {% for subject in subjects %}
                     <li class="dropdown">
@@ -63,8 +63,10 @@
                         {% endfor %}
                     {% endfor %}
                 </div>
+            {% elif subjects == "Empty" %}
+                <h2>There is currently no grades posted by your teachers yet, please check back later.</h2>
             {% else %}
-                <h1>There is currently no grades posted by your teachers yet, please check back later.</h1>
+                <h2>Click refresh</h2>
             {% endif %}
 
         {% elif user.acc_type == "teacher" %}

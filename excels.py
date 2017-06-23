@@ -25,7 +25,7 @@ def read_excels(grade, section, cn):
     try:
         files = os.listdir(filedir)
     except OSError:
-        return None
+        return "Empty"
 
     subjects = {}
 
