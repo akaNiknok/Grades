@@ -34,7 +34,7 @@ def read_htmls(grade, section, cn):
 
             # Open the pre-rendered html
             with open("excels/{}/{}/{}".format(grade, section, file)) as f:
-                soup = BeautifulSoup(f.read().decode("utf-8"))
+                soup = BeautifulSoup(f.read())
 
             # Loop through trimesters
             for div in soup.find_all("div"):
@@ -77,7 +77,7 @@ def read_excel(grade, section, subject):
             merged_cells = [range_boundaries(r) for r in ws.merged_cell_ranges]
 
             table = []
-            empty_cols = range(0, ws.max_column - 1)
+            empty_cols = list(range(0, ws.max_column - 1))
 
             # Loop through rows
             for row in range(5, ws.max_row):
