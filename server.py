@@ -350,7 +350,7 @@ def excels(grade, section, subject):
     with open("excels/{}/{}/{}".format(grade,
                                        section,
                                        user.subject + ".html.j2")) as f:
-        soup = BeautifulSoup(f.read().decode("utf-8"))
+        soup = BeautifulSoup(f.read())
 
     fullscreen = request.args.get("fullscreen")
     trimesters = {}
@@ -427,7 +427,7 @@ def upload():
             # Pre-render table and save to file
             with open(os.path.join(filedir, filename_j2), "w") as f:
                 f.write(render_template("table.html.j2",
-                                        trimesters=trimesters).encode("utf-8"))
+                                        trimesters=trimesters))
 
             return render_template("upload.html.j2", user=user, success=True)
         else:
