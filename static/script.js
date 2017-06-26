@@ -1,4 +1,10 @@
 function radios() {
+    // Radios
+    student = document.getElementById("student")
+    teacher = document.getElementById("teacher")
+    coordinator = document.getElementById("coordinator")
+
+    // Forms
     student_form = document.getElementById("student-form")
     teacher_form = document.getElementById("teacher-form")
     coordinator_form = document.getElementById("coordinator-form")
@@ -13,7 +19,7 @@ function radios() {
     coordinator_pass = document.getElementById("coordinator-pass")
 
     // Student
-    if (document.getElementById("student").checked == true) {
+    if (student.checked == true) {
 
         // Show student form
         student_form.style.cssText = "display: block;"
@@ -29,7 +35,7 @@ function radios() {
     }
 
     // Teacher
-    else if (document.getElementById("teacher").checked == true) {
+    else if (teacher.checked == true) {
 
         // Show teacher form
         student_form.style.cssText = "display: none;"
@@ -45,7 +51,7 @@ function radios() {
     }
 
     // coordinator
-    else if (document.getElementById("coordinator").checked == true) {
+    else if (coordinator.checked == true) {
 
         // Show coordinator from
         student_form.style.cssText = "display: none;"
