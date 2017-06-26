@@ -166,6 +166,17 @@ def register():
 
                     db.session.add(student)
 
+                # Create parent account if account type is parent
+                elif acc_type == "parent":
+                    parent = User(username,
+                                  password,
+                                  acc_type,
+                                  firstname,
+                                  middlename,
+                                  lastname)
+
+                    db.session.add(parent)
+
                 # Add subject and section when account type is teacher
                 elif (acc_type == "teacher" and
                         new_teacher_pass == "CSQC new teach"):

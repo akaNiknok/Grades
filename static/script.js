@@ -1,6 +1,7 @@
 function radios() {
     // Radios
     student = document.getElementById("student")
+    parent = document.getElementById("parent")
     teacher = document.getElementById("teacher")
     coordinator = document.getElementById("coordinator")
 
@@ -30,6 +31,21 @@ function radios() {
         student_grade.setAttribute("required", "required")
         student_section.setAttribute("required", "required")
         student_cn.setAttribute("required", "required")
+        teacher_pass.removeAttribute("required")
+        coordinator_pass.removeAttribute("required")
+    }
+
+    else if (parent.checked == true) {
+
+        // Remove forms
+        student_form.style.cssText = "display: none;"
+        teacher_form.style.cssText = "display: none;"
+        coordinator_form.style.cssText = "display: none;"
+
+        // Remove required
+        student_grade.removeAttribute("required")
+        student_section.removeAttribute("required")
+        student_cn.removeAttribute("required")
         teacher_pass.removeAttribute("required")
         coordinator_pass.removeAttribute("required")
     }
