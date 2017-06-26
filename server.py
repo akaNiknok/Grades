@@ -56,7 +56,7 @@ class User(db.Model):
 db.create_all()
 
 
-@app.route('/', methods=["POST", "GET"])
+@app.route("/", methods=["POST", "GET"])
 def index():
     user_id = session.get("user_id")
 
@@ -107,7 +107,7 @@ def index():
         return render_template("index.html.j2", user=user)
 
 
-@app.route('/about')
+@app.route("/about")
 def about():
     user_id = session.get("user_id")
 
@@ -119,7 +119,7 @@ def about():
     return render_template("about.html.j2", user=user)
 
 
-@app.route('/register', methods=["POST", "GET"])
+@app.route("/register", methods=["POST", "GET"])
 def register():
     if request.method == "POST":
 
@@ -225,7 +225,7 @@ def register():
         return render_template("register.html.j2")
 
 
-@app.route('/delete', methods=["POST"])
+@app.route("/delete", methods=["POST"])
 def delete():
 
     # Get user
@@ -255,7 +255,7 @@ def delete():
     return redirect("/")
 
 
-@app.route('/login', methods=["POST", "GET"])
+@app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
 
@@ -281,13 +281,13 @@ def login():
         return render_template("login.html.j2")
 
 
-@app.route('/logout')
+@app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
 
 
-@app.route('/user/<username>', methods=["POST", "GET"])
+@app.route("/user/<username>", methods=["POST", "GET"])
 def user(username):
     user_id = session.get("user_id")
 
@@ -373,7 +373,7 @@ def user(username):
         return render_template("user.html.j2", user=user, view_user=view_user)
 
 
-@app.route('/excels/<grade>/<section>/<subject>')
+@app.route("/excels/<grade>/<section>/<subject>")
 def excels(grade, section, subject):
     # Get user
     user_id = session.get("user_id")
@@ -418,7 +418,7 @@ def excels(grade, section, subject):
                                trimesters=trimesters)
 
 
-@app.route('/upload', methods=["POST", "GET"])
+@app.route("/upload", methods=["POST", "GET"])
 def upload():
     user_id = session.get("user_id")
 
@@ -487,7 +487,7 @@ def upload():
             return redirect("/")
 
 
-@app.route('/download/<grade>/<section>/<subject>')
+@app.route("/download/<grade>/<section>/<subject>")
 def download(grade, section, subject):
     return send_file("excels/{}/{}/{}.xlsx".format(grade, section, subject),
                      as_attachment=True)
