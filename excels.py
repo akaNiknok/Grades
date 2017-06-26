@@ -1,22 +1,16 @@
 import os
 import openpyxl
 from openpyxl.utils import range_boundaries
+from bs4 import BeautifulSoup
 
 
-def read_excels(grade, section, cn):
-    """Return format:
+def read_htmls(grade, section, cn):
+    """Read pre-rendered tables of every subject of a student and return a dict
+    Return format:
         subjects = {
-            "Subject": {
-                "Trimester": {
-                    "Test": (int(Student Score), int(Total Score))
-                }
-            }
-        }
-    """
-
-    # Rows for label and total score
-    TEST_LABEL_ROW = 7
-    TEST_TOTAL_ROW = 8
+            "Subject":
+                "Trimester": pre_rendered table
+        }"""
 
     # Get file directory using users grade and section
     filedir = "excels/{}/{}/".format(grade, section)
@@ -29,56 +23,36 @@ def read_excels(grade, section, cn):
 
     subjects = {}
 
-    # Loop per subject
+    # Loop through subjects
     for file in files:
 
-        # Only read .xslx
-        if file.endswith(".xlsx"):
-
-            # Open the excel file
-            wb = openpyxl.load_workbook(os.path.join(filedir, file),
-                                        data_only=True)
+        # only read .html.j2 files
+        if file.endswith(".j2"):
 
             trimesters = {}
+            incl_rows = [0, 1, 2, 3, cn + 3]  # Headers and user row
 
-            # Loop through sheets
-            for ws in wb.worksheets:
+            # Open the pre-rendered html
+            with open("excels/{}/{}/{}".format(grade, section, file)) as f:
+                soup = BeautifulSoup(f.read())
 
-                if "Raw.Score" in ws.title:
+            # Loop through trimesters
+            for div in soup.find_all("div"):
 
-                    # Get CN rows
-                    user_row = cn + 8
+                # Get rows and clear table
+                rows = div.find_all("tr")
+                div.table.clear()
 
-                    Tests = {}
+                # Add headers and user row to new table
+                for row in incl_rows:
+                    div.table.append(rows[row])
 
-                    # Store tests in dictionary
-                    for col in range(3, ws.max_column):
+                # Store the div in the trimesters
+                trimesters[div.get("id")] = str(div)
 
-                        test_label = ws.cell(row=TEST_LABEL_ROW,
-                                             column=col).value
-                        student_score = ws.cell(row=user_row,
-                                                column=col).value
-                        total_score = ws.cell(row=TEST_TOTAL_ROW,
-                                              column=col).value
-
-                        # Only include scores with label
-                        if ((test_label not in (None, "TS", "PS", "EP"))
-                                and (student_score is not None)):
-
-                            if test_label in Tests:
-                                Tests[test_label][0] += student_score
-                                Tests[test_label][1] += total_score
-                            else:
-                                Tests[test_label] = [student_score,
-                                                     total_score]
-
-                    # Store the test in trimester
-                    # Also remove "Raw.Score-" from the sheet title
-                    trimesters[ws.title.split("-")[1]] = Tests
-
-            # Store the trimester in subject
-            # Also removes the file extension
-            subjects[os.path.splitext(file)[0]] = trimesters
+            # Store the trimester in the subjects
+            # And also get the filename as the key
+            subjects[file.split(".")[0]] = trimesters
 
     return subjects
 
@@ -103,6 +77,7 @@ def read_excel(grade, section, subject):
             merged_cells = [range_boundaries(r) for r in ws.merged_cell_ranges]
 
             table = []
+            empty_cols = list(range(0, ws.max_column - 1))
 
             # Loop through rows
             for row in range(5, ws.max_row):
@@ -123,6 +98,10 @@ def read_excel(grade, section, subject):
                     if value is not None:
                         colspan = 1
 
+                        # Remove column from empty_cols
+                        if (column - 1) in empty_cols:
+                            empty_cols.remove(column - 1)
+
                         # Check if cell is merged
                         for r in merged_cells:
                             if (r[0] == column) and (r[1] == row):
@@ -139,8 +118,28 @@ def read_excel(grade, section, subject):
                     else:
                         new_row.append(("", 1))
 
-                # Appen row to table
+                # Append row to table
                 table.append(new_row)
+
+            # Remove empty columns
+            for row in table:
+
+                fake_col = 0  # To identify the index of the column in table
+                real_col = 0  # To identify the column number
+                remove_cols = []
+
+                # Identify columns to be removed
+                for col in row:
+                    real_col += col[1]
+                    fake_col += 1
+                    if real_col in empty_cols:
+                        remove_cols.append(fake_col)
+
+                remove_cols.reverse()  # Reverse to escape IndexError
+
+                # Remove the columns
+                for col in remove_cols:
+                    row.pop(col)
 
             # Store the table in the trimesters dictionary
             trimesters[ws.title.split("-")[1]] = table

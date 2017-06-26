@@ -39,26 +39,8 @@
                         {% for trimester in subjects[subject] %}
                             <div id="{{ subject }}{{ trimester }}" class="tab-pane fade">
                                 <h3>{{ subject }} - {{ trimester }} Trimester</h3>
-
                                 <!-- Table of Grades -->
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Test</th>
-                                            <th>Score</th>
-                                            <th>Total Score</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for test in subjects[subject][trimester] %}
-                                            <tr>
-                                                <td>{{ test }}</td>
-                                                <td>{{ subjects[subject][trimester][test][0] }}</td>
-                                                <td>{{ subjects[subject][trimester][test][1] }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+                                {{ subjects[subject][trimester] }}
                             </div>
                         {% endfor %}
                     {% endfor %}
