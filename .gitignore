@@ -6,3 +6,5 @@ test_db\.py
 help/
 
 excels/
+
+__pycache__/
