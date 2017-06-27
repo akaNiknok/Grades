@@ -156,7 +156,7 @@ def register():
             # Validate retype password
             if password == re_password:
 
-                # Add grade, section and CN when account type is student
+                # Signing up as student
                 if acc_type == "student":
 
                     # Get parent user
@@ -190,8 +190,10 @@ def register():
 
                     db.session.add(student)
 
-                # Create parent account if account type is parent
+                # Signing up as parent
                 elif acc_type == "parent":
+
+                    # Create parent
                     parent = User(username,
                                   password,
                                   acc_type,
@@ -202,9 +204,11 @@ def register():
 
                     db.session.add(parent)
 
-                # Add subject and section when account type is teacher
+                # Signing up as teacher
                 elif (acc_type == "teacher" and
                         new_teacher_pass == "CSQC new teach"):
+
+                    # Create teacher
                     teacher = User(username,
                                    password,
                                    acc_type,
@@ -215,9 +219,11 @@ def register():
                     teacher.sections = "[]"
                     db.session.add(teacher)
 
-                # Add subject when account type is coordinator
+                # Signing up as coordinator
                 elif (acc_type == "coordinator" and
                         new_coord_pass == "CSQC new coord"):
+
+                    # Create coordinator
                     coord = User(username,
                                  password,
                                  acc_type,
