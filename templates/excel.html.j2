@@ -1,19 +1,17 @@
 {% extends "base.html.j2" %}
 {% block title %}{{ grade }}-{{ section }} {{ subject }}{% endblock %}
 
-{% block content %}
+{% block page_header %}
+    {{ grade }}-{{ section }} {{ subject }}
+    <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">
+        <span class="glyphicon glyphicon-download"></span> Download .xlsx
+    </a>
+    <a class="btn btn-default" href="/excels/{{ grade }}/{{ section }}/{{ subject }}?fullscreen=1" target="_blank">
+        <span class="glyphicon glyphicon-search"></span> View Fullscreen
+    </a>
+{% endblock %}
 
-    <!-- PAGE HEADER -->
-    <div class="page-header">
-        <h1>{{ grade }}-{{ section }} {{ subject }}
-            <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">
-                <span class="glyphicon glyphicon-download"></span> Download .xlsx
-            </a>
-            <a class="btn btn-default" href="/excels/{{ grade }}/{{ section }}/{{ subject }}?fullscreen=1" target="_blank">
-                <span class="glyphicon glyphicon-search"></span> View Fullscreen
-            </a>
-        </h1>
-    </div>
+{% block content %}
 
     <ul class="nav nav-tabs">
         {% for trimester in trimesters|sort %}

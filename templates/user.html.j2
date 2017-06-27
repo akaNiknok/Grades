@@ -2,13 +2,11 @@
 {% block title %}{{ view_user.username }}{% endblock %}
 {% set active_page = "user" %}
 
+{% block page_header %}
+    {{ view_user.firstname }} {{ view_user.middlename }} {{ view_user.lastname }} <small>{{ view_user.username }} <small>{{ view_user.acc_type }}</small></small>
+{% endblock %}
+
 {% block content %}
-
-    <!-- PAGE HEADER -->
-    <div class="page-header">
-        <h1>{{ view_user.firstname }} {{ view_user.middlename }} {{ view_user.lastname }} <small>{{ view_user.username }} <small>{{ view_user.acc_type }}</small></small></h1>
-    </div>
-
     {% if user == view_user %}
         <form class="form-horizontal" action="" method="post">
 

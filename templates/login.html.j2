@@ -2,14 +2,13 @@
 {% block title %}Login{% endblock %}
 {% set active_page = "login" %}
 
+{% block page_header %}
+    Login
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-sm-12">
-
-        <!-- PAGE HEADER -->
-        <div class="page-header">
-            <h1>Login</h1>
-        </div>
 
         <!-- FORM -->
         <form class="form-horizontal" action="/login" method="post">
