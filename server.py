@@ -25,6 +25,8 @@ class User(db.Model):
     section = db.Column(db.String(4))
     CN = db.Column(db.Integer)
 
+    children = db.Column(db.String)
+
     subject = db.Column(db.String(7))
     sections = db.Column(db.String)
 
@@ -137,6 +139,8 @@ def register():
         grade = request.form["grade"]
         section = request.form["section"]
         CN = request.form["CN"]
+        parent_username = request.form["parent_username"]
+        parent_password = request.form["parent_password"]
 
         # Teacher Specific Forms
         new_teacher_pass = request.form["new_teacher_pass"]
@@ -154,6 +158,21 @@ def register():
 
                 # Add grade, section and CN when account type is student
                 if acc_type == "student":
+
+                    # Get parent user
+                    parent = User.query.filter_by(
+                                username=parent_username
+                            ).first()
+
+                    # Check if username and password of parent is correct
+                    if parent is None:
+                        return render_template("register.html.j2",
+                                               error="parent-username")
+                    elif parent.password != parent_password:
+                        return render_template("register.html.j2",
+                                               error="parent-password")
+
+                    # Create student
                     student = User(username,
                                    password,
                                    acc_type,
@@ -163,6 +182,11 @@ def register():
                     student.grade = int(grade)
                     student.section = section
                     student.CN = int(CN)
+
+                    # Add student to children list of parent
+                    children = json.loads(parent.children)
+                    children.append(username)
+                    parent.children = json.dumps(children)
 
                     db.session.add(student)
 
@@ -174,6 +198,7 @@ def register():
                                   firstname,
                                   middlename,
                                   lastname)
+                    parent.children = "[]"
 
                     db.session.add(parent)
 

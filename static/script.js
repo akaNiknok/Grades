@@ -14,6 +14,8 @@ function radios() {
     student_grade = document.getElementById("student-grade")
     student_section = document.getElementById("student-section")
     student_cn = document.getElementById("student-cn")
+    parent_username = document.getElementById("parent-username")
+    parent_password = document.getElementById("parent-password")
 
     // Teacher and Coordinator Inputs
     teacher_pass = document.getElementById("teacher-pass")
@@ -31,6 +33,8 @@ function radios() {
         student_grade.setAttribute("required", "required")
         student_section.setAttribute("required", "required")
         student_cn.setAttribute("required", "required")
+        parent_username.setAttribute("required", "required")
+        parent_password.setAttribute("required", "required")
         teacher_pass.removeAttribute("required")
         coordinator_pass.removeAttribute("required")
     }
@@ -46,6 +50,8 @@ function radios() {
         student_grade.removeAttribute("required")
         student_section.removeAttribute("required")
         student_cn.removeAttribute("required")
+        parent_username.removeAttribute("required")
+        parent_password.removeAttribute("required")
         teacher_pass.removeAttribute("required")
         coordinator_pass.removeAttribute("required")
     }
@@ -62,6 +68,8 @@ function radios() {
         student_grade.removeAttribute("required")
         student_section.removeAttribute("required")
         student_cn.removeAttribute("required")
+        parent_username.removeAttribute("required")
+        parent_password.removeAttribute("required")
         teacher_pass.setAttribute("required", "required")
         coordinator_pass.removeAttribute("required")
     }
@@ -78,6 +86,8 @@ function radios() {
         student_grade.removeAttribute("required")
         student_section.removeAttribute("required")
         student_cn.removeAttribute("required")
+        parent_username.removeAttribute("required")
+        parent_password.removeAttribute("required")
         teacher_pass.removeAttribute("required")
         coordinator_pass.setAttribute("required", "required")
     }

@@ -105,6 +105,22 @@
                     </div>
                 </div>
 
+                <!-- Parent's Username -->
+                <div class="form-group">
+                    <label class="control-label col-sm-4" for="parent-username">Your Parent's Username:</label>
+                    <div class="col-sm-5">
+                        <input id="parent-username" class="form-control" type="text" name="parent_username" placeholder="Enter your parent's username" autocomplete="off" required>
+                    </div>
+                </div>
+
+                <!-- Parent's Password (Subject to change [email confirmation]) -->
+                <div class="form-group">
+                    <label class="control-label col-sm-4" for="parent-username">Your Parent's Password:</label>
+                    <div class="col-sm-5">
+                        <input id="parent-password" class="form-control" type="password" name="parent_password" placeholder="Enter your parent's password" autocomplete="off" required>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Teacher Form -->
@@ -193,6 +209,8 @@
                     {{ "Password does not match." if error == "password" }}
                     {{ "New teacher's password is incorrect." if error == "teacher" }}
                     {{ "New coordinator's password is incorrect." if error == "coordinator" }}
+                    {{ "Parent's username is incorrect" if error == "parent-username" }}
+                    {{ "Parent's password is incorrect" if error == "parent-password" }}
                 </div>
             {% endif %}
         </form>
