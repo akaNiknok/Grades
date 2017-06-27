@@ -106,18 +106,24 @@
                 </div>
 
                 <!-- Parent's Username -->
-                <div class="form-group">
+                <div class="form-group{{ ' has-error has-feedback' if error == 'parent-username' }}">
                     <label class="control-label col-sm-4" for="parent-username">Your Parent's Username:</label>
                     <div class="col-sm-5">
                         <input id="parent-username" class="form-control" type="text" name="parent_username" placeholder="Enter your parent's username" autocomplete="off" required>
+                        {% if error == "parent-username" %}
+                            <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        {% endif %}
                     </div>
                 </div>
 
                 <!-- Parent's Password (Subject to change [email confirmation]) -->
-                <div class="form-group">
+                <div class="form-group{{ ' has-error has-feedback' if error == 'parent-password' }}">
                     <label class="control-label col-sm-4" for="parent-username">Your Parent's Password:</label>
                     <div class="col-sm-5">
                         <input id="parent-password" class="form-control" type="password" name="parent_password" placeholder="Enter your parent's password" autocomplete="off" required>
+                        {% if error == "parent-password" %}
+                            <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        {% endif %}
                     </div>
                 </div>
 
