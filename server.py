@@ -86,13 +86,32 @@ def index():
 
             # Get children if user is parent
             elif user.acc_type == "parent":
-                children = json.loads(user.children)
-                new_children = []
 
+                # Load children and create a new dict
+                children = json.loads(user.children)
+                new_children = {}
+
+                # Loop through children
                 for child in children:
-                    new_children.append(
-                        User.query.filter_by(username=child).first()
-                    )
+
+                    # Get the user of child
+                    child = User.query.filter_by(username=child).first()
+                    new_children[child] = []
+
+                    # Get file directory using child's grade and section
+                    filedir = "excels/{}/{}/".format(child.grade,
+                                                     child.section)
+
+                    # Get all files (subjects) in file directory
+                    try:
+                        files = os.listdir(filedir)
+                    except OSError:
+                        continue
+
+                    # Append subject to the list inside of the dict
+                    for file in files:
+                        if file.endswith(".j2"):
+                            new_children[child].append(file.split(".")[0])
 
                 return render_template(
                     "index.html.j2",

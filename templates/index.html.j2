@@ -73,7 +73,9 @@
                     <!-- Panel Body -->
                     <div id="{{ child.username }}" class="panel-collapse collapse">
                         <ul class="list-group">
-                            <li class="list-group-item">Test</li>
+                            {% for subject in children[child] %}
+                                <li class="list-group-item">{{ subject }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
