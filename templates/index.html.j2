@@ -57,6 +57,30 @@
                 <h2>Click refresh</h2>
             {% endif %}
 
+        {% elif user.acc_type == "parent"%}
+        <!-- Parent -->
+            <div class="panel-group" id="accordion">
+
+            {% for child in children %}
+                <div class="panel panel-default">
+                    <!-- Panel Heading -->
+                    <div class="panel panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#{{ child.username }}">{{ child.firstname }} {{ child.mi() }} {{ child.lastname }}</a>
+                        </h4>
+                    </div>
+
+                    <!-- Panel Body -->
+                    <div id="{{ child.username }}" class="panel-collapse collapse">
+                        <ul class="list-group">
+                            <li class="list-group-item">Test</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+
+            </div>
+
         {% elif user.acc_type == "teacher" %}
         <!-- Teacher -->
 

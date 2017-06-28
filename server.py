@@ -84,6 +84,22 @@ def index():
                     subjects=session.get("subjects")
                 )
 
+            # Get children if user is parent
+            elif user.acc_type == "parent":
+                children = json.loads(user.children)
+                new_children = []
+
+                for child in children:
+                    new_children.append(
+                        User.query.filter_by(username=child).first()
+                    )
+
+                return render_template(
+                    "index.html.j2",
+                    user=user,
+                    children=new_children
+                )
+
             # Get sections if user is teacher
             elif user.acc_type == "teacher":
                 return render_template(
