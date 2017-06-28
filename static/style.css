@@ -73,3 +73,7 @@ body {
 form h2, form p {
     text-align: center;
 }
+
+.panel-heading {
+    cursor: pointer;
+}
