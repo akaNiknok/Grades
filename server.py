@@ -449,24 +449,44 @@ def excels(grade, section, subject):
     else:
         return redirect("/")
 
-    # Only allow teachers and coordinators to view excels
-    if user.acc_type != "teacher" and user.acc_type != "coordinator":
+    # Only allow teachers, parents and coordinators to view excels
+    if user.acc_type not in ("teacher", "parent", "coordinator"):
         return redirect("/")
 
     # Read pre-rendered table
     with open("excels/{}/{}/{}".format(grade,
                                        section,
-                                       user.subject + ".html.j2")) as f:
+                                       subject + ".html.j2")) as f:
         soup = BeautifulSoup(f.read())
 
+    # Read URL parameters
     fullscreen = request.args.get("fullscreen")
+    cn = request.args.get("cn")
+
     trimesters = {}
 
-    for tag in soup.find_all("div"):
-        if not fullscreen:
-            trimesters[tag.get("id")] = tag
-        else:
-            trimesters[tag.get("id")] = tag.find("table")
+    if user.acc_type == "teacher" or user.acc_type == "coordinator":
+        for tag in soup.find_all("div"):
+            if not fullscreen:
+                trimesters[tag.get("id")] = tag
+            else:
+                trimesters[tag.get("id")] = tag.find("table")
+    else:
+        incl_rows = [0, 1, 2, 3, int(cn) + 3]  # Headers and cn row
+
+        # Loop through trimesters
+        for div in soup.find_all("div"):
+
+            # Get rows and clear table
+            rows = div.find_all("tr")
+            div.table.clear()
+
+            # Add headers and user row to new table
+            for row in incl_rows:
+                div.table.append(rows[row])
+
+            # Store the div in the trimesters
+            trimesters[div.get("id")] = str(div)
 
     if not fullscreen:
         return render_template("excel.html.j2",

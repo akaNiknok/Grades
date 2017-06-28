@@ -74,7 +74,7 @@
                     <div id="{{ child.username }}" class="panel-collapse collapse">
                         <div class="list-group">
                             {% for subject in children[child] %}
-                                <a class="list-group-item" href="#">{{ subject }}</a>
+                                <a class="list-group-item" href="/excels/{{ child.grade }}/{{ child.section }}/{{ subject }}?cn={{ child.CN }}">{{ subject }}</a>
                             {% endfor %}
                         </div>
                     </div>
