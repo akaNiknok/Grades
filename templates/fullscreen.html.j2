@@ -19,13 +19,13 @@
     </head>
     <body>
         <ul class="nav nav-tabs">
-            {% for trimester in trimesters %}
+            {% for trimester in trimesters|sort %}
                 <li><a data-toggle="tab" href="#{{ trimester }}-table">{{ trimester }}</a></li>
             {% endfor %}
         </ul>
 
         <div class="tab-content">
-            {% for trimester in trimesters %}
+            {% for trimester in trimesters|sort %}
                 <div id="{{ trimester }}-table" class="tab-pane fade">
                     <h3>{{ trimester }} Trimester</h3>
                     {{ trimesters[trimester] }}
