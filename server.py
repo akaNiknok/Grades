@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, session
 from flask import redirect, make_response, send_file
 from flask_sqlalchemy import SQLAlchemy
 from bs4 import BeautifulSoup
-from excels import read_excel, read_htmls
+from read import read_excel, read_htmls
 
 app = Flask(__name__)
 app.config.from_object("config")
