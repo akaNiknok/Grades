@@ -3,12 +3,14 @@
 
 {% block page_header %}
     {{ grade }}-{{ section }} {{ subject }}
-    <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">
-        <span class="glyphicon glyphicon-download"></span> Download .xlsx
-    </a>
-    <a class="btn btn-default" href="/excels/{{ grade }}/{{ section }}/{{ subject }}?fullscreen=1" target="_blank">
-        <span class="glyphicon glyphicon-search"></span> View Fullscreen
-    </a>
+    {% if user.acc_type != "parent" %}
+        <a class="btn btn-default" href="/download/{{ grade }}/{{ section }}/{{ subject }}">
+            <span class="glyphicon glyphicon-download"></span> Download .xlsx
+        </a>
+        <a class="btn btn-default" href="/excels/{{ grade }}/{{ section }}/{{ subject }}?fullscreen=1" target="_blank">
+            <span class="glyphicon glyphicon-search"></span> View Fullscreen
+        </a>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
