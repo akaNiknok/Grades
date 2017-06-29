@@ -4,6 +4,27 @@ from openpyxl.utils import range_boundaries
 from bs4 import BeautifulSoup
 
 
+def read_html(grade, section, cn, soup):
+    trimesters = {}
+    incl_rows = [0, 1, 2, 3, cn + 3]  # Headers and user row
+
+    # Loop through trimesters
+    for div in soup.find_all("div"):
+
+        # Get rows and clear table
+        rows = div.find_all("tr")
+        div.table.clear()
+
+        # Add headers and user row to new table
+        for row in incl_rows:
+            div.table.append(rows[row])
+
+        # Store the div in the trimesters
+        trimesters[div.get("id")] = str(div)
+
+    return trimesters
+
+
 def read_htmls(grade, section, cn):
     """Read pre-rendered tables of every subject of a student and return a dict
     Return format:
@@ -29,26 +50,11 @@ def read_htmls(grade, section, cn):
         # only read .html.j2 files
         if file.endswith(".j2"):
 
-            trimesters = {}
-            incl_rows = [0, 1, 2, 3, cn + 3]  # Headers and user row
-
             # Open the pre-rendered html
             with open("excels/{}/{}/{}".format(grade, section, file)) as f:
                 soup = BeautifulSoup(f.read())
 
-            # Loop through trimesters
-            for div in soup.find_all("div"):
-
-                # Get rows and clear table
-                rows = div.find_all("tr")
-                div.table.clear()
-
-                # Add headers and user row to new table
-                for row in incl_rows:
-                    div.table.append(rows[row])
-
-                # Store the div in the trimesters
-                trimesters[div.get("id")] = str(div)
+            trimesters = read_html(grade, section, cn, soup)
 
             # Store the trimester in the subjects
             # And also get the filename as the key

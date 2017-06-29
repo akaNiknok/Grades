@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, session
 from flask import redirect, make_response, send_file
 from flask_sqlalchemy import SQLAlchemy
 from bs4 import BeautifulSoup
-from read import read_excel, read_htmls
+from read import read_html, read_htmls, read_excel
 
 app = Flask(__name__)
 app.config.from_object("config")
@@ -463,30 +463,16 @@ def excels(grade, section, subject):
     fullscreen = request.args.get("fullscreen")
     cn = request.args.get("cn")
 
-    trimesters = {}
-
     if user.acc_type == "teacher" or user.acc_type == "coordinator":
+        trimesters = {}
+
         for tag in soup.find_all("div"):
             if not fullscreen:
                 trimesters[tag.get("id")] = tag
             else:
                 trimesters[tag.get("id")] = tag.find("table")
     else:
-        incl_rows = [0, 1, 2, 3, int(cn) + 3]  # Headers and cn row
-
-        # Loop through trimesters
-        for div in soup.find_all("div"):
-
-            # Get rows and clear table
-            rows = div.find_all("tr")
-            div.table.clear()
-
-            # Add headers and user row to new table
-            for row in incl_rows:
-                div.table.append(rows[row])
-
-            # Store the div in the trimesters
-            trimesters[div.get("id")] = str(div)
+        trimesters = read_html(grade, section, int(cn), soup)
 
     if not fullscreen:
         return render_template("excel.html.j2",
