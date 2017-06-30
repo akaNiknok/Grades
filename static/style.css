@@ -77,3 +77,7 @@ form h2, form p {
 .panel-heading {
     cursor: pointer;
 }
+
+.label {
+    padding: .2em .6em;
+}
