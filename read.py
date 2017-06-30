@@ -4,6 +4,21 @@ from openpyxl.utils import range_boundaries
 from bs4 import BeautifulSoup
 
 
+def get_files(grade, section):
+    """Returns all available files for section"""
+
+    # Get file directory using users grade and section
+    filedir = "excels/{}/{}/".format(grade, section)
+
+    # Get all files (subjects) in file directory
+    try:
+        files = os.listdir(filedir)
+    except OSError:
+        return "Empty"
+
+    return files
+
+
 def read_html(grade, section, cn, soup):
     trimesters = {}
     incl_rows = [0, 1, 2, 3, cn + 3]  # Headers and user row
@@ -33,14 +48,7 @@ def read_htmls(grade, section, cn):
                 "Trimester": pre_rendered table
         }"""
 
-    # Get file directory using users grade and section
-    filedir = "excels/{}/{}/".format(grade, section)
-
-    # Get all files (subjects) in file directory
-    try:
-        files = os.listdir(filedir)
-    except OSError:
-        return "Empty"
+    files = get_files(grade, section)
 
     subjects = {}
 

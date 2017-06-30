@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, session
 from flask import redirect, make_response, send_file
 from flask_sqlalchemy import SQLAlchemy
 from bs4 import BeautifulSoup
-from read import read_html, read_htmls, read_excel
+from read import read_html, read_htmls, read_excel, get_files
 
 app = Flask(__name__)
 app.config.from_object("config")
@@ -100,15 +100,7 @@ def index():
                     child = User.query.filter_by(username=child).first()
                     new_children[child] = []
 
-                    # Get file directory using child's grade and section
-                    filedir = "excels/{}/{}/".format(child.grade,
-                                                     child.section)
-
-                    # Get all files (subjects) in file directory
-                    try:
-                        files = os.listdir(filedir)
-                    except OSError:
-                        continue
+                    files = get_files(child.grade, child.section)
 
                     # Append subject to the list inside of the dict
                     for file in files:
