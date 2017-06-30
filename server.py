@@ -46,11 +46,13 @@ class User(db.Model):
 
     def mi(self):
         """Returns middle initial of user"""
-        mi = ""
+        mi = " "
 
-        for name in self.middlename.split():
-            mi += name[0]
-            mi += "."
+        if self.middlename != "":
+            for name in self.middlename.split():
+                mi += name[0]
+                mi += "."
+            mi += " "
 
         return mi
 
