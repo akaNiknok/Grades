@@ -3,6 +3,7 @@ import json
 from flask import Flask, render_template, request, session
 from flask import redirect, make_response, send_file
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail, Message
 from bs4 import BeautifulSoup
 from read import read_html, read_htmls, read_excel, get_files
 
@@ -13,8 +14,9 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True)
-    password = db.Column(db.String(20))
+    email = db.Column(db.String, unique=True)
+    username = db.Column(db.String(), unique=True)
+    password = db.Column(db.String())
     acc_type = db.Column(db.String(11))
 
     firstname = db.Column(db.String())
@@ -31,12 +33,14 @@ class User(db.Model):
     sections = db.Column(db.String)
 
     def __init__(self,
+                 email,
                  username,
                  password,
                  acc_type,
                  firstname,
                  middlename,
                  lastname):
+        self.email = email
         self.username = username
         self.password = password
         self.acc_type = acc_type
@@ -58,6 +62,7 @@ class User(db.Model):
 
 
 db.create_all()
+mail = Mail(app)
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -155,6 +160,7 @@ def register():
     if request.method == "POST":
 
         # Get data from general forms
+        email = request.form["email"]
         username = request.form["username"]
         password = request.form["password"]
         re_password = request.form["re_password"]
@@ -179,106 +185,116 @@ def register():
         new_coord_pass = request.form["new_coord_pass"]
         new_coord_subject = request.form["new_coord_subject"]
 
+        # Check if email is taken
+        if User.query.filter_by(email=email).first() is not None:
+            return render_template("register.html.j2", error="email")
+
         # Check if username is taken
-        if User.query.filter_by(username=username).first() is None:
-
-            # Validate retype password
-            if password == re_password:
-
-                # Signing up as student
-                if acc_type == "student":
-
-                    # Get parent user
-                    parent = User.query.filter_by(
-                                username=parent_username
-                            ).first()
-
-                    # Check if username and password of parent is correct
-                    if parent is None:
-                        return render_template("register.html.j2",
-                                               error="parent-username")
-                    elif parent.password != parent_password:
-                        return render_template("register.html.j2",
-                                               error="parent-password")
-
-                    # Create student
-                    student = User(username,
-                                   password,
-                                   acc_type,
-                                   firstname,
-                                   middlename,
-                                   lastname)
-                    student.grade = int(grade)
-                    student.section = section
-                    student.CN = int(CN)
-
-                    # Add student to children list of parent
-                    children = json.loads(parent.children)
-                    children.append(username)
-                    parent.children = json.dumps(children)
-
-                    db.session.add(student)
-
-                # Signing up as parent
-                elif acc_type == "parent":
-
-                    # Create parent
-                    parent = User(username,
-                                  password,
-                                  acc_type,
-                                  firstname,
-                                  middlename,
-                                  lastname)
-                    parent.children = "[]"
-
-                    db.session.add(parent)
-
-                # Signing up as teacher
-                elif (acc_type == "teacher" and
-                        new_teacher_pass == "CSQC new teach"):
-
-                    # Create teacher
-                    teacher = User(username,
-                                   password,
-                                   acc_type,
-                                   firstname,
-                                   middlename,
-                                   lastname)
-                    teacher.subject = new_teacher_subject
-                    teacher.sections = "[]"
-                    db.session.add(teacher)
-
-                # Signing up as coordinator
-                elif (acc_type == "coordinator" and
-                        new_coord_pass == "CSQC new coord"):
-
-                    # Create coordinator
-                    coord = User(username,
-                                 password,
-                                 acc_type,
-                                 firstname,
-                                 middlename,
-                                 lastname)
-                    coord.subject = new_coord_subject
-                    db.session.add(coord)
-
-                else:
-                    # Entered the wrong new_*_pass
-                    return render_template("register.html.j2", error=acc_type)
-
-                db.session.commit()
-
-            else:
-                # Entered wrong retype password
-                return render_template("register.html.j2", error="password")
-        else:
-            # Username taken
+        elif User.query.filter_by(username=username).first() is not None:
             return render_template("register.html.j2", error="username")
+
+        # Validate retype password
+        elif password != re_password:
+            return render_template("register.html.j2", error="password")
+
+        # Signing up as student
+        elif acc_type == "student":
+
+            # Get parent user
+            parent = User.query.filter_by(
+                        username=parent_username
+                    ).first()
+
+            # Check if username and password of parent is correct
+            if parent is None:
+                return render_template("register.html.j2",
+                                       error="parent-username")
+            elif parent.password != parent_password:
+                return render_template("register.html.j2",
+                                       error="parent-password")
+
+            # Create student
+            student = User(email,
+                           username,
+                           password,
+                           acc_type,
+                           firstname,
+                           middlename,
+                           lastname)
+            student.grade = int(grade)
+            student.section = section
+            student.CN = int(CN)
+
+            # Add student to children list of parent
+            children = json.loads(parent.children)
+            children.append(username)
+            parent.children = json.dumps(children)
+
+            db.session.add(student)
+
+        # Signing up as parent
+        elif acc_type == "parent":
+
+            # Create parent
+            parent = User(email,
+                          username,
+                          password,
+                          acc_type,
+                          firstname,
+                          middlename,
+                          lastname)
+            parent.children = "[]"
+
+            db.session.add(parent)
+
+        # Signing up as teacher
+        elif (acc_type == "teacher" and
+                new_teacher_pass == "CSQC new teach"):
+
+            # Create teacher
+            teacher = User(email,
+                           username,
+                           password,
+                           acc_type,
+                           firstname,
+                           middlename,
+                           lastname)
+            teacher.subject = new_teacher_subject
+            teacher.sections = "[]"
+            db.session.add(teacher)
+
+        # Signing up as coordinator
+        elif (acc_type == "coordinator" and
+                new_coord_pass == "CSQC new coord"):
+
+            # Create coordinator
+            coord = User(email,
+                         username,
+                         password,
+                         acc_type,
+                         firstname,
+                         middlename,
+                         lastname)
+            coord.subject = new_coord_subject
+            db.session.add(coord)
+
+        # Entered the wrong new_*_pass
+        else:
+            return render_template("register.html.j2", error=acc_type)
+
+        db.session.commit()
 
         # Login new user if "All Izz Well" :D
         user = User.query.filter_by(username=username).first()
         response = make_response(redirect("/"))
         session["user_id"] = user.id
+
+        msg = Message("Confirm Your Account on CSQC Grades",
+                      sender="no.reply.grades@gmail.com",
+                      recipients=[email])
+        msg.body = """Thanks for signing up on CSQC Grades! Please click
+                    <a href="#">here</a> to activate your account"""
+        mail.send(msg)
 
         return response
     else:
