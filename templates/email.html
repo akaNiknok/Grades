@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .email-background {
+                background: #eeeeee;
+                padding: 10px;
+            }
+
+            .email-container {
+                max-width: 500px;
+                background: white;
+                font-family: sans-serif;
+                margin: 0 auto;
+                overflow: hidden;
+                border-radius: 5px;
+                text-align: center;
+            }
+
+            .pre-header {
+                max-width: 500px;
+                color: #eeeeee;
+                font-family: sans-serif;
+                font-size: 5px;
+            }
+
+            p {
+                margin: 20px;
+                font-size: 18px;
+                font-weight: 300;
+                color: #666666;
+                line-height: 1.5;
+            }
+
+            .button {
+                margin: 20px;
+            }
+
+            a {
+                text-decoration: none;
+                display: inline-block;
+                background: #3c5bff;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+            }
+
+            .footer {
+                max-width: 500px;
+                background: none;
+                font-family: sans-serif;
+                margin: 0 auto;
+                overflow: hidden;
+                border-radius: 5px;
+                text-align: center;
+                padding: 10px;
+                font-size: 10px;
+            }
+
+            span {
+                color: #3c5bff;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="email-background">
+            <div class="pre-header">
+                Thanks for signing up on CSQC Grades!
+            </div>
+
+            <div class="email-container">
+                <h1>Welcome to CSQC Grades, <span>{{ username }}</span>!</h1>
+
+                <p>Please click the button below to activate your account.</p>
+
+                <div class="button">
+                    <a href="http://{{ HOSTNAME }}/activate?email={{ email }}&id={{ id }}">Activate Account</a>
+                </div>
+            </div>
+
+            <div class="footer">
+                If you did not sign up to CSQC Grades, you can ignore this message.
+            </div>
+        </div>
+    </body>
+</html>

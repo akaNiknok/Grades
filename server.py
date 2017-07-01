@@ -65,6 +65,7 @@ class User(db.Model):
 
 db.create_all()
 mail = Mail(app)
+HOSTNAME = os.getenv("HOSTNAME")
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -292,7 +293,12 @@ def register():
         msg = Message("Confirm Your Account on CSQC Grades",
                       sender=("CSQC Grades", "no.reply.grades@gmail.com"),
                       recipients=[email])
-        msg.html = render_template("email.html.j2", email=email, id=user.id)
+        msg.html = render_template("email.html.j2",
+                                   HOSTNAME=HOSTNAME,
+                                   username=username,
+                                   email=email,
+                                   id=user.id)
+        print(msg.html)
         mail.send(msg)
 
         return redirect("/activate")
