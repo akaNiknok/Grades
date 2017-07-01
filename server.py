@@ -284,23 +284,45 @@ def register():
         else:
             return render_template("register.html.j2", error=acc_type)
 
+        # Save changes
         db.session.commit()
 
-        # Login new user if "All Izz Well" :D
+        # Email new user
         user = User.query.filter_by(username=username).first()
-        response = make_response(redirect("/"))
-        session["user_id"] = user.id
-
         msg = Message("Confirm Your Account on CSQC Grades",
-                      sender="no.reply.grades@gmail.com",
+                      sender=("CSQC Grades", "no.reply.grades@gmail.com"),
                       recipients=[email])
-        msg.body = """Thanks for signing up on CSQC Grades! Please click
-                    <a href="#">here</a> to activate your account"""
+        msg.html = render_template("email.html.j2", email=email, id=user.id)
         mail.send(msg)
 
-        return response
+        return redirect("/activate")
     else:
         return render_template("register.html.j2")
+
+
+@app.route("/activate")
+def activate():
+
+    email = request.args.get("email")
+    id = request.args.get("id")
+
+    # Check if user is coming from activate
+    if (email is None) or (id is None):
+        return render_template("activate.html.j2", register=1)
+
+    # Get user
+    user = User.query.get(id)
+
+    # Activate account if account is not yet activated
+    if not user.activated:
+
+        # Check email
+        if email == user.email:
+            user.activated = True
+            db.session.commit()
+            return render_template("activate.html.j2")
+
+    return redirect("/")
 
 
 @app.route("/delete", methods=["POST"])
