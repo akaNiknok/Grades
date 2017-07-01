@@ -18,6 +18,7 @@ class User(db.Model):
     username = db.Column(db.String(), unique=True)
     password = db.Column(db.String())
     acc_type = db.Column(db.String(11))
+    activated = db.Column(db.Boolean)
 
     firstname = db.Column(db.String())
     middlename = db.Column(db.String())
@@ -47,6 +48,7 @@ class User(db.Model):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
+        self.activated = False
 
     def mi(self):
         """Returns middle initial of user"""
@@ -346,12 +348,16 @@ def login():
             return render_template("login.html.j2", error="username")
 
         # Validate password
-        elif user.password == password:
-            response = make_response(redirect("/"))
-            session["user_id"] = user.id
-            return response
-        else:
+        elif user.password != password:
             return render_template("login.html.j2", error="password")
+
+        # Check if user activated his accunt
+        elif not user.activated:
+            return render_template("login.html.j2", error="email")
+
+        response = make_response(redirect("/"))
+        session["user_id"] = user.id
+        return response
 
     else:
         return render_template("login.html.j2")

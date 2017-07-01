@@ -48,8 +48,9 @@
             <div class="alert alert-danger alert-dismissable fade in col-sm-offset-4 col-sm-5">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <span class="glyphicon glyphicon-warning-sign"></span>
-                {{ "Username is incorrect. " if error == "username" }}
-                {{ "Password is incorrect. " if error == "password" }}
+                {{ "Username is incorrect." if error == "username" }}
+                {{ "Password is incorrect." if error == "password" }}
+                {{ "Your account is not yet activated, please check your email first." if error == "email" }}
             </div>
         {% endif %}
     </div>
