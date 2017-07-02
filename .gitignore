@@ -1,7 +1,7 @@
 
 *.pyc
 
-test_db\.py
+test_*.py
 
 help/
 
