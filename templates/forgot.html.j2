@@ -1,0 +1,91 @@
+{% extends "base.html.j2" %}
+{% block title %}Forgot{% endblock %}
+
+{% block page_header %}
+    {% if status == "emailed" or status == "success" %}
+        Change Your Password
+    {% else %}
+        Forgot Your Password? <small>Enter your email below to change your password</small>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        {% if status == "emailed"%}
+            <!-- PASSWORD FORM -->
+            <form class="form-horizontal" action="/forgot?email={{ email }}&id={{ id }}" method="post">
+
+                <!-- PASSWORD -->
+                <div class="form-group">
+                    <label class="control-label col-sm-4" for="password">Password:</label>
+                    <div class="col-sm-5">
+                        <input id="password" class="form-control" type="password" name="password" placeholder="Enter password" required>
+                    </div>
+                </div>
+
+                <!-- RETYPE PASSWORD -->
+                <div class="form-group{{ ' has-error has-feedback' if error == 'password' }}">
+                    <label class="control-label col-sm-4" for="re_password">Retype Password:</label>
+                    <div class="col-sm-5">
+                        <input id="re_password" class="form-control" type="password" name="re_password" placeholder="Retype password" required>
+                        {% if error == "password" %}
+                            <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- BUTTON -->
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-5">
+                        <input class="btn btn-success" type="submit" name="submit" value="password">
+                    </div>
+                </div>
+            </form>
+
+            {% if error %}
+                <div class="alert alert-danger alert-dismissable fade in col-sm-offset-4 col-sm-5">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    {{ "Password does not match." if error == "password" }}
+                </div>
+            {% endif %}
+
+        {% elif status == "forgot" %}
+            <!-- EMAIL FORM -->
+            <form class="form-horizontal" action="/forgot" method="post">
+
+                <!-- EMAIL -->
+                <div class="form-group{{ ' has-error has-feedback' if error }}">
+                    <label class="control-label col-sm-4" for="email">Email:</label>
+                    <div class="col-sm-5">
+                        <input id="email" class="form-control" type="text" name="email" placeholder="Enter your email" required>
+                        {% if error == "email" %}
+                            <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- BUTTON -->
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-5">
+                        <input class="btn btn-success" type="submit" name="submit" value="email">
+                    </div>
+                </div>
+            </form>
+
+            {% if error %}
+                <div class="alert alert-danger alert-dismissable fade in col-sm-offset-4 col-sm-5">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    {{ "The email you entered is not yet registered." if error == "email" }}
+                    {{ "Your account is not yet activated, please check your email first." if error == "activated" }}
+                </div>
+            {% endif %}
+        {% else %}
+            <h2 class="text-center text-success">Successfully changed your password!
+            <small>Click <a href="/login">here</a> to login.</small></h2>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

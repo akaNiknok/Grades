@@ -1,0 +1,20 @@
+{% extends "base.html.j2" %}
+{% block title %}Email{% endblock %}
+
+{% block page_header %}
+    {% if status == "registered" or status == "activated" %}
+        Account Activation
+    {% elif status == "forgot" %}
+        Change Password
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if status == "registered" %}
+        <h2 class="text-center">Please check your email {{ email }} to activate your account.</h2>
+    {% elif status == "activated" %}
+        <h2 class="text-center text-success">Your account was successfully activated! <small>Click <a href="/login">here</a> to login.</small></h2>
+    {% elif status == "forgot" %}
+        <h2 class="text-center">Please check your email {{ email }} to change your password.</h2>
+    {% endif %}
+{% endblock %}

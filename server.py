@@ -295,12 +295,11 @@ def register():
         msg = Message("Confirm Your Account on CSQC Grades",
                       sender=("CSQC Grades", "no.reply.grades@gmail.com"),
                       recipients=[email])
-        msg.html = render_template("email.html.j2",
+        msg.html = render_template("emails/email_activate.html.j2",
                                    HOSTNAME=HOSTNAME,
                                    username=username,
                                    email=email,
                                    id=user.id)
-        print(msg.html)
         mail.send(msg)
 
         return redirect("/activate")
@@ -314,9 +313,9 @@ def activate():
     email = request.args.get("email")
     id = request.args.get("id")
 
-    # Check if user is coming from activate
+    # Check if user is coming from email
     if (email is None) or (id is None):
-        return render_template("activate.html.j2", register=1)
+        return render_template("email_status.html.j2", status="registered")
 
     # Get user
     user = User.query.get(id)
@@ -328,7 +327,7 @@ def activate():
         if email == user.email:
             user.activated = True
             db.session.commit()
-            return render_template("activate.html.j2")
+            return render_template("email_status.html.j2", status="activated")
 
     return redirect("/")
 
@@ -482,6 +481,85 @@ def user(username):
             view_user = User.query.filter_by(username=username).first()
 
         return render_template("user.html.j2", user=user, view_user=view_user)
+
+
+@app.route("/forgot", methods=["POST", "GET"])
+def forgot_password():
+    if request.method == "POST":
+
+        submit = request.form["submit"]
+
+        if submit == "email":
+            email = request.form["email"]
+
+            user = User.query.filter_by(email=email).first()
+
+            # Check if account exists
+            if user is None:
+                return render_template("forgot.html.j2",
+                                       status="forgot",
+                                       error="email")
+
+            # Check if account is activated
+            elif user.activated is not True:
+                return render_template("forgot.html.j2",
+                                       status="forgot",
+                                       error="activated")
+
+            # Email the user
+            msg = Message("Change Your Password on CSQC Grades",
+                          sender=("CSQC Grades", "no.reply.grades@gamil.com"),
+                          recipients=[email])
+            msg.html = render_template("emails/email_forgot.html.j2",
+                                       HOSTNAME=HOSTNAME,
+                                       username=user.username,
+                                       email=email,
+                                       id=user.id)
+            mail.send(msg)
+
+            return render_template("email_status.html.j2", status="forgot")
+
+        else:
+            email = request.args.get("email")
+            id = request.args.get("id")
+            password = request.form["password"]
+            re_password = request.form["re_password"]
+
+            # Get user
+            user = User.query.get(id)
+
+            # Check email if it matches
+            if email == user.email:
+
+                # Validate password
+                if password != re_password:
+                    return render_template("forgot.html.j2",
+                                           status="emailed",
+                                           email=email,
+                                           id=id,
+                                           error="password")
+
+                # Change the password and save to database
+                user.password = password
+                db.session.commit()
+
+                return render_template("forgot.html.j2",
+                                       status="success")
+
+            return redirect("/")
+
+    else:
+        email = request.args.get("email")
+        id = request.args.get("id")
+
+        # Check if user is coming from email
+        if (email is None) or (id is None):
+            return render_template("forgot.html.j2", status="forgot")
+
+        return render_template("forgot.html.j2",
+                               status="emailed",
+                               email=email,
+                               id=id)
 
 
 @app.route("/excels/<grade>/<section>/<subject>")
