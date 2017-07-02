@@ -105,7 +105,8 @@ def index():
                 for child in children:
 
                     # Get the user of child
-                    child = User.query.filter_by(username=child).first()
+                    child = User.query.filter_by(username=child,
+                                                 activated=True).first()
                     new_children[child] = []
 
                     files = get_files(child.grade, child.section)
@@ -136,7 +137,8 @@ def index():
                     user=user,
                     teachers=User.query.filter_by(
                         subject=user.subject,
-                        acc_type="teacher"
+                        acc_type="teacher",
+                        activated=True
                     ).all(),
                     loads=json.loads
                 )
