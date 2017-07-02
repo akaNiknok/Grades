@@ -419,29 +419,28 @@ def user(username):
             re_new_pass = request.form["re_new_pass"]
 
             # Check if original password matches user's password
-            if orig_pass == user.password:
-
-                # Check if new password matches retype password
-                if new_pass == re_new_pass:
-
-                    # Change the password and save to database
-                    user.password = new_pass
-                    db.session.commit()
-
-                    return render_template("user.html.j2",
-                                           user=user,
-                                           view_user=user,
-                                           success=True)
-                else:
-                    return render_template("user.html.j2",
-                                           user=user,
-                                           view_user=user,
-                                           error="re_new_pass")
-            else:
+            if orig_pass != user.password:
                 return render_template("user.html.j2",
                                        user=user,
                                        view_user=user,
                                        error="orig_pass")
+
+            # Check if new password matches retype password
+            elif new_pass != re_new_pass:
+                return render_template("user.html.j2",
+                                       user=user,
+                                       view_user=user,
+                                       error="re_new_pass")
+
+            # Change the password and save to database
+            else:
+                user.password = new_pass
+                db.session.commit()
+
+                return render_template("user.html.j2",
+                                       user=user,
+                                       view_user=user,
+                                       success=True)
 
         else:
             # Get data from form
