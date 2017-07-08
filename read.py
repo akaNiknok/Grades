@@ -19,6 +19,19 @@ def get_files(grade, section):
     return files
 
 
+def get_teacher(grade, section, subject):
+    """Return the teacher who uploaded the excel"""
+
+    wb = openpyxl.load_workbook("excels/{}/{}/{}".format(grade,
+                                                         section,
+                                                         subject + ".xlsx"),
+                                data_only=True)
+
+    ws = wb.worksheets[0]
+
+    return ws.cell(row=6, column=1).value
+
+
 def read_html(grade, section, cn, soup):
     trimesters = {}
     incl_rows = [0, 1, 2, 3, cn + 3]  # Headers and user row

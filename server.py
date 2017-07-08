@@ -5,7 +5,7 @@ from flask import redirect, make_response, send_file
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from bs4 import BeautifulSoup
-from read import read_html, read_htmls, read_excel, get_files
+from read import read_html, read_htmls, read_excel, get_files, get_teacher
 
 app = Flask(__name__)
 app.config.from_object("config")
@@ -687,7 +687,9 @@ def upload():
 @app.route("/download/<grade>/<section>/<subject>")
 def download(grade, section, subject):
     return send_file("excels/{}/{}/{}.xlsx".format(grade, section, subject),
-                     as_attachment=True)
+                     as_attachment=True,
+                     attachment_filename=get_teacher(grade, section, subject)
+                     + ".xlsx")
 
 
 if __name__ == "__main__":
