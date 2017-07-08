@@ -135,6 +135,7 @@ def index():
                 return render_template(
                     "index.html.j2",
                     user=user,
+                    sections=json.loads(user.sections),
                     teachers=User.query.filter_by(
                         subject=user.subject,
                         acc_type="teacher",
@@ -281,6 +282,7 @@ def register():
                          middlename,
                          lastname)
             coord.subject = new_coord_subject
+            teacher.sections = "[]"
             db.session.add(coord)
 
         # Entered the wrong new_*_pass

@@ -93,7 +93,6 @@
         <!-- Teacher -->
 
             <a class="btn btn-default" href="/upload">Upload .xlsx</a>
-
             <form id="delete" action="/delete" method="post"></form>
 
             <table class="table table-hover">
@@ -128,8 +127,8 @@
         {% elif user.acc_type == "coordinator" %}
         <!-- Coordinator -->
 
+            <!-- Teacher View -->
             <div class="panel-group" id="accordion">
-
             {% for teacher in teachers %}
                 <div class="panel panel-default">
                     <!-- Panel Heading -->
@@ -149,8 +148,45 @@
                     </div>
                 </div>
             {% endfor %}
-
             </div>
+
+            <!-- Excel View -->
+
+            <div class="page-header">
+                <h1>Your Excels</h1>
+            </div>
+
+            <a class="btn btn-default" href="/upload">Upload .xlsx</a>
+            <form id="delete" action="/delete" method="post"></form>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Grade</th>
+                        <th>Section</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for section in sections %}
+                    <tr>
+                        <td>{{ section[0] }} </td>
+                        <td>{{ section[1] }} </td>
+                        <td>
+                            <!-- Link to table button -->
+                            <a class="btn btn-xs btn-success" href="excels/{{ section[0] }}/{{ section[1 ]}}/{{ user.subject }}">
+                                <span class="glyphicon glyphicon-eye-open"></span> View
+                            </a>
+
+                            <!-- Delete button -->
+                            <button id="showMore{{ sections.index(section) }}" class="btn btn-xs btn-danger" data-toggle="popover" title="Are you sure you want to delete <b>{{ section[0] }}-{{ section[1] }}</b>?" data-content="{{ popover(section, sections) }}" data-placement="bottom" data-html=true>
+                                <span class="glyphicon glyphicon-remove"></span> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
         {% endif %}
 
