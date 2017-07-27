@@ -611,7 +611,7 @@ def upload():
             file.save(os.path.join(filedir, filename))
 
             # Read excel
-            trimesters = read_excel(grade, section, user.subject)
+            trimesters = read_excel(os.path.join(filedir, filename))
 
             # Pre-render table and save to file
             with open(os.path.join(filedir, filename_j2), "w") as f:

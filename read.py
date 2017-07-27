@@ -84,14 +84,11 @@ def read_htmls(grade, section, cn):
     return subjects
 
 
-def read_excel(grade, section, subject):
+def read_excel(filepath):
     """Reads an excel file and returns a table list"""
 
     # Open excel file
-    wb = openpyxl.load_workbook("excels/{}/{}/{}".format(grade,
-                                                         section,
-                                                         subject + ".xlsx"),
-                                data_only=True)
+    wb = openpyxl.load_workbook(filepath, data_only=True)
 
     trimesters = {}
 
