@@ -303,10 +303,16 @@ def delete():
     # Remove the section from the list and delete the files
     sections.pop(delete_index)
     os.remove(
-        "excels/{}/{}/{}.xlsx".format(section[0], section[1], user.subject)
+        "excels/{}/{}/{} - {}.xlsx".format(section[0],
+                                           section[1],
+                                           user.subject,
+                                           section[2])
     )
     os.remove(
-        "excels/{}/{}/{}.html.j2".format(section[0], section[1], user.subject)
+        "excels/{}/{}/{} - {}.html.j2".format(section[0],
+                                              section[1],
+                                              user.subject,
+                                              section[2])
     )
 
     # Save the list
