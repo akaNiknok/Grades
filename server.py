@@ -584,10 +584,11 @@ def upload():
             # Get data from forms
             grade = request.form["grade"]
             section = request.form["section"]
+            subject = request.form["subject"]
 
             # Rename the file to subject.xlsx and subject.html.j2
-            filename = user.subject + ".xlsx"
-            filename_j2 = user.subject + ".html.j2"
+            filename = "{} - {}.xlsx".format(user.subject, subject)
+            filename_j2 = "{} - {}.html.j2".format(user.subject, subject)
 
             # Directory for the excel file
             filedir = "excels/{}/{}/".format(grade, section)
@@ -597,7 +598,7 @@ def upload():
                 sections = json.loads(user.sections)
 
                 # Add the section as tuple to the list
-                sections.append((grade, section))
+                sections.append((grade, section, subject))
 
                 # Save the list
                 user.sections = json.dumps(sections)
