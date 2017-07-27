@@ -597,8 +597,7 @@ def upload():
                 sections = json.loads(user.sections)
 
                 # Add the section as tuple to the list
-                sections.append((request.form["grade"],
-                                 request.form["section"]))
+                sections.append((grade, section))
 
                 # Save the list
                 user.sections = json.dumps(sections)
