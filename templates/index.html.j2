@@ -100,6 +100,7 @@
                     <tr>
                         <th>Grade</th>
                         <th>Section</th>
+                        <th>Subject</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -108,9 +109,10 @@
                     <tr>
                         <td>{{ section[0] }} </td>
                         <td>{{ section[1] }} </td>
+                        <td>{{ section[2] }} </td>
                         <td>
                             <!-- Link to table button -->
-                            <a class="btn btn-xs btn-success" href="excels/{{ section[0] }}/{{ section[1 ]}}/{{ user.subject }}">
+                            <a class="btn btn-xs btn-success" href="excels/{{ section[0] }}/{{ section[1 ]}}/{{ user.subject }}{{ " - " + section[2] if section[2] }}">
                                 <span class="glyphicon glyphicon-eye-open"></span> View
                             </a>
 
@@ -172,9 +174,10 @@
                     <tr>
                         <td>{{ section[0] }} </td>
                         <td>{{ section[1] }} </td>
+                        <td>{{ section[2] }} </td>
                         <td>
                             <!-- Link to table button -->
-                            <a class="btn btn-xs btn-success" href="excels/{{ section[0] }}/{{ section[1 ]}}/{{ user.subject }}">
+                            <a class="btn btn-xs btn-success" href="excels/{{ section[0] }}/{{ section[1 ]}}/{{ user.subject }}{{ " - " + section[2] if section[2] }}">
                                 <span class="glyphicon glyphicon-eye-open"></span> View
                             </a>
 
